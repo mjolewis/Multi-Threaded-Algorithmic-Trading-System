@@ -28,7 +28,7 @@ public:
     explicit MarketDataLiveClient();
     ~MarketDataLiveClient() override = default;
 
-    void initializeConnectionToMarketDataProvider() override;
+    void initializeMarketDataClient() override;
     std::shared_ptr<IMarketDataProvider> getClient() const override;
     void closeClientConnection() override;
 };

@@ -16,9 +16,9 @@ public:
     IMarketDataProvider(IMarketDataProvider&& other) = default;
     virtual ~IMarketDataProvider() = default;
 
-    void initialize() { initializeConnectionToMarketDataProvider(); }
+    void initialize() { initializeMarketDataClient(); }
 
-    virtual void initializeConnectionToMarketDataProvider() = 0;
+    virtual void initializeMarketDataClient() = 0;
 
     virtual std::shared_ptr<IMarketDataProvider> getClient() const = 0;
 
