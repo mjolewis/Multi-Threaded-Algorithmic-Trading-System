@@ -28,7 +28,7 @@ MarketDataHistoricalClient::MarketDataHistoricalClient() : IMarketDataProvider{}
     initialize();
 }
 
-void MarketDataHistoricalClient::initializeConnectionToMarketDataProvider()
+void MarketDataHistoricalClient::initializeMarketDataClient()
 {
     client = std::make_shared<databento::Historical>(MarketDataUtils::getHistoricalClient());
 

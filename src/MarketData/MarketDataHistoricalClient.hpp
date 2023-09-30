@@ -25,10 +25,10 @@ private:
     std::shared_ptr<MarketDataStreamingClient> streamingClient;
 
 public:
-    explicit MarketDataHistoricalClient();
+    MarketDataHistoricalClient();
     ~MarketDataHistoricalClient() override = default;
 
-    void initializeConnectionToMarketDataProvider() override;
+    void initializeMarketDataClient() override;
     std::shared_ptr<IMarketDataProvider> getClient() const override;
     void closeClientConnection() override;
 };

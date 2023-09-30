@@ -16,7 +16,7 @@ MarketDataLiveClient::MarketDataLiveClient() : IMarketDataProvider{}, client{}
     initialize();
 }
 
-void MarketDataLiveClient::initializeConnectionToMarketDataProvider()
+void MarketDataLiveClient::initializeMarketDataClient()
 {
     client = std::make_shared<databento::LiveBlocking>(MarketDataUtils::getLiveClient());
 
