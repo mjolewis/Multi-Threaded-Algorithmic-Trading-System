@@ -11,8 +11,6 @@
 #include "MarketDataStreamingClient.hpp"
 #include "MarketDataUtils.hpp"
 
-using namespace databento;
-
 KeepGoing processQuote(const Record& record)
 {
     auto mboMsg = record.Get<MboMsg>();
@@ -25,6 +23,7 @@ KeepGoing processQuote(const Record& record)
 
 MarketDataHistoricalClient::MarketDataHistoricalClient() : IMarketDataProvider{}, client{}
 {
+    streamingClient = std::make_shared<MarketDataStreamingClient<MarketDataHistoricalClient>>(*this);
     initialize();
 }
 
@@ -33,7 +32,7 @@ void MarketDataHistoricalClient::initializeMarketDataClient()
     client = std::make_shared<databento::Historical>(MarketDataUtils::getHistoricalClient());
 
     auto downloaded_files = client->BatchDownload(ConfigReader::extractStringValueFromConfig("marketData"),
-                                                       ConfigReader::extractStringValueFromConfig("fileToDownload"));
+                                                  ConfigReader::extractStringValueFromConfig("fileToDownload"));
 
     for (const auto& file : downloaded_files)
     {

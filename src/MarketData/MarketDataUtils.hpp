@@ -17,8 +17,6 @@
 
 #include "../Resources/ConfigReader.hpp"
 
-using json = nlohmann::json;
-using namespace databento;
 using namespace std::chrono_literals;
 
 class MarketDataUtils

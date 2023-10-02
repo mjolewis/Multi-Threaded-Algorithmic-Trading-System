@@ -13,6 +13,7 @@
 
 MarketDataLiveClient::MarketDataLiveClient() : IMarketDataProvider{}, client{}
 {
+    streamingClient = std::make_shared<MarketDataStreamingClient<MarketDataLiveClient>>(*this);
     initialize();
 }
 
