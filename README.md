@@ -2,7 +2,7 @@
 An event-based algorithmic trading system, with plug-n-play strategies for live trading and backtesting infrastructure
 
 # Libraries
-1. Market Data  
+1. **<ins>Market Data<ins>**  
    2. Provider: Databento  
    3. Purpose: Provides low-latency live and historical market data without data loss. Typical normalization is 
       6.1-microsecond with practically zero data gaps with their FPGA-based capture.  
@@ -14,7 +14,7 @@ Billed in advance each month and not prorated.
    6. https://docs.databento.com/pricing-guide  
    7. https://databento.com/pricing  
    8. Getting Started: https://docs.databento.com/getting-started?historical=python&live=python  
-9. JSON  
-   10. Provider: nlohmann/json  
-   11. Purpose: Parse JSON formatted configuration files  
-   12. Getting Started: https://github.com/nlohmann/json
+2. **<ins>JSON<ins>**  
+   1. Provider: nlohmann/json  
+   2. Purpose: Parse JSON formatted configuration files  
+   3. Getting Started: https://github.com/nlohmann/json
