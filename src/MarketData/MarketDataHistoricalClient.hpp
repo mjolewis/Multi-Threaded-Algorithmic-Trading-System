@@ -15,13 +15,14 @@
 #include "IMarketDataProvider.hpp"
 #include "MarketDataStreamingClient.hpp"
 
+// Forward Declarations
+class MarketDataHistoricalClient;
+
+template<typename T>
+class MarketDataStreamingClient;
+
 namespace MarketData
 {
-    // Forward Declarations
-    class MarketDataHistoricalClient;
-
-    template<typename T>
-    class MarketDataStreamingClient;
 
     class MarketDataHistoricalClient : public IMarketDataProvider
     {
@@ -38,5 +39,6 @@ namespace MarketData
         void closeClientConnection() override;
     };
 }
+
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATAHISTORICALCLIENT_HPP

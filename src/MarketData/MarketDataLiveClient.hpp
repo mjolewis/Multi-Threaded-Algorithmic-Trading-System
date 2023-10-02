@@ -15,13 +15,14 @@
 #include "IMarketDataProvider.hpp"
 #include "MarketDataStreamingClient.hpp"
 
+// Forward Declarations
+class MarketDataLiveClient;
+
+template<typename T>
+class MarketDataStreamingClient;
+
 namespace MarketData
 {
-    // Forward Declarations
-    class MarketDataLiveClient;
-
-    template<typename T>
-    class MarketDataStreamingClient;
 
     class MarketDataLiveClient : public IMarketDataProvider
     {
