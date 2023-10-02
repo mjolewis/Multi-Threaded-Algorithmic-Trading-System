@@ -33,8 +33,8 @@ namespace MarketData
     {
         client = std::make_shared<databento::Historical>(MarketDataUtils::getHistoricalClient());
 
-        auto downloaded_files = client->BatchDownload(ConfigReader::extractStringValueFromConfig("marketData"),
-                                                      ConfigReader::extractStringValueFromConfig("fileToDownload"));
+        auto downloaded_files = client->BatchDownload(Utilities::ConfigReader::extractStringValueFromConfig("marketData"),
+                                                      Utilities::ConfigReader::extractStringValueFromConfig("fileToDownload"));
 
         for (const auto& file : downloaded_files)
         {

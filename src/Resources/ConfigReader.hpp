@@ -12,22 +12,25 @@
 
 using json = nlohmann::json;
 
-class ConfigReader
+namespace Utilities
 {
-private:
-    inline static std::ifstream configFile{"../src/Resources/config.json"};
-    inline static nlohmann::json data = json::parse(configFile);
-
-public:
-    static std::string extractStringValueFromConfig(const std::string& key)
+    class ConfigReader
     {
-        return data[key];
-    }
+    private:
+        inline static std::ifstream configFile{"../src/Resources/config.json"};
+        inline static nlohmann::json data = json::parse(configFile);
 
-    static bool extractBoolValueFromConfig(const std::string& key)
-    {
-        return data[key];
-    }
-};
+    public:
+        static std::string extractStringValueFromConfig(const std::string& key)
+        {
+            return data[key];
+        }
+
+        static bool extractBoolValueFromConfig(const std::string& key)
+        {
+            return data[key];
+        }
+    };
+}
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_CONFIGREADER_HPP

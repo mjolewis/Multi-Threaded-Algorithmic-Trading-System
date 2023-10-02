@@ -8,27 +8,30 @@
 #include "string"
 #include "map"
 
-class AbstractCodes
+namespace DataStructures
 {
-private:
-    int id{};
-    std::string desc;
-
-protected:
-    AbstractCodes(int id, std::string desc)
+    class AbstractCodes
     {
-        this->id = id;
-        this->desc = std::move(desc);
-    }
+    private:
+        int id{};
+        std::string desc;
 
-public:
-    AbstractCodes() = default;
+    protected:
+        AbstractCodes(int id, std::string desc)
+        {
+            this->id = id;
+            this->desc = std::move(desc);
+        }
 
-    virtual ~AbstractCodes() = default;
+    public:
+        AbstractCodes() = default;
 
-    inline virtual std::string getDesc() const {return this->desc;}
+        virtual ~AbstractCodes() = default;
 
-    inline virtual constexpr explicit operator int() const {return id;}
-};
+        inline virtual std::string getDesc() const {return this->desc;}
+
+        inline virtual constexpr explicit operator int() const {return id;}
+    };
+}
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_ABSTRACTCODES_HPP

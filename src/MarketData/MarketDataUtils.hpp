@@ -41,7 +41,7 @@ namespace MarketData
                 {
                     ++attempts;
                     return databento::HistoricalBuilder{}
-                            .SetKey(ConfigReader::extractStringValueFromConfig("dbnApiKey"))
+                            .SetKey(Utilities::ConfigReader::extractStringValueFromConfig("dbnApiKey"))
                             .Build();
                 }
                 catch (const databento::HttpResponseError& e)
