@@ -12,8 +12,6 @@ class IMarketDataProvider
 {
 public:
     IMarketDataProvider() = default;
-    IMarketDataProvider(const IMarketDataProvider& other) = default;
-    IMarketDataProvider(IMarketDataProvider&& other) = default;
     virtual ~IMarketDataProvider() = default;
 
     void initialize() { initializeMarketDataClient(); }

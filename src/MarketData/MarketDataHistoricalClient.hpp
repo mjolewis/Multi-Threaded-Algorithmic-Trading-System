@@ -7,22 +7,25 @@
 
 #include <iostream>
 #include <string>
-#include <fstream>
 #include <memory>
 
 #include <databento/historical.hpp>
 #include <databento/log.hpp>
 
 #include "IMarketDataProvider.hpp"
+#include "MarketDataStreamingClient.hpp"
 
 // Forward Declarations
+class MarketDataHistoricalClient;
+
+template<typename T>
 class MarketDataStreamingClient;
 
 class MarketDataHistoricalClient : public IMarketDataProvider
 {
 private:
     std::shared_ptr<databento::Historical> client;
-    std::shared_ptr<MarketDataStreamingClient> streamingClient;
+    std::shared_ptr<MarketDataStreamingClient<MarketDataHistoricalClient>> streamingClient;
 
 public:
     MarketDataHistoricalClient();
