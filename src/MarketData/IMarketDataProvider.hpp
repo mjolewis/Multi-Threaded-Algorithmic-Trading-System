@@ -8,19 +8,22 @@
 #include <memory>
 #include <utility>
 
-class IMarketDataProvider
+namespace MarketData
 {
-public:
-    IMarketDataProvider() = default;
-    virtual ~IMarketDataProvider() = default;
+    class IMarketDataProvider
+    {
+    public:
+        IMarketDataProvider() = default;
+        virtual ~IMarketDataProvider() = default;
 
-    void initialize() { initializeMarketDataClient(); }
+        void initialize() { initializeMarketDataClient(); }
 
-    virtual void initializeMarketDataClient() = 0;
+        virtual void initializeMarketDataClient() = 0;
 
-    virtual std::shared_ptr<IMarketDataProvider> getClient() const = 0;
+        virtual std::shared_ptr<IMarketDataProvider> getClient() const = 0;
 
-    virtual void closeClientConnection() = 0;
-};
+        virtual void closeClientConnection() = 0;
+    };
+}
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_IMARKETDATAPROVIDER_HPP

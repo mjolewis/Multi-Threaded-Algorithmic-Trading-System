@@ -19,99 +19,104 @@
 
 using namespace std::chrono_literals;
 
-class MarketDataUtils
+namespace MarketData
 {
-private:
-    static void logErrorMessage(int attempt, const std::string& what)
+    class MarketDataUtils
     {
-        std::cerr << "Unable to connect to market data provider on attempt=" << attempt << what << std::endl;
-    }
-
-public:
-
-     // Build the market data provider client. Retry up to a maximum of 10 times before throwing an error
-    static databento::Historical getHistoricalClient()
-    {
-        int attempts = 0;
-        while (true)
+    private:
+        static void logErrorMessage(int attempt, const std::string& what)
         {
-            try
-            {
-                ++attempts;
-                return HistoricalBuilder{}.SetKey(ConfigReader::extractStringValueFromConfig("dbnApiKey")).Build();
-            }
-            catch (const HttpResponseError& e)
-            {
-                logErrorMessage(attempts, e.what());
-                if (attempts == 10)
-                {
-                    throw e;
-                }
-            }
-            catch (const std::exception& e)
-            {
-                logErrorMessage(attempts, e.what());
-                if (attempts == 10)
-                {
-                    throw e;
-                }
-            }
+            std::cerr << "Unable to connect to market data provider on attempt=" << attempt << what << std::endl;
+        }
 
-            try
+    public:
+
+        // Build the market data provider client. Retry up to a maximum of 10 times before throwing an error
+        static databento::Historical getHistoricalClient()
+        {
+            int attempts = 0;
+            while (true)
             {
-                std::this_thread::sleep_for(10s);
-            }
-            catch (const std::exception& e)
-            {
-                logErrorMessage(attempts, e.what());
+                try
+                {
+                    ++attempts;
+                    return databento::HistoricalBuilder{}
+                            .SetKey(ConfigReader::extractStringValueFromConfig("dbnApiKey"))
+                            .Build();
+                }
+                catch (const databento::HttpResponseError& e)
+                {
+                    logErrorMessage(attempts, e.what());
+                    if (attempts == 10)
+                    {
+                        throw e;
+                    }
+                }
+                catch (const std::exception& e)
+                {
+                    logErrorMessage(attempts, e.what());
+                    if (attempts == 10)
+                    {
+                        throw e;
+                    }
+                }
+
+                try
+                {
+                    std::this_thread::sleep_for(10s);
+                }
+                catch (const std::exception& e)
+                {
+                    logErrorMessage(attempts, e.what());
+                }
             }
         }
-    }
 
-    // Build the market data provider client. Retry up to a maximum of 10 times before throwing an error
-    static databento::LiveBlocking getLiveClient()
-    {
-        int attempts = 0;
-        while (true)
+        // Build the market data provider client. Retry up to a maximum of 10 times before throwing an error
+        static databento::LiveBlocking getLiveClient()
         {
-            try
+            int attempts = 0;
+            while (true)
             {
-                ++attempts;
-                // todo Implement live data feeds after backtesting strategies. See link below to determine
-                // blocking versus threaded strategy
-                // https://docs.databento.com/api-reference-live/client?historical=cpp&live=cpp
-                return LiveBuilder{}
-                        .SetKeyFromEnv()  // `DATABENTO_API_KEY` environment variable
-                        .SetDataset("")
-                        .BuildBlocking();
-            }
-            catch (const HttpResponseError& e)
-            {
-                logErrorMessage(attempts, e.what());
-                if (attempts == 10)
+                try
                 {
-                    throw e;
+                    ++attempts;
+                    // todo Implement live data feeds after backtesting strategies. See link below to determine
+                    // blocking versus threaded strategy
+                    // https://docs.databento.com/api-reference-live/client?historical=cpp&live=cpp
+                    return databento::LiveBuilder{}
+                            .SetKeyFromEnv()  // `DATABENTO_API_KEY` environment variable
+                            .SetDataset("")
+                            .BuildBlocking();
                 }
-            }
-            catch (const std::exception& e)
-            {
-                logErrorMessage(attempts, e.what());
-                if (attempts == 10)
+                catch (const databento::HttpResponseError& e)
                 {
-                    throw e;
+                    logErrorMessage(attempts, e.what());
+                    if (attempts == 10)
+                    {
+                        throw e;
+                    }
                 }
-            }
+                catch (const std::exception& e)
+                {
+                    logErrorMessage(attempts, e.what());
+                    if (attempts == 10)
+                    {
+                        throw e;
+                    }
+                }
 
-            try
-            {
-                std::this_thread::sleep_for(10s);
-            }
-            catch (const std::exception& e)
-            {
-                logErrorMessage(attempts, e.what());
+                try
+                {
+                    std::this_thread::sleep_for(10s);
+                }
+                catch (const std::exception& e)
+                {
+                    logErrorMessage(attempts, e.what());
+                }
             }
         }
-    }
-};
+    };
+}
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATAUTILS_HPP

@@ -11,25 +11,28 @@
 #include "MarketDataStreamingClient.hpp"
 #include "MarketDataUtils.hpp"
 
-MarketDataLiveClient::MarketDataLiveClient() : IMarketDataProvider{}, client{}
+namespace MarketData
 {
-    streamingClient = std::make_shared<MarketDataStreamingClient<MarketDataLiveClient>>(*this);
-    initialize();
-}
+    MarketDataLiveClient::MarketDataLiveClient() : IMarketDataProvider{}, client{}
+    {
+        streamingClient = std::make_shared<MarketDataStreamingClient<MarketDataLiveClient>>(*this);
+        initialize();
+    }
 
-void MarketDataLiveClient::initializeMarketDataClient()
-{
-    client = std::make_shared<databento::LiveBlocking>(MarketDataUtils::getLiveClient());
+    void MarketDataLiveClient::initializeMarketDataClient()
+    {
+        client = std::make_shared<databento::LiveBlocking>(MarketDataUtils::getLiveClient());
 
-    streamingClient->initialize();
-}
+        streamingClient->initialize();
+    }
 
-std::shared_ptr<IMarketDataProvider> MarketDataLiveClient::getClient() const
-{
-    return std::make_shared<MarketDataLiveClient>(*this);
-}
+    std::shared_ptr<IMarketDataProvider> MarketDataLiveClient::getClient() const
+    {
+        return std::make_shared<MarketDataLiveClient>(*this);
+    }
 
-void MarketDataLiveClient::closeClientConnection()
-{
-    client->Stop();
+    void MarketDataLiveClient::closeClientConnection()
+    {
+        client->Stop();
+    }
 }

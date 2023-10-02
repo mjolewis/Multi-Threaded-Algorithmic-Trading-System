@@ -9,18 +9,20 @@
 #include "MarketDataHistoricalClient.hpp"
 #include "MarketDataLiveClient.hpp"
 
-template<typename T>
-MarketDataStreamingClient<T>::MarketDataStreamingClient(const T& marketDataClient)
-    : marketDataClient{marketDataClient}
+namespace MarketData
 {
+    template<typename T>
+    MarketDataStreamingClient<T>::MarketDataStreamingClient(const T& marketDataClient)
+            : marketDataClient{marketDataClient}
+    {
 
+    }
+
+    template<typename T>
+    void MarketDataStreamingClient<T>::initialize()
+    {
+
+    }
 }
-
-template<typename T>
-void MarketDataStreamingClient<T>::initialize()
-{
-
-}
-
 
 #endif

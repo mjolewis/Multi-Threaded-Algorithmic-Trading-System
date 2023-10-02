@@ -15,26 +15,29 @@
 #include "IMarketDataProvider.hpp"
 #include "MarketDataStreamingClient.hpp"
 
-// Forward Declarations
-class MarketDataLiveClient;
-
-template<typename T>
-class MarketDataStreamingClient;
-
-class MarketDataLiveClient : public IMarketDataProvider
+namespace MarketData
 {
-private:
-    std::shared_ptr<databento::LiveBlocking> client;
-    std::shared_ptr<MarketDataStreamingClient<MarketDataLiveClient>> streamingClient;
+    // Forward Declarations
+    class MarketDataLiveClient;
 
-public:
-    explicit MarketDataLiveClient();
-    ~MarketDataLiveClient() override = default;
+    template<typename T>
+    class MarketDataStreamingClient;
 
-    void initializeMarketDataClient() override;
-    std::shared_ptr<IMarketDataProvider> getClient() const override;
-    void closeClientConnection() override;
-};
+    class MarketDataLiveClient : public IMarketDataProvider
+    {
+    private:
+        std::shared_ptr<databento::LiveBlocking> client;
+        std::shared_ptr<MarketDataStreamingClient<MarketDataLiveClient>> streamingClient;
+
+    public:
+        explicit MarketDataLiveClient();
+        ~MarketDataLiveClient() override = default;
+
+        void initializeMarketDataClient() override;
+        std::shared_ptr<IMarketDataProvider> getClient() const override;
+        void closeClientConnection() override;
+    };
+}
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATALIVECLIENT_HPP
