@@ -11,18 +11,21 @@
 #include "MarketDataHistoricalClient.hpp"
 #include "MarketDataLiveClient.hpp"
 
-template<typename T>
-class MarketDataStreamingClient
+namespace MarketData
 {
-private:
-    T marketDataClient;
+    template<typename T>
+    class MarketDataStreamingClient
+    {
+    private:
+        T marketDataClient;
 
-public:
-    MarketDataStreamingClient(const T& marketDataClient);
-    virtual ~MarketDataStreamingClient() = default;
+    public:
+        MarketDataStreamingClient(const T& marketDataClient);
+        virtual ~MarketDataStreamingClient() = default;
 
-    void initialize();
-};
+        void initialize();
+    };
+}
 
 // ********** Start Template Definitions **********
 
