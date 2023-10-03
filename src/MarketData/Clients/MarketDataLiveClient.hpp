@@ -5,8 +5,7 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATALIVECLIENT_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATALIVECLIENT_HPP
 
-#include <iostream>
-#include <string>
+#include <functional>
 #include <memory>
 
 #include <databento/live.hpp>
@@ -15,14 +14,16 @@
 #include "IMarketDataProvider.hpp"
 #include "MarketDataStreamingClient.hpp"
 
-// Forward Declarations
-class MarketDataLiveClient;
-
-template<typename T>
-class MarketDataStreamingClient;
-
 namespace MarketData
 {
+    // Forward Declarations
+    class MarketDataLiveClient;
+
+    template<typename T>
+    class MarketDataStreamingClient;
+
+    template<typename T>
+    class MarketDataConsumer;
 
     class MarketDataLiveClient : public IMarketDataProvider
     {
@@ -34,9 +35,9 @@ namespace MarketData
         explicit MarketDataLiveClient();
         ~MarketDataLiveClient() override = default;
 
-        void initializeMarketDataClient() override;
         std::shared_ptr<IMarketDataProvider> getClient() const override;
-        void closeClientConnection() override;
+        std::function<void ()> getBookUpdate() const override;
+        void stop() override;
     };
 }
 

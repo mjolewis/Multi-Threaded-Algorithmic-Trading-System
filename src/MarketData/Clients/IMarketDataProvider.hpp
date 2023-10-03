@@ -5,8 +5,8 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_IMARKETDATAPROVIDER_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_IMARKETDATAPROVIDER_HPP
 
+#include <functional>
 #include <memory>
-#include <utility>
 
 namespace MarketData
 {
@@ -16,13 +16,9 @@ namespace MarketData
         IMarketDataProvider() = default;
         virtual ~IMarketDataProvider() = default;
 
-        void initialize() { initializeMarketDataClient(); }
-
-        virtual void initializeMarketDataClient() = 0;
-
         virtual std::shared_ptr<IMarketDataProvider> getClient() const = 0;
-
-        virtual void closeClientConnection() = 0;
+        virtual std::function<void ()> getBookUpdate() const = 0;
+        virtual void stop() = 0;
     };
 }
 

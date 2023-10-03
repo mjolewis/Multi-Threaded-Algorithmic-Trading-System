@@ -7,17 +7,15 @@
 
 #include "memory"
 
-#include "IMarketDataProvider.hpp"
-#include "MarketDataHistoricalClient.hpp"
-#include "MarketDataLiveClient.hpp"
-#include "MarketDataProcessor.hpp"
-#include "MarketDataConsumer.hpp"
-
-template<typename T>
-class MarketDataConsumer;
+#include "src/MarketData/Processors/MarketDataProcessor.hpp"
+#include "src/MarketData/Consumers/MarketDataConsumer.hpp"
 
 namespace MarketData
 {
+    // Forward Declarations
+    template<typename T>
+    class MarketDataConsumer;
+
     template<typename T>
     class MarketDataStreamingClient
     {

@@ -5,10 +5,7 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATACONSUMER_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATACONSUMER_HPP
 
-#include "IMarketDataProvider.hpp"
-#include "MarketDataHistoricalClient.hpp"
-#include "MarketDataLiveClient.hpp"
-#include "MarketDataProcessor.hpp"
+#include "src/MarketData/Processors/MarketDataProcessor.hpp"
 
 namespace MarketData
 {
@@ -21,7 +18,6 @@ namespace MarketData
         bool stopSignal;
 
     public:
-        MarketDataConsumer();
         MarketDataConsumer(const T& marketDataClient, const MarketDataProcessor& streamingProcessor);
         virtual ~MarketDataConsumer() = default;
 
