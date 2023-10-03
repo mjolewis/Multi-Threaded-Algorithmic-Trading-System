@@ -36,4 +36,5 @@ class EnvironmentType : public DataStructures::AbstractCodes
     inline const EnvironmentType EnvironmentType::PROD = EnvironmentType{3, "Prod"};
 }
 
+
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_ENVIRONMENTTYPE_HPP

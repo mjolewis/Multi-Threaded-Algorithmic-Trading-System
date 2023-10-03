@@ -6,18 +6,12 @@
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATACONSUMER_CPP
 
 #include "MarketDataConsumer.hpp"
-#include "IMarketDataProvider.hpp"
-#include "MarketDataHistoricalClient.hpp"
-#include "MarketDataLiveClient.hpp"
+#include "src/MarketData/Processors/MarketDataProcessor.hpp"
 
 namespace MarketData
 {
-    template<typename T>
-    MarketDataConsumer<T>::MarketDataConsumer() : marketDataClient{}, streamingProcessor{}, stopSignal{false}
-    {
-
-    }
-
+    // Overloaded ctor that initializes the consumer and accepts upstream components so that it can
+    // consume data and delegate the processing to the streaming processor
     template<typename T>
     MarketDataConsumer<T>::MarketDataConsumer(const T& marketDataClient, const MarketDataProcessor& streamingProcessor)
         : marketDataClient{marketDataClient}, streamingProcessor{streamingProcessor}, stopSignal{false}
@@ -25,12 +19,15 @@ namespace MarketData
 
     }
 
+    // Performs a batch download of historical data when T is a HistoricalClient. Used for back-testing strategies.
+    // Subscribes to live book updates when T is a LiveClient. Used for live trading.
     template<typename T>
     void MarketDataConsumer<T>::start()
     {
-
+        marketDataClient.getBookUpdate()();
     }
 
+    // Stops consuming data from the publisher. Useful in scenarios where the trading system should be shut down.
     template<typename T>
     void MarketDataConsumer<T>::stop()
     {

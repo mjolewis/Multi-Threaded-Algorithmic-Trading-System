@@ -5,6 +5,8 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATAPROCESSOR_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATAPROCESSOR_HPP
 
+#include <databento/timeseries.hpp>
+
 namespace MarketData
 {
     class MarketDataProcessor
@@ -14,6 +16,7 @@ namespace MarketData
         virtual ~MarketDataProcessor() = default;
 
         void initialize();
+        static databento::KeepGoing processQuote(const databento::Record& record);
     };
 }
 

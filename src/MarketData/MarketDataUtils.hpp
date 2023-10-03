@@ -5,9 +5,7 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATAUTILS_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATAUTILS_HPP
 
-#include <iostream>
-#include <exception>
-#include <thread>
+#include <string>
 
 #include <databento/historical.hpp>
 #include <databento/live.hpp>
@@ -15,107 +13,17 @@
 #include <databento/log.hpp>
 #include <nlohmann/json.hpp>
 
-#include "../Resources/ConfigReader.hpp"
-
-using namespace std::chrono_literals;
-
 namespace MarketData
 {
     class MarketDataUtils
     {
     private:
-        static void logErrorMessage(int attempt, const std::string& what)
-        {
-            std::cerr << "Unable to connect to market data provider on attempt=" << attempt << what << std::endl;
-        }
+        static void logErrorMessage(int attempt, const std::string& what);
 
     public:
-
-        // Build the market data provider client. Retry up to a maximum of 10 times before throwing an error
-        static databento::Historical getHistoricalClient()
-        {
-            int attempts = 0;
-            while (true)
-            {
-                try
-                {
-                    ++attempts;
-                    return databento::HistoricalBuilder{}
-                            .SetKey(Utilities::ConfigReader::extractStringValueFromConfig("dbnApiKey"))
-                            .Build();
-                }
-                catch (const databento::HttpResponseError& e)
-                {
-                    logErrorMessage(attempts, e.what());
-                    if (attempts == 10)
-                    {
-                        throw e;
-                    }
-                }
-                catch (const std::exception& e)
-                {
-                    logErrorMessage(attempts, e.what());
-                    if (attempts == 10)
-                    {
-                        throw e;
-                    }
-                }
-
-                try
-                {
-                    std::this_thread::sleep_for(10s);
-                }
-                catch (const std::exception& e)
-                {
-                    logErrorMessage(attempts, e.what());
-                }
-            }
-        }
-
-        // Build the market data provider client. Retry up to a maximum of 10 times before throwing an error
-        static databento::LiveBlocking getLiveClient()
-        {
-            int attempts = 0;
-            while (true)
-            {
-                try
-                {
-                    ++attempts;
-                    // todo Implement live data feeds after backtesting strategies. See link below to determine
-                    // blocking versus threaded strategy
-                    // https://docs.databento.com/api-reference-live/client?historical=cpp&live=cpp
-                    return databento::LiveBuilder{}
-                            .SetKeyFromEnv()  // `DATABENTO_API_KEY` environment variable
-                            .SetDataset("")
-                            .BuildBlocking();
-                }
-                catch (const databento::HttpResponseError& e)
-                {
-                    logErrorMessage(attempts, e.what());
-                    if (attempts == 10)
-                    {
-                        throw e;
-                    }
-                }
-                catch (const std::exception& e)
-                {
-                    logErrorMessage(attempts, e.what());
-                    if (attempts == 10)
-                    {
-                        throw e;
-                    }
-                }
-
-                try
-                {
-                    std::this_thread::sleep_for(10s);
-                }
-                catch (const std::exception& e)
-                {
-                    logErrorMessage(attempts, e.what());
-                }
-            }
-        }
+        static databento::Historical getHistoricalClient();
+        static databento::LiveBlocking getLiveClient();
+        static std::string getEnvironmentType();
     };
 }
 
