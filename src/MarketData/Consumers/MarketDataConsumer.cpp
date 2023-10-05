@@ -5,6 +5,8 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATACONSUMER_CPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATACONSUMER_CPP
 
+#include <thread>
+
 #include "MarketDataConsumer.hpp"
 #include "src/MarketData/Processors/MarketDataProcessor.hpp"
 
@@ -19,12 +21,16 @@ namespace MarketData
 
     }
 
-    // Performs a batch download of historical data when T is a HistoricalClient. Used for back-testing strategies.
-    // Subscribes to live book updates when T is a LiveClient. Used for live trading.
+    // Subscribes to market data from either the historical client or live client depending on T.
+    // The historical client should be used for back-testing. The live client must be used for live trading.
+    // T is configurable via config.json.
     template<typename T>
     void MarketDataConsumer<T>::start()
     {
-        marketDataClient.getBookUpdate()();
+        std::thread consumerThread(marketDataClient.getBookUpdate());
+
+        // Blocks the current thread until the thread identified by *this finishes its execution.
+        if (consumerThread.joinable()) consumerThread.join();
     }
 
     // Stops consuming data from the publisher. Useful in scenarios where the trading system should be shut down.
@@ -34,5 +40,6 @@ namespace MarketData
         stopSignal = true;
     }
 } // MarketData
+
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATACONSUMER_CPP

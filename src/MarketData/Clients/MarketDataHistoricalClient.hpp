@@ -7,6 +7,8 @@
 
 #include <functional>
 #include <memory>
+#include <vector>
+#include <string>
 
 #include <databento/historical.hpp>
 #include <databento/log.hpp>
@@ -35,7 +37,12 @@ namespace MarketData
         MarketDataHistoricalClient();
         ~MarketDataHistoricalClient() override = default;
 
+        // Static Functions
+        static std::vector<std::string> readFromFile();
+
+        // Function Overrides
         std::shared_ptr<IMarketDataProvider> getClient() const override;
+        std::vector<std::string> doBatchDownload(std::shared_ptr<databento::Historical>& _client) const;
         std::function<void ()> getBookUpdate() const override;
         void stop() override;
     };
