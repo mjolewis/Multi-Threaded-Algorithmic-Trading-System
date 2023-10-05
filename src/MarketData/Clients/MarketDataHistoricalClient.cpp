@@ -33,7 +33,7 @@ namespace MarketData
     // Batch download historical data files for back-testing. Note - This can be converted into a
     // streaming download using the streaming API; however, streaming incurs a per stream costs
     // whereas batch download only incurs a cost for the first download. All subsequent downloads are free
-    std::vector<std::string> MarketDataHistoricalClient::doBatchDownload(std::shared_ptr<databento::Historical>& _client) const
+    std::vector<std::string> MarketDataHistoricalClient::doBatchDownload(std::shared_ptr<databento::Historical>& _client)
     {
         // Batch download historical data files for back-testing
         return _client->BatchDownload(
@@ -65,7 +65,7 @@ namespace MarketData
                     if (bookUpdate.substr(bookUpdate.length() - 8) == ".dbn.zst")
                     {
                         databento::DbnFileStore dbn_store{bookUpdate};
-                        dbn_store.Replay(MarketDataProcessor::processQuote);
+                        dbn_store.Replay(MarketDataProcessor::processBookUpdate);
                     }
                 }
 
