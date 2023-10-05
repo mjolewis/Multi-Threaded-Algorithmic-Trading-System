@@ -37,12 +37,9 @@ namespace MarketData
         MarketDataHistoricalClient();
         ~MarketDataHistoricalClient() override = default;
 
-        // Static Functions
-        static std::vector<std::string> readFromFile();
-
-        // Function Overrides
         std::shared_ptr<IMarketDataProvider> getClient() const override;
-        std::vector<std::string> doBatchDownload(std::shared_ptr<databento::Historical>& _client) const;
+        static std::vector<std::string> doBatchDownload(std::shared_ptr<databento::Historical>& _client);
+        static std::vector<std::string> readFromFile();
         std::function<void ()> getBookUpdate() const override;
         void stop() override;
     };

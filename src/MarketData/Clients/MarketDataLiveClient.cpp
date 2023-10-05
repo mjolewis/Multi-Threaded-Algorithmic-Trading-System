@@ -48,7 +48,7 @@ namespace MarketData
                 // Use template keyword to treat Holds as a dependent type to Record
                 if (bookUpdate && bookUpdate->template Holds<databento::MboMsg>())
                 {
-                    MarketDataProcessor::processQuote(*bookUpdate);
+                    MarketDataProcessor::processBookUpdate(*bookUpdate);
                 }
                 else
                 {
