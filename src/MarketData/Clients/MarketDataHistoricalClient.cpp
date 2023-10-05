@@ -6,6 +6,7 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <thread>
 
 #include <databento/historical.hpp>
 
@@ -13,7 +14,6 @@
 #include "src/MarketData/MarketDataUtils.hpp"
 #include "MarketDataStreamingClient.hpp"
 #include "src/Resources/ConfigReader.hpp"
-#include "src/CommonServer/Utils/StopWatch.hpp"
 
 namespace MarketData
 {
@@ -23,6 +23,12 @@ namespace MarketData
         streamingClient{std::make_shared<MarketDataStreamingClient<MarketDataHistoricalClient>>(*this)}
     {
         streamingClient->initialize();
+    }
+
+    // Dtor that currently terminates session gateway with MarketDataClient
+    MarketDataHistoricalClient::~MarketDataHistoricalClient()
+    {
+        stop();
     }
 
     std::shared_ptr<IMarketDataProvider> MarketDataHistoricalClient::getClient() const
@@ -83,6 +89,6 @@ namespace MarketData
 
     void MarketDataHistoricalClient::stop()
     {
-
+        std::cout << "Terminated session gateway with MarketDataClient" << std::endl;
     }
 }

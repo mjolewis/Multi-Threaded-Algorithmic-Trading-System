@@ -33,11 +33,11 @@ namespace MarketData
 
     public:
         explicit MarketDataLiveClient();
-        ~MarketDataLiveClient() override = default;
+        ~MarketDataLiveClient() override;
 
         std::shared_ptr<IMarketDataProvider> getClient() const override;
         std::function<void ()> getBookUpdate() const override;
-        void stop() override;
+        void stop();
     };
 }
 
