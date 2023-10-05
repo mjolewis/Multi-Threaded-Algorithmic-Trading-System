@@ -33,25 +33,35 @@ namespace MarketData
     std::function<void ()> MarketDataLiveClient::getBookUpdate() const
     {
         return [&_client = client]() {
-
-            // Add a new subscription to the session with the Databento live gateway
-            _client->Subscribe({}, databento::Schema::Mbo, databento::SType::RawSymbol);
-
-            // Instructs the live gateway to start sending data
-            _client->Start();
-
-            // Blocks until the next record is received or the optional timeout is reached
-            // A full list of fields returned through the record_callback or nullptr if no record was received
-            auto* bookUpdate = _client->NextRecord(1ms);
-
-            // Use template keyword to treat Holds as a dependent type to Record
-            if (bookUpdate && bookUpdate->template Holds<databento::MboMsg>())
+            try
             {
-                MarketDataProcessor::processQuote(*bookUpdate);
+                // Add a new subscription to the session with the Databento live gateway
+                _client->Subscribe({}, databento::Schema::Mbo, databento::SType::RawSymbol);
+
+                // Instructs the live gateway to start sending data
+                _client->Start();
+
+                // Blocks until the next record is received or the optional timeout is reached
+                // A full list of fields returned through the record_callback or nullptr if no record was received
+                auto* bookUpdate = _client->NextRecord(1ms);
+
+                // Use template keyword to treat Holds as a dependent type to Record
+                if (bookUpdate && bookUpdate->template Holds<databento::MboMsg>())
+                {
+                    MarketDataProcessor::processQuote(*bookUpdate);
+                }
+                else
+                {
+                    MarketDataUtils::logErrorMessage(1, "Timed out waiting for record");
+                }
             }
-            else
+            catch (const databento::HttpResponseError& e)
             {
-                std::cerr << "Timed out waiting for record\n";
+                MarketDataUtils::logErrorMessage(1, e.what());
+            }
+            catch (const std::exception& e)
+            {
+                MarketDataUtils::logErrorMessage(1, e.what());
             }
         };
     }

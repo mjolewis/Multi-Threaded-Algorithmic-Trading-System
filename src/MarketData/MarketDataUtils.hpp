@@ -17,13 +17,12 @@ namespace MarketData
 {
     class MarketDataUtils
     {
-    private:
-        static void logErrorMessage(int attempt, const std::string& what);
-
     public:
+        static void logErrorMessage(int attempt, const std::string& what);
         static databento::Historical getHistoricalClient();
         static databento::LiveBlocking getLiveClient();
         static std::string getEnvironmentType();
+        static int getThreadCount();
     };
 }
 

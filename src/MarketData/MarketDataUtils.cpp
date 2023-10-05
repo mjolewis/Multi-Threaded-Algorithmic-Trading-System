@@ -20,7 +20,7 @@ namespace MarketData
     // Logs any errors that occur when connecting to a client
     void MarketDataUtils::logErrorMessage(int attempt, const std::string& what)
     {
-        std::cerr << "Unable to connect to market data provider on attempt=" << attempt << what << std::endl;
+        std::cerr << "Unable to connect to market data provider on attempt=" << attempt << " : " << what << std::endl;
     }
 
     // Build the market data client. Retry up to a maximum of 10 times before throwing an error
@@ -114,5 +114,11 @@ namespace MarketData
     std::string MarketDataUtils::getEnvironmentType()
     {
         return Utilities::ConfigReader::extractStringValueFromConfig("environmentType");
+    }
+
+    // Used to partition the system into multiple symbol ranged engines (aka threads)
+    int MarketDataUtils::getThreadCount()
+    {
+        return Utilities::ConfigReader::extractIntValueFromConfig("threadCount");
     }
 }

@@ -17,23 +17,22 @@ namespace MarketData
               streamingConsumer{marketDataClient, streamingProcessor}
     {
         createStreamingProcessor();
-        streamingConsumer = MarketDataConsumer<T>{marketDataClient, streamingProcessor};
     }
 
     // Creates streaming processors based on an installation configuration
     template<typename T>
     void MarketDataStreamingClient<T>::createStreamingProcessor()
     {
-        // Each supported installation will eventually have their own processors. This method
-        // will then eventually determine which processor to create based on an installation configuration.
-        // Processors should be region specific because different installations have different regulations
-        // and practices that alter the data provided in the book update. The processors will be customized
+        // Each supported installation will eventually have their own processors. This function
+        // will then eventually determine which processor to create based on the installation configuration.
+        // Processors should be installation specific because market data and the governing regulations vary
+        // across regions, which impacts data attributes in the book update. The processors will be customized
         // to handle these differences appropriately. (Example installations US, EU, CA).
         streamingProcessor = MarketDataProcessor{};
     }
 
-    // Initializes the processor and consumer. The processor should be initialized before the consumer to avoid
-    // missing any book updates that our app consumes from the publisher.
+    // Initialize the processor and consumer. The processor must be initialized before the consumer to avoid
+    // missing any book updates that our app consumes from the publisher before the processor is able to handle it
     template<typename T>
     void MarketDataStreamingClient<T>::initialize()
     {
