@@ -24,6 +24,12 @@ namespace MarketData
         streamingClient->initialize();
     }
 
+    // Dtor that currently terminates session gateway with MarketDataClient
+    MarketDataLiveClient::~MarketDataLiveClient()
+    {
+        stop();
+    }
+
     std::shared_ptr<IMarketDataProvider> MarketDataLiveClient::getClient() const
     {
         return std::make_shared<MarketDataLiveClient>(*this);
@@ -70,5 +76,6 @@ namespace MarketData
     void MarketDataLiveClient::stop()
     {
         client->Stop();
+        std::cout << "Terminated session gateway with MarketDataClient" << std::endl;
     }
 }

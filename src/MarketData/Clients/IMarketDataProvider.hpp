@@ -18,7 +18,6 @@ namespace MarketData
 
         virtual std::shared_ptr<IMarketDataProvider> getClient() const = 0;
         virtual std::function<void ()> getBookUpdate() const = 0;
-        virtual void stop() = 0;
     };
 }
 
