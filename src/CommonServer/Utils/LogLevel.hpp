@@ -11,7 +11,7 @@
 
 #include "src/DataStructures/AbstractCodes.hpp"
 
-namespace MessageObjects
+namespace Utilities
 {
     class LogLevel : public DataStructures::AbstractCodes
     {

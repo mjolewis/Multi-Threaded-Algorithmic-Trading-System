@@ -14,7 +14,7 @@
 #include "src/MarketData/MarketDataUtils.hpp"
 #include "MarketDataStreamingClient.hpp"
 #include "src/Resources/ConfigReader.hpp"
-#include "src/MessageObjects/LogLevels/LogLevel.hpp"
+#include "src/CommonServer/Utils/LogLevel.hpp"
 
 namespace MarketData
 {
@@ -87,17 +87,17 @@ namespace MarketData
             }
             catch (const databento::HttpResponseError& e)
             {
-                MarketDataUtils::log(MessageObjects::LogLevel::SEVERE, e.what());
+                MarketDataUtils::log(Utilities::LogLevel::SEVERE, e.what());
             }
             catch (const std::exception& e)
             {
-                MarketDataUtils::log(MessageObjects::LogLevel::SEVERE, e.what());
+                MarketDataUtils::log(Utilities::LogLevel::SEVERE, e.what());
             }
         };
     }
 
     void MarketDataHistoricalClient::stop()
     {
-        MarketDataUtils::log(MessageObjects::LogLevel::INFO, "Terminated session gateway with MarketDataClient");
+        MarketDataUtils::log(Utilities::LogLevel::INFO, "Terminated session gateway with MarketDataClient");
     }
 }
