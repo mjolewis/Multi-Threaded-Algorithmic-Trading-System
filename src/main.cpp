@@ -3,9 +3,11 @@
 //
 
 #include "src/MarketData/Clients/MarketDataHistoricalClient.hpp"
+#include "src/MarketData/Clients/MarketDataLiveClient.hpp"
 
 int main()
 {
     MarketData::MarketDataHistoricalClient marketDataClient{"main"};
+    marketDataClient.stop();
     return 0;
 }

@@ -5,7 +5,7 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATACONSUMER_CPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATACONSUMER_CPP
 
-#include <thread>
+#include <future>
 
 #include "MarketDataConsumer.hpp"
 #include "src/MarketData/Processors/MarketDataProcessor.hpp"
@@ -27,17 +27,18 @@ namespace MarketData
     template<typename T>
     void MarketDataConsumer<T>::start()
     {
-        std::thread consumerThread(marketDataClient.getBookUpdate());
-
-        // Blocks the current thread until the thread identified by *this finishes its execution.
-        if (consumerThread.joinable()) consumerThread.join();
+        // Note - The destructor of the std::future will block at the end of the full expression
+        // until the asynchronous operation completes. As a result, we use a lvalue expression
+        // whose lifetime is bound to the variable
+        auto future = std::async(std::launch::async, marketDataClient.getBookUpdate());
     }
 
-    // Stops consuming data from the publisher. Useful in scenarios where the trading system should be shut down.
+    // Disconnects the session gateway
     template<typename T>
     void MarketDataConsumer<T>::stop()
     {
         stopSignal = true;
+        marketDataClient.stop();
     }
 } // MarketData
 
