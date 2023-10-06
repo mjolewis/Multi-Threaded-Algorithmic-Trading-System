@@ -7,6 +7,7 @@
 
 #include <functional>
 #include <memory>
+#include <string>
 
 #include <databento/live.hpp>
 #include <databento/log.hpp>
@@ -28,13 +29,15 @@ namespace MarketData
     class MarketDataLiveClient : public IMarketDataProvider
     {
     private:
+        std::string clientName;
         std::shared_ptr<databento::LiveBlocking> client;
         std::shared_ptr<MarketDataStreamingClient<MarketDataLiveClient>> streamingClient;
 
     public:
-        explicit MarketDataLiveClient();
+        explicit MarketDataLiveClient(std::string clientName);
         ~MarketDataLiveClient() override;
 
+        const std::string& getClientName() const;
         std::shared_ptr<IMarketDataProvider> getClient() const override;
         std::function<void ()> getBookUpdate() const override;
         void stop();

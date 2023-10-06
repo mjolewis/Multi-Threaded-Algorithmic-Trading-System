@@ -6,6 +6,6 @@
 
 int main()
 {
-    MarketData::MarketDataHistoricalClient marketDataClient{};
+    MarketData::MarketDataHistoricalClient marketDataClient{"main"};
     return 0;
 }
