@@ -9,7 +9,6 @@
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATACONSUMER_HPP
 
 #include <array>
-#include <thread>
 
 #include "src/MarketData/Processors/MarketDataProcessor.hpp"
 #include "src/MarketData/MarketDataUtils.hpp"
