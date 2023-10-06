@@ -4,6 +4,7 @@
 
 #include <functional>
 #include <memory>
+#include <string>
 
 #include <databento/live.hpp>
 #include <databento/log.hpp>
@@ -17,9 +18,10 @@ using namespace std::chrono_literals;
 namespace MarketData
 {
     // Overloaded ctor that initializes the client and downstream components
-    MarketDataLiveClient::MarketDataLiveClient() : IMarketDataProvider{},
-        client{std::make_shared<databento::LiveBlocking>(MarketDataUtils::getLiveClient())},
-        streamingClient{std::make_shared<MarketDataStreamingClient<MarketDataLiveClient>>(*this)}
+    MarketDataLiveClient::MarketDataLiveClient(std::string clientName)
+        : IMarketDataProvider{}, clientName{std::move(clientName)},
+          client{std::make_shared<databento::LiveBlocking>(MarketDataUtils::getLiveClient())},
+          streamingClient{std::make_shared<MarketDataStreamingClient<MarketDataLiveClient>>(*this)}
     {
         streamingClient->initialize();
     }
@@ -28,6 +30,14 @@ namespace MarketData
     MarketDataLiveClient::~MarketDataLiveClient()
     {
         stop();
+    }
+
+    // The system will ultimately have numerous market data clients (e.g. strategies for live trading,
+    // a market data writer to persist ticks for backtesting, etc.) The clientName will be useful in
+    // identifying which market data clients have connected or are working via logging.
+    const std::string& MarketDataLiveClient::getClientName() const
+    {
+        return clientName;
     }
 
     std::shared_ptr<IMarketDataProvider> MarketDataLiveClient::getClient() const

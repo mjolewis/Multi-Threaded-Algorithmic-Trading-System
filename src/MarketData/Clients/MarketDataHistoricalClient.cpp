@@ -4,9 +4,9 @@
 
 #include <functional>
 #include <memory>
+#include <utility>
 #include <vector>
 #include <string>
-#include <thread>
 
 #include <databento/historical.hpp>
 
@@ -18,9 +18,10 @@
 namespace MarketData
 {
     // Overloaded ctor that initializes the client and downstream components
-    MarketDataHistoricalClient::MarketDataHistoricalClient() : IMarketDataProvider{},
-        client{std::make_shared<databento::Historical>(MarketDataUtils::getHistoricalClient())},
-        streamingClient{std::make_shared<MarketDataStreamingClient<MarketDataHistoricalClient>>(*this)}
+    MarketDataHistoricalClient::MarketDataHistoricalClient(std::string clientName)
+        : IMarketDataProvider{}, clientName{std::move(clientName)},
+          client{std::make_shared<databento::Historical>(MarketDataUtils::getHistoricalClient())},
+          streamingClient{std::make_shared<MarketDataStreamingClient<MarketDataHistoricalClient>>(*this)}
     {
         streamingClient->initialize();
     }
@@ -31,6 +32,14 @@ namespace MarketData
         stop();
     }
 
+    // The system will ultimately have numerous market data clients (e.g. strategies for live trading,
+    // a market data writer to persist ticks for backtesting, etc.) The clientName will be useful in
+    // identifying which market data clients have connected or are working via logging.
+    const std::string& MarketDataHistoricalClient::getClientName() const
+    {
+        return clientName;
+    }
+
     std::shared_ptr<IMarketDataProvider> MarketDataHistoricalClient::getClient() const
     {
         return std::make_shared<MarketDataHistoricalClient>(*this);
@@ -39,7 +48,7 @@ namespace MarketData
     // Batch download historical data files for back-testing. Note - This can be converted into a
     // streaming download using the streaming API; however, streaming incurs a per stream costs
     // whereas batch download only incurs a cost for the first download. All subsequent downloads are free
-    std::vector<std::string> MarketDataHistoricalClient::doBatchDownload(std::shared_ptr<databento::Historical>& _client)
+    std::vector<std::string> MarketDataHistoricalClient::doBatchDownload(const std::shared_ptr<databento::Historical>& _client)
     {
         // Batch download historical data files for back-testing
         return _client->BatchDownload(
@@ -58,12 +67,12 @@ namespace MarketData
     // Used by the MarketDataConsumer to consume bookUpdates published by the market data provider (pub-sub model)
     std::function<void ()> MarketDataHistoricalClient::getBookUpdate() const
     {
-        return [&]() {
+        return [&_client = client]() {
             try
             {
                 // todo - Reading from previously downloaded file for testing purposes.
-                // std::vector<std::string> bookUpdates = doBatchDownload(client);
-                std::vector<std::string> bookUpdates = readFromFile();
+                std::vector<std::string> bookUpdates = doBatchDownload(_client);
+                // std::vector<std::string> bookUpdates = readFromFile();
 
                 // Replay each book update by providing a callback processor to the clients Replay API
                 for (const auto& bookUpdate : bookUpdates)
@@ -74,7 +83,6 @@ namespace MarketData
                         dbn_store.Replay(MarketDataProcessor::processBookUpdate);
                     }
                 }
-
             }
             catch (const databento::HttpResponseError& e)
             {

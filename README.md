@@ -1,5 +1,5 @@
 # Multi-Threaded-Algorithmic-Trading-System
-An event-based algorithmic trading system, with plug-n-play strategies for live trading and backtesting infrastructure
+A low-latency, event-based algorithmic trading system, with plug and play strategies for live trading and backtesting infrastructure
 
 # Libraries
 1. **<ins>Market Data<ins>**  

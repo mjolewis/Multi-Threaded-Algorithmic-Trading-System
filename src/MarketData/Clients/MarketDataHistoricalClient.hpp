@@ -30,15 +30,17 @@ namespace MarketData
     class MarketDataHistoricalClient : public IMarketDataProvider
     {
     private:
+        std::string clientName;
         std::shared_ptr<databento::Historical> client;
         std::shared_ptr<MarketDataStreamingClient<MarketDataHistoricalClient>> streamingClient;
 
     public:
-        MarketDataHistoricalClient();
+        explicit MarketDataHistoricalClient(std::string clientName);
         ~MarketDataHistoricalClient() override;
 
+        const std::string& getClientName() const;
         std::shared_ptr<IMarketDataProvider> getClient() const override;
-        static std::vector<std::string> doBatchDownload(std::shared_ptr<databento::Historical>& _client);
+        static std::vector<std::string> doBatchDownload(const std::shared_ptr<databento::Historical>& _client);
         static std::vector<std::string> readFromFile();
         std::function<void ()> getBookUpdate() const override;
         void stop();
