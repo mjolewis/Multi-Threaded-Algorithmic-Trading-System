@@ -12,15 +12,16 @@
 
 #include "MarketDataUtils.hpp"
 #include "../Resources/ConfigReader.hpp"
+#include "src/MessageObjects/LogLevels/LogLevel.hpp"
 
 using namespace std::chrono_literals;
 
 namespace MarketData
 {
-    // Logs any errors that occur when connecting to a client
-    void MarketDataUtils::logErrorMessage(int attempt, const std::string& what)
+    // Logging utility. Will eventually need to convert to a low-latency custom-built or 3rd party logging library
+    void MarketDataUtils::log(const MessageObjects::LogLevel& logLevel, const std::string& message)
     {
-        std::cerr << "Unable to connect to market data provider on attempt=" << attempt << " : " << what << std::endl;
+        std::cerr << logLevel.getDesc() << " : " << message << std::endl;
     }
 
     // Build the market data client. Retry up to a maximum of 10 times before throwing an error
@@ -38,17 +39,21 @@ namespace MarketData
             }
             catch (const databento::HttpResponseError& e)
             {
-                logErrorMessage(attempts, e.what());
+                std::string msg = "Unable to connect to market data client - Attempt=" + std::to_string(attempts);
+                log(MessageObjects::LogLevel::WARN, msg + " : " + e.what());
                 if (attempts == 10)
                 {
+                    log(MessageObjects::LogLevel::SEVERE, "Exceeded max attempts connecting to market data provider");
                     throw e;
                 }
             }
             catch (const std::exception& e)
             {
-                logErrorMessage(attempts, e.what());
+                std::string msg = "Unable to connect to market data client - Attempt=" + std::to_string(attempts);
+                log(MessageObjects::LogLevel::WARN, msg + " : " + e.what());
                 if (attempts == 10)
                 {
+                    log(MessageObjects::LogLevel::SEVERE, "Exceeded max attempts connecting to market data provider");
                     throw e;
                 }
             }
@@ -60,7 +65,8 @@ namespace MarketData
             }
             catch (const std::exception& e)
             {
-                logErrorMessage(attempts, e.what());
+                std::string msg = "Unable to connect to market data client - Attempt=" + std::to_string(attempts);
+                log(MessageObjects::LogLevel::WARN, msg + " : " + e.what());
             }
         }
     }
@@ -83,17 +89,21 @@ namespace MarketData
             }
             catch (const databento::HttpResponseError& e)
             {
-                logErrorMessage(attempts, e.what());
+                std::string msg = "Unable to connect to market data client - Attempt=" + std::to_string(attempts);
+                log(MessageObjects::LogLevel::WARN, msg + " : " + e.what());
                 if (attempts == 10)
                 {
+                    log(MessageObjects::LogLevel::SEVERE, "Exceeded max attempts connecting to market data provider");
                     throw e;
                 }
             }
             catch (const std::exception& e)
             {
-                logErrorMessage(attempts, e.what());
+                std::string msg = "Unable to connect to market data client - Attempt=" + std::to_string(attempts);
+                log(MessageObjects::LogLevel::WARN, msg + " : " + e.what());
                 if (attempts == 10)
                 {
+                    log(MessageObjects::LogLevel::SEVERE, "Exceeded max attempts connecting to market data provider");
                     throw e;
                 }
             }
@@ -105,7 +115,8 @@ namespace MarketData
             }
             catch (const std::exception& e)
             {
-                logErrorMessage(attempts, e.what());
+                std::string msg = "Unable to connect to market data client - Attempt=" + std::to_string(attempts);
+                log(MessageObjects::LogLevel::WARN, msg + " : " + e.what());
             }
         }
     }

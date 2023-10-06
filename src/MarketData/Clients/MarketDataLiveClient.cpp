@@ -12,6 +12,7 @@
 #include "MarketDataLiveClient.hpp"
 #include "MarketDataStreamingClient.hpp"
 #include "src/MarketData/MarketDataUtils.hpp"
+#include "src/MessageObjects/LogLevels/LogLevel.hpp"
 
 using namespace std::chrono_literals;
 
@@ -68,16 +69,16 @@ namespace MarketData
                 }
                 else
                 {
-                    MarketDataUtils::logErrorMessage(1, "Timed out waiting for record");
+                    MarketDataUtils::log(MessageObjects::LogLevel::WARN, "Timed out waiting for record");
                 }
             }
             catch (const databento::HttpResponseError& e)
             {
-                MarketDataUtils::logErrorMessage(1, e.what());
+                MarketDataUtils::log(MessageObjects::LogLevel::SEVERE, e.what());
             }
             catch (const std::exception& e)
             {
-                MarketDataUtils::logErrorMessage(1, e.what());
+                MarketDataUtils::log(MessageObjects::LogLevel::SEVERE, e.what());
             }
         };
     }
@@ -86,6 +87,6 @@ namespace MarketData
     void MarketDataLiveClient::stop()
     {
         client->Stop();
-        std::cout << "Terminated session gateway with MarketDataClient" << std::endl;
+        MarketDataUtils::log(MessageObjects::LogLevel::INFO, "Terminated session gateway with MarketDataClient");
     }
 }

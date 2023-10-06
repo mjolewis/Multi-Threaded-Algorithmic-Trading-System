@@ -13,12 +13,15 @@
 #include <databento/log.hpp>
 #include <nlohmann/json.hpp>
 
+#include "src/MessageObjects/LogLevels/LogLevel.hpp"
+
 namespace MarketData
 {
     class MarketDataUtils
     {
     public:
-        static void logErrorMessage(int attempt, const std::string& what);
+        static void log(const MessageObjects::LogLevel& logLevel, int value, const std::string& message);
+        static void log(const MessageObjects::LogLevel& logLevel, const std::string& message);
         static databento::Historical getHistoricalClient();
         static databento::LiveBlocking getLiveClient();
         static std::string getEnvironmentType();
