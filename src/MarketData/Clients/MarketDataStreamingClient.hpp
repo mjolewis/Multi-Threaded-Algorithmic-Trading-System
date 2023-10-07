@@ -7,10 +7,10 @@
 
 #include "memory"
 
-#include "src/MarketData/Processors/MarketDataProcessor.hpp"
-#include "src/MarketData/Consumers/MarketDataConsumer.hpp"
+#include "MarketData/Processors/MarketDataProcessor.hpp"
+#include "MarketData/Consumers/MarketDataConsumer.hpp"
 
-namespace MarketData
+namespace BeaconTech::MarketData
 {
     // Forward Declarations
     template<typename T>
@@ -31,7 +31,8 @@ namespace MarketData
         void createStreamingProcessor();
         void initialize();
     };
-}
+} // namespace BeaconTech::MarketData
+
 
 // ********** Start Template Definitions **********
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATASTREAMINGCLIENT_CPP

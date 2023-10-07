@@ -8,7 +8,7 @@
 #include "MarketDataStreamingClient.hpp"
 #include "MarketDataHistoricalClient.hpp"
 
-namespace MarketData
+namespace BeaconTech::MarketData
 {
     // Overloaded ctor that initializes the streaming client and downstream components
     template<typename T>
@@ -39,7 +39,7 @@ namespace MarketData
         streamingProcessor.initialize();
         streamingConsumer.start();
     }
-}
+} // namespace BeaconTech::MarketData
 
 
 #endif

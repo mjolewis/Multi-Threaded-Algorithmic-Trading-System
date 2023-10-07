@@ -1,4 +1,7 @@
 //
+// Processes binary encoded market data from the provider and transforms it into a common format
+// for consumption by  downstream components
+//
 // Created by Michael Lewis on 10/2/23.
 //
 
@@ -6,6 +9,8 @@
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATAPROCESSOR_HPP
 
 #include <databento/timeseries.hpp>
+
+#include "MessageObjects/MarketData/OrderBook/Book.hpp"
 
 // Concept to enforce compile-time validation of a quote consumed from the market data provider
 template<typename T>
@@ -33,12 +38,15 @@ concept Trade = requires(const T& trade)
     trade.size;
 };
 
-namespace MarketData
+namespace BeaconTech::MarketData
 {
     class MarketDataProcessor
     {
+    private:
+        MessageObjects::Book orderBook;
+
     public:
-        MarketDataProcessor() = default;
+        MarketDataProcessor();
         virtual ~MarketDataProcessor() = default;
 
         void initialize();
@@ -46,15 +54,15 @@ namespace MarketData
         // Book Updates
         template<typename T>
         requires Quote<T>
-        static void handle(const T& quote);
+        void handle(const T& quote);
 
         template<typename T>
         requires Trade<T>
-        static void handle(const T& trade);
+        void handle(const T& trade);
 
-        static databento::KeepGoing processBookUpdate(const databento::Record& record);
+        databento::KeepGoing processBookUpdate(const databento::Record& record);
     };
-}
+} // namespace BeaconTech::MarketData
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATAPROCESSOR_HPP

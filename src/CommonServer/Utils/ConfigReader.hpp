@@ -12,12 +12,13 @@
 
 using json = nlohmann::json;
 
-namespace Utilities
+namespace BeaconTech::Utils
 {
     class ConfigReader
     {
     private:
-        inline static std::ifstream configFile{"../src/Resources/config.json"};
+        inline static const std::string filePath = "/Users/mlewis/CLionProjects/Multi-Threaded-Algorithmic-Trading-System/src/CommonServer/Utils/Resources/config.json";
+        inline static std::ifstream configFile{filePath, std::ios::in};
         inline static nlohmann::json data = json::parse(configFile);
 
     public:
@@ -30,7 +31,12 @@ namespace Utilities
         {
             return data[key];
         }
+
+        static int extractIntValueFromConfig(const std::string& key)
+        {
+            return data[key];
+        }
     };
-}
+} // namespace BeaconTech::Utils
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_CONFIGREADER_HPP

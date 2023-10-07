@@ -8,8 +8,11 @@
 #include <functional>
 #include <memory>
 
-namespace MarketData
+#include "MarketData/Processors/MarketDataProcessor.hpp"
+
+namespace BeaconTech::MarketData
 {
+
     class IMarketDataProvider
     {
     public:
@@ -17,8 +20,10 @@ namespace MarketData
         virtual ~IMarketDataProvider() = default;
 
         virtual std::shared_ptr<IMarketDataProvider> getClient() const = 0;
-        virtual std::function<void ()> getBookUpdate() const = 0;
+
+        virtual std::function<void ()> getBookUpdate(MarketDataProcessor& streamingProcessor) = 0;
     };
-}
+} // namespace BeaconTech::MarketData
+
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_IMARKETDATAPROVIDER_HPP

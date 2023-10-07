@@ -1,4 +1,8 @@
 //
+// The system will operate across various environments such as back-testing, dev, qa, and prod.
+// Each of these environments will ultimately have their own infrastructure (e.g. servers, databases, etc.).
+// As a result, the environment is configurable via this data structure.
+//
 // Created by Michael Lewis on 9/29/23.
 //
 
@@ -9,27 +13,27 @@
 
 #include "../DataStructures/AbstractCodes.hpp"
 
-namespace MessageObjects
+namespace BeaconTech::MessageObjects
 {
-class EnvironmentType : public DataStructures::AbstractCodes
-    {
-    private:
-        EnvironmentType(int id, std::string desc) : AbstractCodes(id, std::move(desc)) {}
+    class EnvironmentType : public DataStructures::AbstractCodes
+        {
+        private:
+            EnvironmentType(int id, std::string desc) : AbstractCodes(id, std::move(desc)) {}
 
-    public:
-        EnvironmentType() = default;
+        public:
+            EnvironmentType() = default;
 
-        // Enum declarations
-        static const EnvironmentType BACKTEST;
-        static const EnvironmentType DEV;
-        static const EnvironmentType QA;
-        static const EnvironmentType PROD;
+            // Enum declarations
+            static const EnvironmentType BACKTEST;
+            static const EnvironmentType DEV;
+            static const EnvironmentType QA;
+            static const EnvironmentType PROD;
 
-        // todo - Implement caching logic to look up codes by id
-        static const std::map<int, AbstractCodes> CODES_BY_ID;
-    };
+            // todo - Implement caching logic to look up codes by id
+            static const std::map<int, AbstractCodes> CODES_BY_ID;
+        };
 
-// Enum definitions
+    // Enum definitions
     inline const EnvironmentType EnvironmentType::BACKTEST = EnvironmentType{1, "Backtest"};
     inline const EnvironmentType EnvironmentType::DEV = EnvironmentType{2, "Dev"};
     inline const EnvironmentType EnvironmentType::QA = EnvironmentType{3, "Qa"};

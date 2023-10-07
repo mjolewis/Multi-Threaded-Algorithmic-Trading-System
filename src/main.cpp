@@ -7,7 +7,7 @@
 
 int main()
 {
-    MarketData::MarketDataHistoricalClient marketDataClient{"main"};
+    BeaconTech::MarketData::MarketDataHistoricalClient marketDataClient{"main"};
     marketDataClient.stop();
     return 0;
 }

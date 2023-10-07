@@ -11,12 +11,13 @@
 #include <databento/historical.hpp>
 
 #include "MarketDataHistoricalClient.hpp"
-#include "src/MarketData/MarketDataUtils.hpp"
+#include "MarketData/MarketDataUtils.hpp"
 #include "MarketDataStreamingClient.hpp"
-#include "src/Resources/ConfigReader.hpp"
-#include "src/CommonServer/Utils/LogLevel.hpp"
+#include "MarketData/Processors/MarketDataProcessor.hpp"
+#include "CommonServer/Utils/ConfigReader.hpp"
+#include "CommonServer/Utils/LogLevel.hpp"
 
-namespace MarketData
+namespace BeaconTech::MarketData
 {
     // Overloaded ctor that initializes the client and downstream components
     MarketDataHistoricalClient::MarketDataHistoricalClient(std::string clientName)
@@ -53,8 +54,8 @@ namespace MarketData
     {
         // Batch download historical data files for back-testing
         return _client->BatchDownload(
-                Utilities::ConfigReader::extractStringValueFromConfig("marketData"),
-                Utilities::ConfigReader::extractStringValueFromConfig("fileToDownload"));
+                Utils::ConfigReader::extractStringValueFromConfig("marketData"),
+                Utils::ConfigReader::extractStringValueFromConfig("fileToDownload"));
     }
 
     // Read from a file previously downloaded to avoid for testing. Will eventually need to migrate over to
@@ -66,38 +67,43 @@ namespace MarketData
     }
 
     // Used by the MarketDataConsumer to consume bookUpdates published by the market data provider (pub-sub model)
-    std::function<void ()> MarketDataHistoricalClient::getBookUpdate() const
+    std::function<void ()> MarketDataHistoricalClient::getBookUpdate(MarketDataProcessor& streamingProcessor)
     {
-        return [&_client = client]() {
+        return [&]() {
             try
             {
                 // todo - Reading from previously downloaded file for testing purposes.
-                std::vector<std::string> bookUpdates = doBatchDownload(_client);
-                // std::vector<std::string> bookUpdates = readFromFile();
+                // std::vector<std::string> bookUpdates = doBatchDownload(client);
+                std::vector<std::string> bookUpdates = readFromFile();
 
                 // Replay each book update by providing a callback processor to the clients Replay API
                 for (const auto& bookUpdate : bookUpdates)
                 {
                     if (bookUpdate.substr(bookUpdate.length() - 8) == ".dbn.zst")
                     {
+                        auto callback = [&] (const databento::Record& record)
+                        {
+                            return streamingProcessor.processBookUpdate(record);
+                        };
+
                         databento::DbnFileStore dbn_store{bookUpdate};
-                        dbn_store.Replay(MarketDataProcessor::processBookUpdate);
+                        dbn_store.Replay(callback);
                     }
                 }
             }
             catch (const databento::HttpResponseError& e)
             {
-                MarketDataUtils::log(Utilities::LogLevel::SEVERE, e.what());
+                MarketDataUtils::log(Utils::LogLevel::SEVERE, e.what());
             }
             catch (const std::exception& e)
             {
-                MarketDataUtils::log(Utilities::LogLevel::SEVERE, e.what());
+                MarketDataUtils::log(Utils::LogLevel::SEVERE, e.what());
             }
         };
     }
 
     void MarketDataHistoricalClient::stop()
     {
-        MarketDataUtils::log(Utilities::LogLevel::INFO, "Terminated session gateway with MarketDataClient");
+        MarketDataUtils::log(Utils::LogLevel::INFO, "Terminated session gateway with MarketDataClient");
     }
-}
+} // namespace BeaconTech::MarketData

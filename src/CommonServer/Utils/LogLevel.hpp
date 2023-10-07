@@ -11,7 +11,7 @@
 
 #include "src/DataStructures/AbstractCodes.hpp"
 
-namespace Utilities
+namespace BeaconTech::Utils
 {
     class LogLevel : public DataStructures::AbstractCodes
     {
@@ -34,7 +34,8 @@ namespace Utilities
     inline const LogLevel LogLevel::INFO = LogLevel{1, "Info"};
     inline const LogLevel LogLevel::WARN = LogLevel{2, "Warn"};
     inline const LogLevel LogLevel::SEVERE = LogLevel{3, "Severe"};
-}
+
+} // namespace BeaconTech::Utils
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_LOGLEVEL_HPP
