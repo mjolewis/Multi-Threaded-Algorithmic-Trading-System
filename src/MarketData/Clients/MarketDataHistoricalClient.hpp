@@ -14,10 +14,12 @@
 #include <databento/log.hpp>
 
 #include "IMarketDataProvider.hpp"
-#include "MarketDataStreamingClient.hpp"
+#include "MarketData/Clients/MarketDataStreamingClient.hpp"
+#include "MarketData/Processors/MarketDataProcessor.hpp"
 
-namespace MarketData
+namespace BeaconTech::MarketData
 {
+
     // Forward Declarations
     class MarketDataHistoricalClient;
 
@@ -39,13 +41,18 @@ namespace MarketData
         ~MarketDataHistoricalClient() override;
 
         const std::string& getClientName() const;
+
         std::shared_ptr<IMarketDataProvider> getClient() const override;
+
         static std::vector<std::string> doBatchDownload(const std::shared_ptr<databento::Historical>& _client);
+
         static std::vector<std::string> readFromFile();
-        std::function<void ()> getBookUpdate() const override;
+
+        std::function<void ()> getBookUpdate(MarketDataProcessor& streamingProcessor) override;
+
         void stop();
     };
-}
+} // namespace BeaconTech::MarketData
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATAHISTORICALCLIENT_HPP

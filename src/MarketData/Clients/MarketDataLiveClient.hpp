@@ -15,8 +15,9 @@
 #include "IMarketDataProvider.hpp"
 #include "MarketDataStreamingClient.hpp"
 
-namespace MarketData
+namespace BeaconTech::MarketData
 {
+
     // Forward Declarations
     class MarketDataLiveClient;
 
@@ -38,11 +39,14 @@ namespace MarketData
         ~MarketDataLiveClient() override;
 
         const std::string& getClientName() const;
+
         std::shared_ptr<IMarketDataProvider> getClient() const override;
-        std::function<void ()> getBookUpdate() const override;
+
+        std::function<void ()> getBookUpdate(MarketDataProcessor& streamingProcessor) override;
+
         void stop();
     };
-}
+} // namespace BeaconTech::MarketData
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATALIVECLIENT_HPP

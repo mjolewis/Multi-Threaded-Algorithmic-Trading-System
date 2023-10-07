@@ -8,9 +8,9 @@
 #include <future>
 
 #include "MarketDataConsumer.hpp"
-#include "src/MarketData/Processors/MarketDataProcessor.hpp"
+#include "MarketData/Processors/MarketDataProcessor.hpp"
 
-namespace MarketData
+namespace BeaconTech::MarketData
 {
     // Overloaded ctor that initializes the consumer and accepts upstream components so that it can
     // consume data and delegate the processing to the streaming processor
@@ -30,7 +30,7 @@ namespace MarketData
         // Note - The destructor of the std::future will block at the end of the full expression
         // until the asynchronous operation completes. As a result, we use a lvalue expression
         // whose lifetime is bound to the variable
-        auto future = std::async(std::launch::async, marketDataClient.getBookUpdate());
+        auto future = std::async(std::launch::async, marketDataClient.getBookUpdate(streamingProcessor));
     }
 
     // Disconnects the session gateway
@@ -40,7 +40,7 @@ namespace MarketData
         stopSignal = true;
         marketDataClient.stop();
     }
-} // MarketData
+} // namespace BeaconTech::MarketData
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATACONSUMER_CPP

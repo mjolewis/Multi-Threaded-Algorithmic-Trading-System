@@ -10,23 +10,29 @@
 
 #include <chrono>
 
-class StopWatch
+#include "DataTime.hpp"
+
+namespace BeaconTech::Utils
 {
-private:
-    std::chrono::steady_clock::time_point startTime;
-    std::chrono::steady_clock::time_point stopTime;
+    class StopWatch
+    {
+    private:
+        TimePoint startTime;
+        TimePoint stopTime;
 
-    StopWatch(const StopWatch &);
-    StopWatch & operator=(const StopWatch &);
+        StopWatch(const StopWatch &);
+        StopWatch & operator=(const StopWatch &);
 
-public:
-    StopWatch() = default;
+    public:
+        StopWatch() = default;
 
-    void start();
-    void stop();
-    void reset();
-    double elapsedTime() const;
-};
+        void start();
+        void stop();
+        void reset();
+        double elapsedTime() const;
+    };
+
+} // namespace BeaconTech::Utils
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_STOPWATCH_HPP

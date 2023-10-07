@@ -1,4 +1,7 @@
 //
+// Represents a base class for data structures that need to be encoded and decoded for efficient persistence
+// and/or message passing between components
+//
 // Created by Michael Lewis on 9/29/23.
 //
 
@@ -8,7 +11,7 @@
 #include "string"
 #include "map"
 
-namespace DataStructures
+namespace BeaconTech::DataStructures
 {
     class AbstractCodes
     {

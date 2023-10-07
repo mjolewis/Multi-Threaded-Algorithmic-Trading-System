@@ -10,10 +10,10 @@
 
 #include <array>
 
-#include "src/MarketData/Processors/MarketDataProcessor.hpp"
-#include "src/MarketData/MarketDataUtils.hpp"
+#include "MarketData/Processors/MarketDataProcessor.hpp"
+#include "MarketData/MarketDataUtils.hpp"
 
-namespace MarketData
+namespace BeaconTech::MarketData
 {
     template<typename T>
     class MarketDataConsumer
@@ -35,7 +35,7 @@ namespace MarketData
         void stop();
     };
 
-} // MarketData
+} // namespace BeaconTech::MarketData
 
 
 // ********** Start Template Definitions **********

@@ -7,37 +7,29 @@
 
 #include "StopWatch.hpp"
 
-/**
- * Starts this StopWatch
- */
-void StopWatch::start()
+namespace BeaconTech::Utils
 {
-    startTime = std::chrono::steady_clock::now();
-}
 
-/**
- * Stops this StopWatch
- */
-void StopWatch::stop()
-{
-    stopTime = std::chrono::steady_clock::now();
-}
+    void StopWatch::start()
+    {
+        startTime = std::chrono::steady_clock::now();
+    }
 
-/**
- * Resets the start and end times to the current time.
- */
-void StopWatch::reset()
-{
-    stopTime = startTime = std::chrono::steady_clock::now();
-}
+    void StopWatch::stop()
+    {
+        stopTime = std::chrono::steady_clock::now();
+    }
 
-/**
- * Calculates the difference between the stop time and start time
- * @return A double representation of the elapsed time
- */
-double StopWatch::elapsedTime() const
-{
-    auto elapsedTime = std::chrono::duration_cast<std::chrono::microseconds>(stopTime - startTime);
+    void StopWatch::reset()
+    {
+        stopTime = startTime = std::chrono::steady_clock::now();
+    }
 
-    return std::chrono::duration<double>(elapsedTime).count();
-}
+    //Calculates the difference between the stop time and start time
+    double StopWatch::elapsedTime() const
+    {
+        auto elapsedTime = std::chrono::duration_cast<std::chrono::microseconds>(stopTime - startTime);
+
+        return std::chrono::duration<double>(elapsedTime).count();
+    }
+} // namespace BeaconTech::Utils

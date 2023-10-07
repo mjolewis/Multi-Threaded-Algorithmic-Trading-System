@@ -6,26 +6,35 @@
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MDENTITY_HPP
 
 #include <string>
+#include "CommonServer/Utils/DataTime.hpp"
 
-class MdEntity
+namespace BeaconTech::MessageObjects
 {
-private:
-    std::string symbol;
-    long exchangeTimestamp;
-    int tradeDate;
 
-public:
-    MdEntity(MdEntity mdEntity);
-    ~MdEntity() = default;
+    class MdEntity
+    {
+    private:
+        std::string symbol;
+        UnixNanos exchangeTimestamp;
+        int tradeDate;
 
-    std::string MdEntity::getSymbol();
-    void MdEntity::setSymbol(const std::string& symbol);
+    public:
+        MdEntity() = default;
+        MdEntity(const MdEntity& mdEntity);
+        virtual ~MdEntity() = default;
 
-    long MdEntity::getExchangeTimestamp();
-    void MdEntity::setExchangeTimestamp(long exchangeTimestamp);
+        std::string getSymbol();
 
-    int MdEntity::getTradeDate();
-    void MdEntity::setTradeDate(int tradeDate);
-};
+        void setSymbol(const std::string& symbol);
+
+        UnixNanos getExchangeTimestamp();
+
+        void setExchangeTimestamp(UnixNanos exchangeTimestamp);
+
+        int getTradeDate();
+
+        void setTradeDate(int tradeDate);
+    };
+}
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MDENTITY_HPP
