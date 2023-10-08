@@ -12,11 +12,11 @@
 #include <databento/log.hpp>
 #include <databento/flag_set.hpp>
 #include "databento/fixed_price.hpp"
-#include <nlohmann/json.hpp>
 
 #include "MarketDataUtils.hpp"
-#include "CommonServer/Utils/ConfigReader.hpp"
+#include "CommonServer/Utils/ConfigManager.hpp"
 #include "CommonServer/Utils/LogLevel.hpp"
+#include "MessageObjects/MarketData/OrderBook/PriceLevel.hpp"
 
 using namespace std::chrono_literals;
 
@@ -40,7 +40,7 @@ namespace BeaconTech::MarketData
             {
                 ++attempts;
                 return databento::HistoricalBuilder{}
-                        .SetKey(Utils::ConfigReader::extractStringValueFromConfig("dbnApiKey"))
+                        .SetKey(Utils::ConfigManager::extractStringValueFromConfig("dbnApiKey"))
                         .Build();
             }
             catch (const databento::HttpResponseError& e)
@@ -130,13 +130,13 @@ namespace BeaconTech::MarketData
     // Helper function used to determine which mode to run in
     std::string MarketDataUtils::getEnvironmentType()
     {
-        return Utils::ConfigReader::extractStringValueFromConfig("environmentType");
+        return Utils::ConfigManager::extractStringValueFromConfig("environmentType");
     }
 
     // Used to partition the system into multiple symbol ranged engines (aka threads)
     int MarketDataUtils::getThreadCount()
     {
-        return Utils::ConfigReader::extractIntValueFromConfig("threadCount");
+        return Utils::ConfigManager::extractIntValueFromConfig("threadCount");
     }
 
     // True if the flag is set. False otherwise

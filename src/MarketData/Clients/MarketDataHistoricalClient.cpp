@@ -14,7 +14,7 @@
 #include "MarketData/MarketDataUtils.hpp"
 #include "MarketDataStreamingClient.hpp"
 #include "MarketData/Processors/MarketDataProcessor.hpp"
-#include "CommonServer/Utils/ConfigReader.hpp"
+#include "CommonServer/Utils/ConfigManager.hpp"
 #include "CommonServer/Utils/LogLevel.hpp"
 
 namespace BeaconTech::MarketData
@@ -54,8 +54,8 @@ namespace BeaconTech::MarketData
     {
         // Batch download historical data files for back-testing
         return _client->BatchDownload(
-                Utils::ConfigReader::extractStringValueFromConfig("marketData"),
-                Utils::ConfigReader::extractStringValueFromConfig("fileToDownload"));
+                Utils::ConfigManager::extractStringValueFromConfig("marketData"),
+                Utils::ConfigManager::extractStringValueFromConfig("fileToDownload"));
     }
 
     // Read from a file previously downloaded to avoid for testing. Will eventually need to migrate over to
