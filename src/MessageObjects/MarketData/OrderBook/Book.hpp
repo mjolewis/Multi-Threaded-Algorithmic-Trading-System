@@ -4,8 +4,8 @@
 // requires inefficiently iterating over all the orders to build levels. As a result,
 // the system uses a more efficient order tracking approach.
 //
-// Note - This book is capable of tracking multiple instruments. This is achieved by
-// building a Book of Books.
+// This book is capable of tracking multiple instruments. This is achieved using
+// a composite data structure that maintains a separate book for each instrument.
 //
 // Created by Michael Lewis on 10/6/23.
 //
@@ -27,18 +27,24 @@
 namespace BeaconTech::MessageObjects
 {
 
+    // Alias
+    using OrderBook = std::unordered_map<std::uint64_t, Quote>;
+    using OrderBooks = std::unordered_map<std::uint32_t, OrderBook>;
+    using Bbos = std::unordered_map<std::uint32_t, std::tuple<PriceLevel, PriceLevel>>;
+
     class Book
     {
     private:
-        std::shared_ptr<std::unordered_map<std::uint64_t, Quote>> quotes;
+        std::shared_ptr<OrderBooks> orderBooks; // instrumentId -> orderId -> orderBook
+        std::shared_ptr<Bbos> bbos; // instrumentId -> priceLevels
 
     public:
         Book();
         virtual ~Book() = default;
 
-        std::tuple<PriceLevel, PriceLevel> getBbo();
-
         void apply(const databento::MboMsg& mboMsg);
+
+        const std::shared_ptr<Bbos>& getBbos();
     };
 
 } // namespace BeaconTech::MessageObjects
