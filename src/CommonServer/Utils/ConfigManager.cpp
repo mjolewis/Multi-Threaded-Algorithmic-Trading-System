@@ -39,19 +39,19 @@ namespace BeaconTech::Utils
         }
     }
 
-    std::string ConfigManager::extractStringValueFromConfig(const std::string& key)
+    std::string ConfigManager::stringConfig(const std::string& key)
     {
         return configs.at(key);
     }
 
     // Extracts a string value from the config and converts it into a bool
-    bool ConfigManager::extractBoolValueFromConfig(const std::string& key)
+    bool ConfigManager::boolConfig(const std::string& key)
     {
         return "true" == configs.at(key);
     }
 
     // Extracts a string value from the config and converts it into an int
-    int ConfigManager::extractIntValueFromConfig(const std::string& key)
+    int ConfigManager::intConfig(const std::string& key)
     {
         return std::stoi(configs.at(key));
     }

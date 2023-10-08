@@ -11,7 +11,6 @@
 //
 
 #include <unordered_map>
-#include <tuple>
 #include <utility>
 
 #include <databento/timeseries.hpp>
@@ -165,7 +164,7 @@ namespace BeaconTech::MessageObjects
             }
 
             const auto instrumentId = orderBook.first;
-            bbos->emplace(instrumentId, std::make_tuple(bestBid, bestAsk));
+            bbos->emplace(instrumentId, std::make_pair(bestBid, bestAsk));
         }
 
         return bbos;

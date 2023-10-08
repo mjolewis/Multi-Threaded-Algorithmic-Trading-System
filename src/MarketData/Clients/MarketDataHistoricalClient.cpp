@@ -54,8 +54,8 @@ namespace BeaconTech::MarketData
     {
         // Batch download historical data files for back-testing
         return _client->BatchDownload(
-                Utils::ConfigManager::extractStringValueFromConfig("marketData"),
-                Utils::ConfigManager::extractStringValueFromConfig("fileToDownload"));
+                Utils::ConfigManager::stringConfig("marketData"),
+                Utils::ConfigManager::stringConfig("fileToDownload"));
     }
 
     // Read from a file previously downloaded to avoid for testing. Will eventually need to migrate over to

@@ -4,14 +4,18 @@
 // Created by Michael Lewis on 10/2/23.
 //
 
+#include <iomanip>
+#include <ios>
 #include <string>
+
+#include <boost/format.hpp>
 
 #include <databento/historical.hpp>
 #include <databento/live.hpp>
 #include <databento/exceptions.hpp>
 #include <databento/log.hpp>
 #include <databento/flag_set.hpp>
-#include "databento/fixed_price.hpp"
+#include <databento/fixed_price.hpp>
 
 #include "MarketDataUtils.hpp"
 #include "CommonServer/Utils/ConfigManager.hpp"
@@ -22,8 +26,6 @@ using namespace std::chrono_literals;
 
 namespace BeaconTech::MarketData
 {
-    using Bbos = std::unordered_map<std::uint32_t, std::tuple<MessageObjects::PriceLevel, MessageObjects::PriceLevel>>;
-
     // Logging utility. Will eventually need to convert to a low-latency custom-built or 3rd party logging library
     void MarketDataUtils::log(const Utils::LogLevel& logLevel, const std::string& message)
     {
@@ -40,7 +42,7 @@ namespace BeaconTech::MarketData
             {
                 ++attempts;
                 return databento::HistoricalBuilder{}
-                        .SetKey(Utils::ConfigManager::extractStringValueFromConfig("dbnApiKey"))
+                        .SetKey(Utils::ConfigManager::stringConfig("dbnApiKey"))
                         .Build();
             }
             catch (const databento::HttpResponseError& e)
@@ -130,13 +132,13 @@ namespace BeaconTech::MarketData
     // Helper function used to determine which mode to run in
     std::string MarketDataUtils::getEnvironmentType()
     {
-        return Utils::ConfigManager::extractStringValueFromConfig("environmentType");
+        return Utils::ConfigManager::stringConfig("environmentType");
     }
 
     // Used to partition the system into multiple symbol ranged engines (aka threads)
-    int MarketDataUtils::getThreadCount()
+    int MarketDataUtils::getNumThreads()
     {
-        return Utils::ConfigManager::extractIntValueFromConfig("threadCount");
+        return Utils::ConfigManager::intConfig("numThreads");
     }
 
     // True if the flag is set. False otherwise
@@ -146,21 +148,31 @@ namespace BeaconTech::MarketData
     }
 
     // Prints best bid and ask for each book after processing the last message in the packet
-    void MarketDataUtils::printBbos(databento::MboMsg quote, std::shared_ptr<Bbos> bbos)
+    void MarketDataUtils::printBbos(const databento::MboMsg& quote, const std::shared_ptr<Bbos>& bbos)
     {
-        if (MarketDataUtils::isFlagSet(quote.flags, databento::FlagSet::kLast))
+        if (!Utils::ConfigManager::boolConfig("printBbo")) return;
+        if (!MarketDataUtils::isFlagSet(quote.flags, databento::FlagSet::kLast)) return;
+
+        MessageObjects::PriceLevel bestBid{};
+        MessageObjects::PriceLevel bestAsk{};
+        for (const auto& [instrumentId, bbo] : *bbos)
         {
-            MessageObjects::PriceLevel bestBid{};
-            MessageObjects::PriceLevel bestAsk{};
-            for (const auto& [instrumentId, bbo] : *bbos)
-            {
-                std::tie(bestBid, bestAsk) = bbo;
-                std::cout << "InstrumentId: " << instrumentId << "\t"
-                          << "Best bid\t" << (float(bestBid.price) / float(databento::kFixedPriceScale))
-                          << " × " << bestBid.size << "\t"
-                          << "Best ask\t" << (float(bestAsk.price) / float(databento::kFixedPriceScale))
-                          << " × " << bestAsk.size << std::endl;
-            }
+            std::tie(bestBid, bestAsk) = bbo;
+
+            auto formattedBid = boost::format("Best bid: %1% × %2%")
+                    % (float(bestBid.price) / float(databento::kFixedPriceScale))
+                    % bestBid.size;
+
+            auto formattedAsk = boost::format("Best ask: %1% × %2%")
+                    % (float(bestAsk.price) / float(databento::kFixedPriceScale))
+                    % bestAsk.size;
+
+            std::cout << std::left << std::setfill(' ')
+                      << "InstrumentId: " << std::setw(12) << instrumentId
+                      << std::setw(26)
+                      << formattedBid.str()
+                      << formattedAsk.str()
+                      << std::endl;
         }
     }
 } // namespace BeaconTech::MarketData

@@ -8,13 +8,8 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_CONFIGMANAGER_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_CONFIGMANAGER_HPP
 
-#include <fstream>
 #include <string>
 #include <unordered_map>
-
-#include <nlohmann/json.hpp>
-
-using json = nlohmann::json;
 
 namespace BeaconTech::Utils
 {
@@ -27,11 +22,11 @@ namespace BeaconTech::Utils
     public:
         static void loadDefaultConfigs();
 
-        static std::string extractStringValueFromConfig(const std::string& key);
+        static std::string stringConfig(const std::string& key);
 
-        static bool extractBoolValueFromConfig(const std::string& key);
+        static bool boolConfig(const std::string& key);
 
-        static int extractIntValueFromConfig(const std::string& key);
+        static int intConfig(const std::string& key);
     };
 } // namespace BeaconTech::Utils
 
