@@ -26,8 +26,6 @@ namespace BeaconTech::MarketData
     class MarketDataUtils
     {
     public:
-        static void log(const Utils::LogLevel& logLevel, int value, const std::string& message);
-
         static void log(const Utils::LogLevel& logLevel, const std::string& message);
 
         static databento::Historical getHistoricalClient();
@@ -43,5 +41,6 @@ namespace BeaconTech::MarketData
         static void printBbos(databento::MboMsg quote, std::shared_ptr<Bbos> bbos);
     };
 } // namespace BeaconTech::MarketData
+
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATAUTILS_HPP
