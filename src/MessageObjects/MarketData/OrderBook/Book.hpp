@@ -17,12 +17,13 @@
 #include <memory>
 #include <unordered_map>
 #include <string>
+#include <utility>
 
 #include <databento/timeseries.hpp>
 
 #include "Quote.hpp"
 #include "PriceLevel.hpp"
-#include "CommonServer/Utils/DataTime.hpp"
+#include "CommonServer/Utils/DateTimes.hpp"
 
 namespace BeaconTech::MessageObjects
 {
@@ -30,7 +31,7 @@ namespace BeaconTech::MessageObjects
     // Alias
     using OrderBook = std::unordered_map<std::uint64_t, Quote>;
     using OrderBooks = std::unordered_map<std::uint32_t, OrderBook>;
-    using Bbos = std::unordered_map<std::uint32_t, std::tuple<PriceLevel, PriceLevel>>;
+    using Bbos = std::unordered_map<std::uint32_t, std::pair<PriceLevel, PriceLevel>>;
 
     class Book
     {

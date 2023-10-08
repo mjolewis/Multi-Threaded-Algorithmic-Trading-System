@@ -8,6 +8,7 @@
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATAUTILS_HPP
 
 #include <string>
+#include <utility>
 
 #include <databento/historical.hpp>
 #include <databento/live.hpp>
@@ -21,7 +22,7 @@
 
 namespace BeaconTech::MarketData
 {
-    using Bbos = std::unordered_map<std::uint32_t, std::tuple<MessageObjects::PriceLevel, MessageObjects::PriceLevel>>;
+    using Bbos = std::unordered_map<std::uint32_t, std::pair<MessageObjects::PriceLevel, MessageObjects::PriceLevel>>;
 
     class MarketDataUtils
     {
@@ -34,11 +35,11 @@ namespace BeaconTech::MarketData
 
         static std::string getEnvironmentType();
 
-        static int getThreadCount();
+        static int getNumThreads();
 
         static bool isFlagSet(const databento::FlagSet& flag, std::uint8_t bit);
 
-        static void printBbos(databento::MboMsg quote, std::shared_ptr<Bbos> bbos);
+        static void printBbos(const databento::MboMsg& quote, const std::shared_ptr<Bbos>& bbos);
     };
 } // namespace BeaconTech::MarketData
 

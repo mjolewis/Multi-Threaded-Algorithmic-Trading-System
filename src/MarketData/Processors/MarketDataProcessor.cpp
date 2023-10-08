@@ -35,7 +35,7 @@ namespace BeaconTech::MarketData
     void MarketDataProcessor::handle(const T& quote)
     {
         orderBook.apply(quote);
-            MarketDataUtils::printBbos(quote, orderBook.getBbos());
+        MarketDataUtils::printBbos(quote, orderBook.getBbos());
     }
 
     // The system is currently designed for high-frequency trading. As a result, it only cares about quotes.
