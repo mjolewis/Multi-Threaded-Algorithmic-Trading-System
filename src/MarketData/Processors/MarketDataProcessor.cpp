@@ -5,18 +5,14 @@
 // Created by Michael Lewis on 10/2/23.
 //
 
-
 #include <concepts>
 #include <iostream>
+#include <memory>
 
-#include "databento/fixed_price.hpp"
 #include <databento/timeseries.hpp>
-#include <databento/flag_set.hpp>
 
 #include "MarketDataProcessor.hpp"
 #include "MarketData/MarketDataUtils.hpp"
-#include "MessageObjects/MarketData/OrderBook/Book.hpp"
-#include "MessageObjects/MarketData/OrderBook/PriceLevel.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -31,29 +27,21 @@ namespace BeaconTech::MarketData
         // silent for now
     }
 
-    // The current system processes MBOs (Market by Order); however, this is configurable.
-    // Compile-time validation enforced via a Concept
+    // Handles incoming quotes and applies it to the order book.
+    // The quotes are MBOs (Market by Order); however, this is configurable.
+    // Performs compile-time validation via a Concept
     template<typename T>
     requires Quote<T>
     void MarketDataProcessor::handle(const T& quote)
     {
         orderBook.apply(quote);
-
-        // Prints the book after processing the last message in the packet
-        if (MarketDataUtils::isFlagSet(quote.flags, databento::FlagSet::kLast))
-        {
-            MessageObjects::PriceLevel bestBid{};
-            MessageObjects::PriceLevel bestOffer{};
-            std::tie(bestBid, bestOffer) = orderBook.getBbo();
-            std::cout << "Best offer\t" << float(bestOffer.price) << " × " << bestOffer.size << "\t";
-            std::cout << "Best bid\t" << float(bestBid.price) << " × " << bestBid.size << std::endl;
-        }
+            MarketDataUtils::printBbos(quote, orderBook.getBbos());
     }
 
-    // Compile-time validation enforced via a Concept
     // The system is currently designed for high-frequency trading. As a result, it only cares about quotes.
     // A decision should be made regarding whether we want to participate in lower frequency volume based
     // trading. If so, trades will be required for algos such as VWAP.
+    // Performs compile-time validation via a Concept
     template<typename T>
     requires Trade<T>
     void MarketDataProcessor::handle(const T& trade)

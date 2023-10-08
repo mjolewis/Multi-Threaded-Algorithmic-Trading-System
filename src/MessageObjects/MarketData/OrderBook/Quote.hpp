@@ -19,11 +19,11 @@ namespace BeaconTech::MessageObjects
     struct Quote
     {
         BeaconTech::MessageObjects::Side side;
-        double price{};
+        std::int64_t price{};
         std::uint32_t size{};
         UnixNanos timestamp{};
 
-        Quote(BeaconTech::MessageObjects::Side side, double price, std::uint32_t size, UnixNanos timestamp)
+        Quote(BeaconTech::MessageObjects::Side side, std::int64_t price, std::uint32_t size, UnixNanos timestamp)
             : side{std::move(side)}, price{price}, size{size}, timestamp{timestamp}
         {
 

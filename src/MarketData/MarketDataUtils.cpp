@@ -11,6 +11,7 @@
 #include <databento/exceptions.hpp>
 #include <databento/log.hpp>
 #include <databento/flag_set.hpp>
+#include "databento/fixed_price.hpp"
 #include <nlohmann/json.hpp>
 
 #include "MarketDataUtils.hpp"
@@ -21,6 +22,8 @@ using namespace std::chrono_literals;
 
 namespace BeaconTech::MarketData
 {
+    using Bbos = std::unordered_map<std::uint32_t, std::tuple<MessageObjects::PriceLevel, MessageObjects::PriceLevel>>;
+
     // Logging utility. Will eventually need to convert to a low-latency custom-built or 3rd party logging library
     void MarketDataUtils::log(const Utils::LogLevel& logLevel, const std::string& message)
     {
@@ -140,5 +143,24 @@ namespace BeaconTech::MarketData
     bool MarketDataUtils::isFlagSet(const databento::FlagSet& flag, std::uint8_t bit)
     {
         return (flag & bit) == bit;
+    }
+
+    // Prints best bid and ask for each book after processing the last message in the packet
+    void MarketDataUtils::printBbos(databento::MboMsg quote, std::shared_ptr<Bbos> bbos)
+    {
+        if (MarketDataUtils::isFlagSet(quote.flags, databento::FlagSet::kLast))
+        {
+            MessageObjects::PriceLevel bestBid{};
+            MessageObjects::PriceLevel bestAsk{};
+            for (const auto& [instrumentId, bbo] : *bbos)
+            {
+                std::tie(bestBid, bestAsk) = bbo;
+                std::cout << "InstrumentId: " << instrumentId << "\t"
+                          << "Best bid\t" << (float(bestBid.price) / float(databento::kFixedPriceScale))
+                          << " × " << bestBid.size << "\t"
+                          << "Best ask\t" << (float(bestAsk.price) / float(databento::kFixedPriceScale))
+                          << " × " << bestAsk.size << std::endl;
+            }
+        }
     }
 } // namespace BeaconTech::MarketData

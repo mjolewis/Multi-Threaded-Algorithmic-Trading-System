@@ -12,14 +12,17 @@
 #include <databento/historical.hpp>
 #include <databento/live.hpp>
 #include <databento/exceptions.hpp>
-#include <databento/log.hpp>
 #include <databento/flag_set.hpp>
 #include <nlohmann/json.hpp>
 
 #include "CommonServer/Utils/LogLevel.hpp"
+#include "MessageObjects/MarketData/OrderBook/Book.hpp"
+#include "MessageObjects/MarketData/OrderBook/PriceLevel.hpp"
 
 namespace BeaconTech::MarketData
 {
+    using Bbos = std::unordered_map<std::uint32_t, std::tuple<MessageObjects::PriceLevel, MessageObjects::PriceLevel>>;
+
     class MarketDataUtils
     {
     public:
@@ -36,6 +39,8 @@ namespace BeaconTech::MarketData
         static int getThreadCount();
 
         static bool isFlagSet(const databento::FlagSet& flag, std::uint8_t bit);
+
+        static void printBbos(databento::MboMsg quote, std::shared_ptr<Bbos> bbos);
     };
 } // namespace BeaconTech::MarketData
 

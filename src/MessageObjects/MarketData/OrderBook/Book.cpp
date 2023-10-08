@@ -4,8 +4,8 @@
 // requires inefficiently iterating over all the orders to build levels. As a result,
 // the system uses a more efficient order tracking approach.
 //
-// Note - This book is capable of tracking multiple instruments. This is achieved by
-// building a Book of Books.
+// This book is capable of tracking multiple instruments. This is achieved using
+// a composite data structure that maintains a separate book for each instrument.
 //
 // Created by Michael Lewis on 10/6/23.
 //
@@ -25,60 +25,14 @@
 
 namespace BeaconTech::MessageObjects
 {
-    Book::Book() : quotes{std::make_shared<std::unordered_map<std::uint64_t, Quote>>()}
+    Book::Book() : orderBooks{std::make_shared<OrderBooks>()}, bbos{std::make_shared<Bbos>()}
     {
 
-    }
-
-    std::tuple<PriceLevel, PriceLevel> Book::getBbo()
-    {
-        auto bestAsk = PriceLevel();
-        auto bestBid = PriceLevel();
-
-        for (auto& it : *quotes)
-        {
-            const auto quote = it.second;
-            if (quote.side == Side::SELL)
-            {
-                if (bestAsk.price == 0 || bestAsk.price > quote.price)
-                {
-                    bestAsk.price = quote.price;
-                    bestAsk.size = quote.size;
-                    bestAsk.count = 1;
-                }
-                else if (bestAsk.price == quote.price)
-                {
-                    bestAsk.size += quote.size;
-                    ++bestAsk.count;
-                }
-            }
-            else if (quote.side == Side::BUY)
-            {
-                if (bestBid.price < quote.price)
-                {
-                    bestBid.price = quote.price;
-                    bestBid.size = quote.size;
-                    bestBid.count = 1;
-                }
-                else if (bestBid.price == quote.price)
-                {
-                    bestBid.size += quote.size;
-                    ++bestBid.count;
-                }
-            }
-        }
-
-        return {bestBid, bestAsk};
     }
 
     void Book::apply(const databento::MboMsg& mboMsg)
     {
-        auto timestamp = mboMsg.hd.ts_event;
         auto action = mboMsg.action;
-        auto side = (char) mboMsg.side;
-        auto orderId = mboMsg.order_id;
-        auto price = float(mboMsg.price) / float(databento::kFixedPriceScale);
-        auto size = mboMsg.size;
 
         // Trade or Fill -> No change to book because all fills are
         // accompanied by cancel actions that do update the book
@@ -87,34 +41,58 @@ namespace BeaconTech::MessageObjects
             return;
         }
 
-        // Clear -> Clear all resting orders
+        auto instrumentId = mboMsg.hd.instrument_id;
+        auto timestamp = mboMsg.hd.ts_event;
+        auto side = (char) mboMsg.side;
+        auto orderId = mboMsg.order_id;
+        auto price = mboMsg.price;
+        auto size = mboMsg.size;
+
+        // Clear -> Clear all resting orders for the given instrumentId
         if (action == OrderAction::CLEAR.getFixCode())
         {
-            quotes->clear();
+            const auto& orderBook = orderBooks->find(instrumentId);
+            if (orderBook != orderBooks->cend())
+            {
+                orderBook->second.clear();
+            }
+
             return;
         }
 
-        // Add -> Add a new order
+        // Add -> Add a new order for the given instrumentId
         if (action == OrderAction::ADD.getFixCode())
         {
+            const auto& orderBook = orderBooks->find(instrumentId);
             Side side_ = Side::fromFix(side);
             Quote quote_ = Quote{side_, price, size, timestamp};
-            quotes->insert(std::make_pair(orderId, quote_));
+            if (orderBook == orderBooks->cend())
+            {
+                orderBooks->insert({instrumentId, {{orderId, quote_}}});
+            }
+            else
+            {
+                orderBook->second.insert(std::make_pair(orderId, quote_));
+            }
             return;
         }
 
         // Cancel -> Partial or full cancel
         if (action == OrderAction::CANCEL.getFixCode())
         {
-            auto restingOrder = quotes->find(orderId);
-            if (restingOrder != quotes->cend() && restingOrder->second.size >= size)
+            const auto& orderBook = orderBooks->find(instrumentId);
+            if (orderBook != orderBooks->cend())
             {
-                restingOrder->second.size -= size;
-
-                // Remove orders that are fully cancelled
-                if (restingOrder->second.size == 0)
+                auto restingOrder = orderBook->second.find(orderId);
+                if (restingOrder != orderBook->second.cend() && restingOrder->second.size >= size)
                 {
-                    quotes->erase(restingOrder);
+                    restingOrder->second.size -= size;
+
+                    // Remove orders that are fully cancelled
+                    if (restingOrder->second.size == 0)
+                    {
+                        orderBook->second.erase(restingOrder);
+                    }
                 }
             }
 
@@ -124,21 +102,73 @@ namespace BeaconTech::MessageObjects
         // Modify -> Modifies the price or size
         if (action == OrderAction::MODIFY.getFixCode())
         {
-            auto restingOrder = quotes->find(orderId);
-            if (restingOrder != quotes->cend())
+            const auto& orderBook = orderBooks->find(instrumentId);
+            if (orderBook != orderBooks->cend())
             {
-                // Assume order loses priority if price changes or size increases
-                if (restingOrder->second.price != price || restingOrder->second.size < size)
+                auto restingOrder = orderBook->second.find(orderId);
+                if (restingOrder != orderBook->second.cend())
                 {
-                    restingOrder->second.timestamp = timestamp;
-                }
+                    // Order loses priority if price changes or size increases
+                    if (restingOrder->second.price != price || restingOrder->second.size < size)
+                    {
+                        restingOrder->second.timestamp = timestamp;
+                    }
 
-                restingOrder->second.size = size;
-                restingOrder->second.price = price;
+                    restingOrder->second.size = size;
+                    restingOrder->second.price = price;
+                }
             }
 
             return;
         }
+    }
+
+    const std::shared_ptr<Bbos>& Book::getBbos()
+    {
+        auto bestAsk = PriceLevel();
+        auto bestBid = PriceLevel();
+
+        for (const auto& orderBook : *orderBooks)
+        {
+            const auto& orders = orderBook.second;
+            for (const auto& orderId : orders)
+            {
+                const auto& order = orderId.second;
+                if (order.side == Side::SELL)
+                {
+                    if (bestAsk.price == 0 || bestAsk.price > order.price)
+                    {
+                        bestAsk.price = order.price;
+                        bestAsk.size = order.size;
+                        bestAsk.count = 1;
+                    }
+                    else if (bestAsk.price == order.price)
+                    {
+                        bestAsk.size += order.size;
+                        ++bestAsk.count;
+                    }
+                }
+                else if (order.side == Side::BUY)
+                {
+                    if (bestBid.price < order.price)
+                    {
+                        bestBid.price = order.price;
+                        bestBid.size = order.size;
+                        bestBid.count = 1;
+                    }
+                    else if (bestBid.price == order.price)
+                    {
+                        bestBid.size += order.size;
+                        ++bestBid.count;
+                    }
+                }
+            }
+
+            const auto instrumentId = orderBook.first;
+            bbos->emplace(instrumentId, std::make_tuple(bestBid, bestAsk));
+        }
+
+        return bbos;
     }
 
 } // namespace BeaconTech::MessageObjects

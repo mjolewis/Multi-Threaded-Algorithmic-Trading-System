@@ -14,12 +14,16 @@ namespace BeaconTech::MessageObjects
 
     struct PriceLevel
     {
-        double price;
-        double size;
+        std::int64_t price;
+        std::uint32_t size;
         int count;
 
-        PriceLevel() = default;
-        PriceLevel(double price, double size, int count) : price{price}, size{size}, count{count}
+        PriceLevel() : price{0}, size{0}, count{0}
+        {
+
+        }
+
+        PriceLevel(std::int64_t price, std::uint32_t size, int count) : price{price}, size{size}, count{count}
         {
 
         }
