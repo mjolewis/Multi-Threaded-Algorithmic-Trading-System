@@ -63,7 +63,7 @@ namespace BeaconTech::MarketData
     // when back-testing instead of running batch downloads for each back-test.
     std::vector<std::string> MarketDataHistoricalClient::readFromFile()
     {
-        return {"/Users/mlewis/CLionProjects/Multi-Threaded-Algorithmic-Trading-System/src/MarketData/HistoricalData/XNAS-20230927-798SMC6CUJ/xnas-itch-20230925.mbo.dbn.zst"};
+        return {Utils::ConfigManager::stringConfig("flatHistoricalDataFile")};
     }
 
     // Used by the MarketDataConsumer to consume bookUpdates published by the market data provider (pub-sub model)
