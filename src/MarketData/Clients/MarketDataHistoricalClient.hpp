@@ -37,6 +37,7 @@ namespace BeaconTech::MarketData
         std::shared_ptr<MarketDataStreamingClient<MarketDataHistoricalClient>> streamingClient;
 
     public:
+        MarketDataHistoricalClient() = default;
         explicit MarketDataHistoricalClient(std::string clientName);
         ~MarketDataHistoricalClient() override;
 
