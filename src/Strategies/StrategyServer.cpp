@@ -15,7 +15,7 @@ namespace BeaconTech::Strategies
     // Order of instantiation matters. The Server and Engines should be instantiated before the Market Data Client
     // to ensure that these components are ready to start processing data published by the Client.
     template<typename T>
-    StrategyServer<T>::StrategyServer() : numThreads{Utils::ConfigManager::intConfig("numThreads")}
+    StrategyServer<T>::StrategyServer() : numThreads{Utils::ConfigManager::intConfigValueDefaultIfNull("numThreads", 1)}
     {
         createThreads();
         marketDataClient = T{"StrategyServer"};

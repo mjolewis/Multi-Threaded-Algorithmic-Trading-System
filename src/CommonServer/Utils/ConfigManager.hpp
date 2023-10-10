@@ -22,11 +22,11 @@ namespace BeaconTech::Utils
     public:
         static void loadDefaultConfigs();
 
-        static std::string stringConfig(const std::string& key);
+        static std::string stringConfigValueDefaultIfNull(const std::string& configName, const std::string& defaultValue);
 
-        static bool boolConfig(const std::string& key);
+        static bool boolConfigValueDefaultIfNull(const std::string& configName, const bool& defaultValue);
 
-        static int intConfig(const std::string& key);
+        static int intConfigValueDefaultIfNull(const std::string& configName, const int& defaultValue);
     };
 } // namespace BeaconTech::Utils
 
