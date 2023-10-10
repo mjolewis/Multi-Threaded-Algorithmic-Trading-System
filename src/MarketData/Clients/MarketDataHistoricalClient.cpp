@@ -54,8 +54,8 @@ namespace BeaconTech::MarketData
     {
         // Batch download historical data files for back-testing
         return _client->BatchDownload(
-                Utils::ConfigManager::stringConfig("marketData"),
-                Utils::ConfigManager::stringConfig("fileToDownload"));
+                Utils::ConfigManager::stringConfigValueDefaultIfNull("marketData", "../src/MarketData/HistoricalData"),
+                Utils::ConfigManager::stringConfigValueDefaultIfNull("fileToDownload", ""));
     }
 
     // Read from a file previously downloaded to avoid for testing. Will eventually need to migrate over to
@@ -63,7 +63,7 @@ namespace BeaconTech::MarketData
     // when back-testing instead of running batch downloads for each back-test.
     std::vector<std::string> MarketDataHistoricalClient::readFromFile()
     {
-        return {Utils::ConfigManager::stringConfig("flatHistoricalDataFile")};
+        return {Utils::ConfigManager::stringConfigValueDefaultIfNull("flatHistoricalDataFile", "")};
     }
 
     // Used by the MarketDataConsumer to consume bookUpdates published by the market data provider (pub-sub model)

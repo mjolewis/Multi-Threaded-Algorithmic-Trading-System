@@ -42,7 +42,7 @@ namespace BeaconTech::MarketData
             {
                 ++attempts;
                 return databento::HistoricalBuilder{}
-                        .SetKey(Utils::ConfigManager::stringConfig("dbnApiKey"))
+                        .SetKey(Utils::ConfigManager::stringConfigValueDefaultIfNull("dbnApiKey", ""))
                         .Build();
             }
             catch (const databento::HttpResponseError& e)
@@ -132,13 +132,13 @@ namespace BeaconTech::MarketData
     // Helper function used to determine which mode to run in
     std::string MarketDataUtils::getEnvironmentType()
     {
-        return Utils::ConfigManager::stringConfig("environmentType");
+        return Utils::ConfigManager::stringConfigValueDefaultIfNull("environmentType", "Dev");
     }
 
     // Used to partition the system into multiple symbol ranged engines (aka threads)
     int MarketDataUtils::getNumThreads()
     {
-        return Utils::ConfigManager::intConfig("numThreads");
+        return Utils::ConfigManager::intConfigValueDefaultIfNull("numThreads", 1);
     }
 
     // True if the flag is set. False otherwise
@@ -150,7 +150,7 @@ namespace BeaconTech::MarketData
     // Prints best bid and ask for each book after processing the last message in the packet
     void MarketDataUtils::printBbos(const databento::MboMsg& quote, const std::shared_ptr<Bbos>& bbos)
     {
-        if (!Utils::ConfigManager::boolConfig("printBbo")) return;
+        if (!Utils::ConfigManager::boolConfigValueDefaultIfNull("printBbo", false)) return;
         if (!MarketDataUtils::isFlagSet(quote.flags, databento::FlagSet::kLast)) return;
 
         MessageObjects::PriceLevel bestBid{};

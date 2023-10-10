@@ -5,6 +5,8 @@
 // Created by Michael Lewis on 9/29/23.
 //
 
+#include <cctype>
+#include <algorithm>
 #include <fstream>
 #include <exception>
 #include <iostream>
@@ -39,20 +41,26 @@ namespace BeaconTech::Utils
         }
     }
 
-    std::string ConfigManager::stringConfig(const std::string& key)
+    std::string ConfigManager::stringConfigValueDefaultIfNull(const std::string& configName, const std::string& defaultValue)
     {
-        return configs.at(key);
+        auto config = configs.find(configName);
+        return config == configs.cend() ? defaultValue : config->second;
     }
 
     // Extracts a string value from the config and converts it into a bool
-    bool ConfigManager::boolConfig(const std::string& key)
+    bool ConfigManager::boolConfigValueDefaultIfNull(const std::string& configName, const bool& defaultValue)
     {
-        return "true" == configs.at(key);
+        auto config = configs.find(configName);
+        const std::string& testValue = "true";
+        return std::equal(config->second.cbegin(), config->second.cend(),
+                                   testValue.cbegin(), testValue.cend(),
+                                   [&](char lhs, char rhs) { return std::tolower(lhs) == std::tolower(rhs); } );
     }
 
     // Extracts a string value from the config and converts it into an int
-    int ConfigManager::intConfig(const std::string& key)
+    int ConfigManager::intConfigValueDefaultIfNull(const std::string& configName, const int& defaultValue)
     {
-        return std::stoi(configs.at(key));
+        auto config = configs.find(configName);
+        return config == configs.cend() ? defaultValue : std::stoi(config->second);
     }
 } // namespace BeaconTech::Utils
