@@ -5,14 +5,11 @@
 // Created by Michael Lewis on 10/2/23.
 //
 
-#include <concepts>
-#include <iostream>
-#include <memory>
-
 #include <databento/timeseries.hpp>
 
 #include "MarketDataProcessor.hpp"
 #include "MarketData/MarketDataUtils.hpp"
+#include "CommonServer/Utils/BTConcepts.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -22,20 +19,43 @@ namespace BeaconTech::MarketData
 
     }
 
-    void MarketDataProcessor::initialize()
+    MarketDataProcessor& MarketDataProcessor::operator=(const MarketDataProcessor& other)
     {
-        // silent for now
+        // Avoid self-assignment
+        if (this == &other) return *this;
+
+        orderBook = other.orderBook;
+        callback  = other.callback;
+
+        return *this;
+    }
+
+    MarketDataProcessor& MarketDataProcessor::operator=(MarketDataProcessor&& other) noexcept
+    {
+        // Avoid self-assigment
+        if (this == &other) return *this;
+
+        orderBook = other.orderBook;
+        callback = std::move(other.callback);
+
+        return *this;
+    }
+
+    void MarketDataProcessor::initialize(const MdCallback& _callback)
+    {
+        this->callback = _callback;
     }
 
     // Handles incoming quotes and applies it to the order book.
     // The quotes are MBOs (Market by Order); however, this is configurable.
     // Performs compile-time validation via a Concept
     template<typename T>
-    requires Quote<T>
-    void MarketDataProcessor::handle(const T& quote)
+    requires Mbbo<T>
+    void MarketDataProcessor::handle(const T& mbbo)
     {
-        orderBook.apply(quote);
-        MarketDataUtils::printBbos(quote, orderBook.getBbos());
+        orderBook.apply(mbbo);
+        callback(mbbo.hd.instrument_id, orderBook.getBbos());
+        MarketDataUtils::printBbos(mbbo, orderBook.getBbos());
     }
 
     // The system is currently designed for high-frequency trading. As a result, it only cares about quotes.

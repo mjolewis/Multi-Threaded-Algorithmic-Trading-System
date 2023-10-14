@@ -1,4 +1,7 @@
 //
+// Sets up the market data processor and sets up data streaming
+// from the live or historical data from the client
+//
 // Created by Michael Lewis on 9/28/23.
 //
 
@@ -9,6 +12,7 @@
 
 #include "MarketData/Processors/MarketDataProcessor.hpp"
 #include "MarketData/Consumers/MarketDataConsumer.hpp"
+#include "CommonServer/Utils/MdTypes.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -21,15 +25,20 @@ namespace BeaconTech::MarketData
     {
     private:
         T marketDataClient;
-        MarketDataProcessor streamingProcessor;
+        std::shared_ptr<MarketDataProcessor> streamingProcessor;
         MarketDataConsumer<T> streamingConsumer;
 
     public:
         explicit MarketDataStreamingClient(const T& marketDataClient);
         virtual ~MarketDataStreamingClient() = default;
 
+        MarketDataStreamingClient& operator=(const MarketDataStreamingClient& other);
+
+        MarketDataStreamingClient& operator=(MarketDataStreamingClient&& other) noexcept;
+
         void createStreamingProcessor();
-        void initialize();
+
+        void initialize(const MdCallback& callback);
     };
 } // namespace BeaconTech::MarketData
 

@@ -11,7 +11,7 @@
 
 #include <map>
 
-#include "../DataStructures/AbstractCodes.hpp"
+#include "src/DataStructures/AbstractCodes.hpp"
 
 namespace BeaconTech::MessageObjects
 {
@@ -24,7 +24,7 @@ namespace BeaconTech::MessageObjects
             EnvironmentType() = default;
 
             // Enum declarations
-            static const EnvironmentType BACKTEST;
+            static const EnvironmentType TEST;
             static const EnvironmentType DEV;
             static const EnvironmentType QA;
             static const EnvironmentType PROD;
@@ -34,7 +34,7 @@ namespace BeaconTech::MessageObjects
         };
 
     // Enum definitions
-    inline const EnvironmentType EnvironmentType::BACKTEST = EnvironmentType{1, "Backtest"};
+    inline const EnvironmentType EnvironmentType::TEST = EnvironmentType{1, "Test"};
     inline const EnvironmentType EnvironmentType::DEV = EnvironmentType{2, "Dev"};
     inline const EnvironmentType EnvironmentType::QA = EnvironmentType{3, "Qa"};
     inline const EnvironmentType EnvironmentType::PROD = EnvironmentType{3, "Prod"};

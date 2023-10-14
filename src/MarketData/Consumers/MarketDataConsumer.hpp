@@ -1,6 +1,5 @@
 //
-// @Note - This Consumer is not CopyConstructible, CopyAssignable, or MoveAssignable.
-// It is, however, MoveConstructible to comply with the std::thread protocol.
+// A consumer thread for inbound market data messages.
 //
 // Created by Michael Lewis on 10/2/23.
 //
@@ -9,6 +8,7 @@
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATACONSUMER_HPP
 
 #include <array>
+#include <memory>
 
 #include "MarketData/Processors/MarketDataProcessor.hpp"
 #include "MarketData/MarketDataUtils.hpp"
@@ -22,16 +22,22 @@ namespace BeaconTech::MarketData
         inline static constexpr int NUM_THREADS = 4;
 
         T marketDataClient;
-        MarketDataProcessor streamingProcessor;
+        std::shared_ptr<MarketDataProcessor> streamingProcessor;
         std::array<std::thread, NUM_THREADS> consumerThreads;
         bool stopSignal;
 
     public:
-        MarketDataConsumer(const T& marketDataClient, const MarketDataProcessor& streamingProcessor);
+        MarketDataConsumer() = default;
+        MarketDataConsumer(const T& marketDataClient, std::shared_ptr<MarketDataProcessor>& streamingProcessor);
         MarketDataConsumer(MarketDataConsumer&& other) noexcept = default;
         virtual ~MarketDataConsumer() = default;
 
+        MarketDataConsumer<T>& operator=(const MarketDataConsumer<T>& other);
+
+        MarketDataConsumer<T>& operator=(MarketDataConsumer<T>&& other) noexcept;
+
         void start();
+
         void stop();
     };
 

@@ -1,4 +1,6 @@
 //
+// A high-performance and lock free engine model with deterministic message processing.
+//
 // Created by Michael Lewis on 10/4/23.
 //
 
@@ -10,6 +12,8 @@
 #include "StrategyServer.hpp"
 #include "MarketData/Clients/MarketDataHistoricalClient.hpp"
 #include "MarketData/Clients/MarketDataLiveClient.hpp"
+#include "CommonServer/Utils/BTConcepts.hpp"
+#include "MarketData/OrderBook/Book.hpp"
 
 namespace BeaconTech::Strategies
 {
@@ -25,8 +29,10 @@ namespace BeaconTech::Strategies
         int threadId;
 
     public:
-        StrategyEngine(const StrategyServer<T>& server, int threadId);
+        StrategyEngine(std::shared_ptr<StrategyServer<T>> server, int threadId);
         virtual ~StrategyEngine() = default;
+
+        void handle(const std::shared_ptr<Bbos>& bbos);
     };
 
 } // namespace BeaconTech::Strategies

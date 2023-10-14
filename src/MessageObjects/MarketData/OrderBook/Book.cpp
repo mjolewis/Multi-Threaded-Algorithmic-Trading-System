@@ -64,14 +64,14 @@ namespace BeaconTech::MessageObjects
         {
             const auto& orderBook = orderBooks->find(instrumentId);
             Side side_ = Side::fromFix(side);
-            Quote quote_ = Quote{side_, price, size, timestamp};
+            Quote quote = Quote{instrumentId, side_, price, size, timestamp};
             if (orderBook == orderBooks->cend())
             {
-                orderBooks->insert({instrumentId, {{orderId, quote_}}});
+                orderBooks->insert({instrumentId, {{orderId, quote}}});
             }
             else
             {
-                orderBook->second.insert(std::make_pair(orderId, quote_));
+                orderBook->second.insert(std::make_pair(orderId, quote));
             }
             return;
         }

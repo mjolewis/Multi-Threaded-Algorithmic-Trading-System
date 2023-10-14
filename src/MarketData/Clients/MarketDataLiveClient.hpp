@@ -1,4 +1,7 @@
 //
+// Connects to a market data provider using a subscription style protocol. This client
+// communicates with the providers real-time data gateway using the C++ API.
+//
 // Created by Michael Lewis on 9/29/23.
 //
 
@@ -14,6 +17,7 @@
 
 #include "IMarketDataProvider.hpp"
 #include "MarketDataStreamingClient.hpp"
+#include "CommonServer/Utils/MdTypes.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -39,13 +43,15 @@ namespace BeaconTech::MarketData
         explicit MarketDataLiveClient(std::string clientName);
         ~MarketDataLiveClient() override;
 
+        void subscribe(const MdCallback& callback) override;
+
+        std::function<void ()> getBookUpdate(std::shared_ptr<MarketDataProcessor>& streamingProcessor) override;
+
         const std::string& getClientName() const;
 
         std::shared_ptr<IMarketDataProvider> getClient() const override;
 
-        std::function<void ()> getBookUpdate(MarketDataProcessor& streamingProcessor) override;
-
-        void stop();
+        void stop() override;
     };
 } // namespace BeaconTech::MarketData
 
