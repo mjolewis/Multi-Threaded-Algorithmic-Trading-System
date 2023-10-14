@@ -1,7 +1,9 @@
 //
-// Represents a resting order in the book.
+// Represents a resting order in the book. Quotes are normalized MBO messages received from
+// the market data provider that can be consumed by downstream components in a consistent way
 //
 // Created by Michael Lewis on 10/6/23.
+//
 
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_QUOTE_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_QUOTE_HPP
@@ -18,13 +20,16 @@ namespace BeaconTech::MessageObjects
 
     struct Quote
     {
+        std::uint32_t instrumentId;
         BeaconTech::MessageObjects::Side side;
         std::int64_t price{};
         std::uint32_t size{};
         UnixNanos timestamp{};
 
-        Quote(BeaconTech::MessageObjects::Side side, std::int64_t price, std::uint32_t size, UnixNanos timestamp)
-            : side{std::move(side)}, price{price}, size{size}, timestamp{timestamp}
+        Quote(std::uint32_t instrumentId, BeaconTech::MessageObjects::Side side,
+              std::int64_t price, std::uint32_t size, UnixNanos timestamp)
+                : instrumentId{std::move(instrumentId)}, side{std::move(side)},
+                  price{price}, size{size}, timestamp{timestamp}
         {
 
         }

@@ -21,18 +21,13 @@
 
 #include <databento/timeseries.hpp>
 
+#include "CommonServer/Utils/MdTypes.hpp"
 #include "Quote.hpp"
 #include "PriceLevel.hpp"
 #include "CommonServer/Utils/DateTimes.hpp"
 
 namespace BeaconTech::MessageObjects
 {
-
-    // Alias
-    using OrderBook = std::unordered_map<std::uint64_t, Quote>;
-    using OrderBooks = std::unordered_map<std::uint32_t, OrderBook>;
-    using Bbos = std::unordered_map<std::uint32_t, std::pair<PriceLevel, PriceLevel>>;
-
     class Book
     {
     private:
@@ -49,5 +44,6 @@ namespace BeaconTech::MessageObjects
     };
 
 } // namespace BeaconTech::MessageObjects
+
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_BOOK_HPP

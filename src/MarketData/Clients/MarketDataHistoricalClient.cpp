@@ -1,5 +1,11 @@
 //
-// Created by Michael Lewis on 9/28/23.
+// Connects to a market data provider using an HTTP style protocol. This client
+// communicates with the providers historical data gateway using the C++ API.
+// Historical data can be streamed or loaded data directly into the application.
+// The provider also provides an API to make batch download requests, which instructs
+// the service to prepare the data as flat files.
+//
+// Created by Michael Lewis on 9/29/23.
 //
 
 #include <functional>
@@ -16,6 +22,7 @@
 #include "MarketData/Processors/MarketDataProcessor.hpp"
 #include "CommonServer/Utils/ConfigManager.hpp"
 #include "CommonServer/Utils/LogLevel.hpp"
+#include "CommonServer/Utils/MdTypes.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -25,7 +32,7 @@ namespace BeaconTech::MarketData
           client{std::make_shared<databento::Historical>(MarketDataUtils::getHistoricalClient())},
           streamingClient{std::make_shared<MarketDataStreamingClient<MarketDataHistoricalClient>>(*this)}
     {
-        streamingClient->initialize();
+
     }
 
     // Dtor that currently terminates session gateway with MarketDataClient
@@ -42,9 +49,11 @@ namespace BeaconTech::MarketData
         return clientName;
     }
 
-    std::shared_ptr<IMarketDataProvider> MarketDataHistoricalClient::getClient() const
+    // Allows system components to subscribe to book updates via a callback
+    void MarketDataHistoricalClient::subscribe(const MdCallback& callback)
     {
-        return std::make_shared<MarketDataHistoricalClient>(*this);
+
+        streamingClient->initialize(callback);
     }
 
     // Batch download historical data files for back-testing. Note - This can be converted into a
@@ -67,12 +76,12 @@ namespace BeaconTech::MarketData
     }
 
     // Used by the MarketDataConsumer to consume bookUpdates published by the market data provider (pub-sub model)
-    std::function<void ()> MarketDataHistoricalClient::getBookUpdate(MarketDataProcessor& streamingProcessor)
+    std::function<void ()> MarketDataHistoricalClient::getBookUpdate(std::shared_ptr<MarketDataProcessor>& streamingProcessor)
     {
         return [&]() {
             try
             {
-                // todo - Reading from previously downloaded file for testing purposes.
+                // todo - Reading from previously downloaded file for demo purposes.
                 // std::vector<std::string> bookUpdates = doBatchDownload(client);
                 std::vector<std::string> bookUpdates = readFromFile();
 
@@ -83,7 +92,7 @@ namespace BeaconTech::MarketData
                     {
                         auto callback = [&] (const databento::Record& record)
                         {
-                            return streamingProcessor.processBookUpdate(record);
+                            return streamingProcessor->processBookUpdate(record);
                         };
 
                         databento::DbnFileStore dbn_store{bookUpdate};
@@ -100,6 +109,11 @@ namespace BeaconTech::MarketData
                 MarketDataUtils::log(Utils::LogLevel::SEVERE, e.what());
             }
         };
+    }
+
+    std::shared_ptr<IMarketDataProvider> MarketDataHistoricalClient::getClient() const
+    {
+        return std::make_shared<MarketDataHistoricalClient>(*this);
     }
 
     void MarketDataHistoricalClient::stop()

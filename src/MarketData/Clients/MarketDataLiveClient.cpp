@@ -1,6 +1,10 @@
 //
+// Connects to a market data provider using a subscription style protocol. This client
+// communicates with the providers real-time data gateway using the C++ API.
+//
 // Created by Michael Lewis on 9/29/23.
 //
+
 
 #include <functional>
 #include <memory>
@@ -13,6 +17,7 @@
 #include "MarketDataStreamingClient.hpp"
 #include "MarketData/MarketDataUtils.hpp"
 #include "CommonServer/Utils/LogLevel.hpp"
+#include "CommonServer/Utils/MdTypes.hpp"
 
 using namespace std::chrono_literals;
 
@@ -24,7 +29,7 @@ namespace BeaconTech::MarketData
           client{std::make_shared<databento::LiveBlocking>(MarketDataUtils::getLiveClient())},
           streamingClient{std::make_shared<MarketDataStreamingClient<MarketDataLiveClient>>(*this)}
     {
-        streamingClient->initialize();
+
     }
 
     // Dtor that currently terminates session gateway with MarketDataClient
@@ -41,13 +46,14 @@ namespace BeaconTech::MarketData
         return clientName;
     }
 
-    std::shared_ptr<IMarketDataProvider> MarketDataLiveClient::getClient() const
+    // Allows system components to subscribe to book updates via a callback
+    void MarketDataLiveClient::subscribe(const MdCallback& callback)
     {
-        return std::make_shared<MarketDataLiveClient>(*this);
+        streamingClient->initialize(callback);
     }
 
     // Used by the MarketDataConsumer to consume bookUpdates published by the market data provider (pub-sub model)
-    std::function<void ()> MarketDataLiveClient::getBookUpdate(MarketDataProcessor& streamingProcessor)
+    std::function<void ()> MarketDataLiveClient::getBookUpdate(std::shared_ptr<MarketDataProcessor>& streamingProcessor)
     {
         return [&]() {
             try
@@ -65,7 +71,7 @@ namespace BeaconTech::MarketData
                 // Use template keyword to treat Holds as a dependent type to Record
                 if (bookUpdate && bookUpdate->template Holds<databento::MboMsg>())
                 {
-                    streamingProcessor.processBookUpdate(*bookUpdate);
+                    streamingProcessor->processBookUpdate(*bookUpdate);
                 }
                 else
                 {
@@ -81,6 +87,11 @@ namespace BeaconTech::MarketData
                 MarketDataUtils::log(Utils::LogLevel::SEVERE, e.what());
             }
         };
+    }
+
+    std::shared_ptr<IMarketDataProvider> MarketDataLiveClient::getClient() const
+    {
+        return std::make_shared<MarketDataLiveClient>(*this);
     }
 
     // Stops the session with the gateway. Once stopped, the session cannot be restarted.

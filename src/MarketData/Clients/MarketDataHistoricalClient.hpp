@@ -1,6 +1,13 @@
 //
-// Created by Michael Lewis on 9/26/23.
+// Connects to a market data provider using an HTTP style protocol. This client
+// communicates with the providers historical data gateway using the C++ API.
+// Historical data can be streamed or loaded data directly into the application.
+// The provider also provides an API to make batch download requests, which instructs
+// the service to prepare the data as flat files.
 //
+// Created by Michael Lewis on 9/29/23.
+//
+
 
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATAHISTORICALCLIENT_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATAHISTORICALCLIENT_HPP
@@ -16,6 +23,7 @@
 #include "IMarketDataProvider.hpp"
 #include "MarketData/Clients/MarketDataStreamingClient.hpp"
 #include "MarketData/Processors/MarketDataProcessor.hpp"
+#include "CommonServer/Utils/MdTypes.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -36,22 +44,24 @@ namespace BeaconTech::MarketData
         std::shared_ptr<databento::Historical> client;
         std::shared_ptr<MarketDataStreamingClient<MarketDataHistoricalClient>> streamingClient;
 
+        static std::vector<std::string> doBatchDownload(const std::shared_ptr<databento::Historical>& _client);
+
+        static std::vector<std::string> readFromFile();
+
     public:
         MarketDataHistoricalClient() = default;
         explicit MarketDataHistoricalClient(std::string clientName);
         ~MarketDataHistoricalClient() override;
 
+        void subscribe(const MdCallback& callback) override;
+
+        std::function<void ()> getBookUpdate(std::shared_ptr<MarketDataProcessor>& streamingProcessor) override;
+
         const std::string& getClientName() const;
 
         std::shared_ptr<IMarketDataProvider> getClient() const override;
 
-        static std::vector<std::string> doBatchDownload(const std::shared_ptr<databento::Historical>& _client);
-
-        static std::vector<std::string> readFromFile();
-
-        std::function<void ()> getBookUpdate(MarketDataProcessor& streamingProcessor) override;
-
-        void stop();
+        void stop() override;
     };
 } // namespace BeaconTech::MarketData
 
