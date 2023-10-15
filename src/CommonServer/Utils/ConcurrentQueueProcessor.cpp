@@ -10,8 +10,6 @@
 
 #include <iostream>
 #include <exception>
-#include <mutex>
-#include <functional>
 #include <thread>
 
 #include "ConcurrentQueueProcessor.hpp"
@@ -28,7 +26,6 @@ namespace BeaconTech::Utils
     // Stops the event loop before destroying the queue processor
     ConcurrentQueueProcessor::~ConcurrentQueueProcessor()
     {
-        std::cout << "DTOR: ConcurrentQueue" << std::endl;
         stop();
     }
 

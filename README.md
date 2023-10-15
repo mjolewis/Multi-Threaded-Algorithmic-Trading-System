@@ -1,7 +1,32 @@
 # Multi-Threaded-Algorithmic-Trading-System
-A low-latency, event-based algorithmic trading system, with plug and play strategies for live trading and backtesting infrastructure
+A low-latency, event-based algorithmic trading system, with plug and play strategies. The system supports 
+both live trading and backtesting infrastructure.
 
-# Libraries
+# Contents
+1. [Introduction](#introduction)
+2. [Components](#components)
+2. [System Architecture](#system-architecture)
+3. [External Libraries](#external-libraries)
+
+# Introduction
+A high performance, multi-threaded trading system that supports any number of customizable strategies. 
+The system directly consumes multicast market-data from a low-latency market data provider and deterministically 
+sequences the update events into downstream, lock-free components. Additionally, these update events are partitioned and 
+scheduled onto distinct threads based on the instrument id as a way to optimize tick-to-order latency, which 
+is a critical metric for HFT systems. 
+
+In summary, the system handles market data feeds internally, makes a trade decision, and emits an order 
+using a binary protocol (order submission is currently under development).
+
+# Components
+1. Feed Handlers
+2. Order Book Builder
+3. Strategies
+4. OMS
+
+# System Architecture
+
+# External Libraries
 1. **<ins>Market Data<ins>**  
    1. Provider: Databento  
    2. Purpose: Provides low-latency live and historical market data without data loss. Typical normalization is 
@@ -16,5 +41,5 @@ Billed in advance each month and not prorated.
    7. Getting Started: https://docs.databento.com/getting-started?historical=python&live=python  
 2. **<ins>JSON<ins>**  
    1. Provider: nlohmann/json  
-   2. Purpose: Parse JSON formatted configuration files  
+   2. Purpose: Parse JSON formatted configuration files (configuration settings will eventually be persisted to a database and loaded into memory at startup) 
    3. Getting Started: https://github.com/nlohmann/json
