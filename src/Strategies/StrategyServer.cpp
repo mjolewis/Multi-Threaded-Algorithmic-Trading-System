@@ -42,7 +42,7 @@ namespace BeaconTech::Strategies
     {
         for (int thread = 0; thread < numEngineThreads; ++thread)
         {
-            // When numProcessorThreads > numEngineThreads, the extra threads should be used for logging
+            // When numListeners > numEngineThreads, the extra threads should be used for logging
             for (int listenerId = 0; listenerId < (numListeners / numEngineThreads); ++listenerId)
             {
                 strategyEngines.emplace_back(std::make_shared<StrategyServer<T>>(*this), thread);
