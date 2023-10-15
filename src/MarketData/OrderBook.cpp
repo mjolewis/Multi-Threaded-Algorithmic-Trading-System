@@ -13,23 +13,23 @@
 #include <unordered_map>
 #include <utility>
 
-#include <databento/timeseries.hpp>
+#include "cmake-build-debug/_deps/databento-src/include/databento/timeseries.hpp"
 #include "databento/fixed_price.hpp"
 
-#include "Book.hpp"
-#include "PriceLevel.hpp"
-#include "Side.hpp"
-#include "OrderAction.hpp"
-#include "Quote.hpp"
+#include "OrderBook.hpp"
+#include "src/MessageObjects/MarketData/PriceLevel.hpp"
+#include "src/MessageObjects/MarketData/Side.hpp"
+#include "src/MessageObjects/MarketData/OrderAction.hpp"
+#include "src/MessageObjects/MarketData/Quote.hpp"
 
 namespace BeaconTech::MessageObjects
 {
-    Book::Book() : orderBooks{std::make_shared<OrderBooks>()}, bbos{std::make_shared<Bbos>()}
+    OrderBook::OrderBook() : orderBooks{std::make_shared<OrderBooks>()}, bbos{std::make_shared<Bbos>()}
     {
 
     }
 
-    void Book::apply(const databento::MboMsg& mboMsg)
+    void OrderBook::apply(const databento::MboMsg& mboMsg)
     {
         auto action = mboMsg.action;
 
@@ -122,7 +122,7 @@ namespace BeaconTech::MessageObjects
         }
     }
 
-    const std::shared_ptr<Bbos>& Book::getBbos()
+    const std::shared_ptr<Bbos>& OrderBook::getBbos()
     {
         auto bestAsk = PriceLevel();
         auto bestBid = PriceLevel();

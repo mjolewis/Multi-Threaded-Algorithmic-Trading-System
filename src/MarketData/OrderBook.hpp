@@ -10,8 +10,8 @@
 // Created by Michael Lewis on 10/6/23.
 //
 
-#ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_BOOK_HPP
-#define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_BOOK_HPP
+#ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_ORDERBOOK_HPP
+#define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_ORDERBOOK_HPP
 
 #include <chrono>
 #include <memory>
@@ -19,24 +19,24 @@
 #include <string>
 #include <utility>
 
-#include <databento/timeseries.hpp>
+#include "cmake-build-debug/_deps/databento-src/include/databento/timeseries.hpp"
 
 #include "CommonServer/Utils/MdTypes.hpp"
-#include "Quote.hpp"
-#include "PriceLevel.hpp"
+#include "src/MessageObjects/MarketData/Quote.hpp"
+#include "src/MessageObjects/MarketData/PriceLevel.hpp"
 #include "CommonServer/Utils/DateTimes.hpp"
 
 namespace BeaconTech::MessageObjects
 {
-    class Book
+    class OrderBook
     {
     private:
         std::shared_ptr<OrderBooks> orderBooks; // instrumentId -> orderId -> orderBook
         std::shared_ptr<Bbos> bbos; // instrumentId -> priceLevels
 
     public:
-        Book();
-        virtual ~Book() = default;
+        OrderBook();
+        virtual ~OrderBook() = default;
 
         void apply(const databento::MboMsg& mboMsg);
 
@@ -46,4 +46,4 @@ namespace BeaconTech::MessageObjects
 } // namespace BeaconTech::MessageObjects
 
 
-#endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_BOOK_HPP
+#endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_ORDERBOOK_HPP

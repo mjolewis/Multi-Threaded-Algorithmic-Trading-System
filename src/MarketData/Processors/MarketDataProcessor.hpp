@@ -10,7 +10,7 @@
 
 #include <databento/timeseries.hpp>
 
-#include "MessageObjects/MarketData/OrderBook/Book.hpp"
+#include "src/MarketData/OrderBook.hpp"
 #include "CommonServer/Utils/BTConcepts.hpp"
 #include "CommonServer/Utils/MdTypes.hpp"
 
@@ -19,7 +19,7 @@ namespace BeaconTech::MarketData
     class MarketDataProcessor
     {
     private:
-        MessageObjects::Book orderBook;
+        MessageObjects::OrderBook orderBook;
         MdCallback callback;
 
     public:
@@ -33,7 +33,7 @@ namespace BeaconTech::MarketData
 
         void initialize(const MdCallback& callback);
 
-        // Book Updates
+        // OrderBook Updates
         template<typename T>
         requires Mbbo<T>
         void handle(const T& quote);

@@ -20,7 +20,7 @@
 #include "MarketDataUtils.hpp"
 #include "CommonServer/Utils/ConfigManager.hpp"
 #include "CommonServer/Utils/LogLevel.hpp"
-#include "MessageObjects/MarketData/OrderBook/PriceLevel.hpp"
+#include "src/MessageObjects/MarketData/PriceLevel.hpp"
 
 using namespace std::chrono_literals;
 

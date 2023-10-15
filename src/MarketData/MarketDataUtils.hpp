@@ -17,8 +17,8 @@
 #include <nlohmann/json.hpp>
 
 #include "CommonServer/Utils/LogLevel.hpp"
-#include "MessageObjects/MarketData/OrderBook/Book.hpp"
-#include "MessageObjects/MarketData/OrderBook/PriceLevel.hpp"
+#include "OrderBook.hpp"
+#include "src/MessageObjects/MarketData/PriceLevel.hpp"
 
 namespace BeaconTech::MarketData
 {
