@@ -10,9 +10,9 @@
 #include <memory>
 #include <functional>
 
-#include "MessageObjects/MarketData/OrderBook/Book.hpp"
-#include "MessageObjects/MarketData/OrderBook/Quote.hpp"
-#include "MessageObjects/MarketData/OrderBook/PriceLevel.hpp"
+#include "src/MarketData/OrderBook.hpp"
+#include "src/MessageObjects/MarketData/Quote.hpp"
+#include "src/MessageObjects/MarketData/PriceLevel.hpp"
 
 namespace BeaconTech
 {

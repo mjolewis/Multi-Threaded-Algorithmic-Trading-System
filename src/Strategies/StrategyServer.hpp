@@ -17,7 +17,7 @@
 #include "StrategyEngine.hpp"
 #include "MarketData/Clients/MarketDataHistoricalClient.hpp"
 #include "MarketData/Clients/MarketDataLiveClient.hpp"
-#include "MessageObjects/MarketData/OrderBook/Quote.hpp"
+#include "src/MessageObjects/MarketData/Quote.hpp"
 #include "CommonServer/Utils/MdTypes.hpp"
 #include "CommonServer/Utils/ConcurrentQueueProcessor.hpp"
 

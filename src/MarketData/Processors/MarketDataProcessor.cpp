@@ -77,7 +77,7 @@ namespace BeaconTech::MarketData
         */
     }
 
-    // Process the book update from the Consumer. Book updates are subsequently delegated to
+    // Process the book update from the Consumer. OrderBook updates are subsequently delegated to
     // a templated handler that performs compile-time validation via Concepts
     databento::KeepGoing MarketDataProcessor::processBookUpdate(const databento::Record& record)
     {
