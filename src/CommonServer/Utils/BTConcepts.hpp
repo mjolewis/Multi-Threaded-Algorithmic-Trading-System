@@ -7,7 +7,7 @@
 
 #include <concepts>
 
-namespace BeaconTech
+namespace BeaconTech::Common
 {
     // Concept to enforce compile-time validation of a mbbo consumed from the market data provider
     template<typename T>
@@ -34,6 +34,6 @@ namespace BeaconTech
         trade.side;
         trade.size;
     };
-}
+} // namespace BeaconTech::Common
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_BTCONCEPTS_HPP

@@ -16,7 +16,7 @@
 #include "StrategyEngine.hpp"
 #include "CommonServer/Utils/ConfigManager.hpp"
 #include "CommonServer/Utils/MdTypes.hpp"
-#include "CommonServer/Utils/ConcurrentQueueProcessor.hpp"
+#include "src/CommonServer/DataStructures/ConcurrentQueueProcessor.hpp"
 
 namespace BeaconTech::Strategies
 {
@@ -25,8 +25,8 @@ namespace BeaconTech::Strategies
     // should be created before subscribing to market data
     template<typename T>
     StrategyServer<T>::StrategyServer()
-        : numEngineThreads{Utils::ConfigManager::intConfigValueDefaultIfNull("numEngineThreads", 1)},
-          numListeners{Utils::ConfigManager::intConfigValueDefaultIfNull("numListeners", 1)},
+        : numEngineThreads{Common::ConfigManager::intConfigValueDefaultIfNull("numEngineThreads", 1)},
+          numListeners{Common::ConfigManager::intConfigValueDefaultIfNull("numListeners", 1)},
           marketDataClient{"StrategyServer"}
     {
         createThreads();
@@ -48,7 +48,7 @@ namespace BeaconTech::Strategies
                 strategyEngines.emplace_back(std::make_shared<StrategyServer<T>>(*this), thread);
             }
 
-            queueProcessors.emplace_back(std::make_shared<Utils::ConcurrentQueueProcessor>(thread));
+            queueProcessors.emplace_back(std::make_shared<Common::ConcurrentQueueProcessor>(thread));
         }
     }
 
@@ -63,7 +63,7 @@ namespace BeaconTech::Strategies
     // Schedules entities into a concurrent queue. The entity is scheduled onto
     // the thread in the thread pool associated with engineThreadId
     template<typename T>
-    void StrategyServer<T>::scheduleJob(int engineThreadId, const std::shared_ptr<Bbos>& bbos)
+    void StrategyServer<T>::scheduleJob(int engineThreadId, const std::shared_ptr<Common::Bbos>& bbos)
     {
         queueProcessors.at(engineThreadId)->enqueue([&]() { strategyEngines.at(engineThreadId).handle(bbos); });
     }
@@ -73,7 +73,7 @@ namespace BeaconTech::Strategies
     template<typename T>
     void StrategyServer<T>::subscribeToMarketData()
     {
-        callback = [&](const std::uint32_t& instrumentId, const std::shared_ptr<Bbos>& bbos) -> void {
+        callback = [&](const std::uint32_t& instrumentId, const std::shared_ptr<Common::Bbos>& bbos) -> void {
             try
             {
                 scheduleJob(getEngineThread(instrumentId), bbos);

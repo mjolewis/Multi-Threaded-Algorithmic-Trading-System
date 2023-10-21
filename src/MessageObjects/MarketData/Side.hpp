@@ -15,7 +15,7 @@
 namespace BeaconTech::MessageObjects
 {
 
-    class Side : public DataStructures::AbstractCodes
+    class Side : public Common::AbstractCodes
     {
     private:
         char fixCode;
@@ -36,7 +36,7 @@ namespace BeaconTech::MessageObjects
         }
 
         // todo - Implement caching logic to look up codes by id
-        static const std::map<int, AbstractCodes> CODES_BY_ID;
+        static const std::map<int, Common::AbstractCodes> CODES_BY_ID;
 
         inline char getFixCode() const { return fixCode; }
 

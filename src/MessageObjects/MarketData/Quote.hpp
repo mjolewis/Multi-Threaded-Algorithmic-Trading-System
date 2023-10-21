@@ -24,10 +24,10 @@ namespace BeaconTech::MessageObjects
         BeaconTech::MessageObjects::Side side;
         std::int64_t price{};
         std::uint32_t size{};
-        UnixNanos timestamp{};
+        Common::UnixNanos timestamp{};
 
         Quote(std::uint32_t instrumentId, BeaconTech::MessageObjects::Side side,
-              std::int64_t price, std::uint32_t size, UnixNanos timestamp)
+              std::int64_t price, std::uint32_t size, Common::UnixNanos timestamp)
                 : instrumentId{std::move(instrumentId)}, side{std::move(side)},
                   price{price}, size{size}, timestamp{timestamp}
         {

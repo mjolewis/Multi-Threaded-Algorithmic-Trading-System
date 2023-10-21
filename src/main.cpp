@@ -11,7 +11,7 @@ int main()
 {
     using Client = BeaconTech::MarketData::MarketDataHistoricalClient;
 
-    BeaconTech::Utils::ConfigManager::loadDefaultConfigs();
+    BeaconTech::Common::ConfigManager::loadDefaultConfigs();
     BeaconTech::Strategies::StrategyServer<Client> server{};
 //    BeaconTech::MarketData::MarketDataHistoricalClient marketDataClient{"main"};
 //    marketDataClient.stop();

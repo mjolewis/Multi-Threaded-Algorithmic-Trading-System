@@ -11,12 +11,12 @@
 
 #include "CommonServer/DataStructures/AbstractCodes.hpp"
 
-namespace BeaconTech::Utils
+namespace BeaconTech::Common
 {
-    class LogLevel : public DataStructures::AbstractCodes
+    class LogLevel : public Common::AbstractCodes
     {
     private:
-        LogLevel(int id, std::string desc) : AbstractCodes(id, std::move(desc)) {}
+        LogLevel(int id, std::string desc) : Common::AbstractCodes(id, std::move(desc)) {}
 
     public:
         LogLevel() = default;

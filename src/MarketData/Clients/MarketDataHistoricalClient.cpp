@@ -21,7 +21,7 @@
 #include "MarketDataStreamingClient.hpp"
 #include "MarketData/Processors/MarketDataProcessor.hpp"
 #include "CommonServer/Utils/ConfigManager.hpp"
-#include "CommonServer/Utils/LogLevel.hpp"
+#include "src/CommonServer/Logging/LogLevel.hpp"
 #include "CommonServer/Utils/MdTypes.hpp"
 
 namespace BeaconTech::MarketData
@@ -50,7 +50,7 @@ namespace BeaconTech::MarketData
     }
 
     // Allows system components to subscribe to book updates via a callback
-    void MarketDataHistoricalClient::subscribe(const MdCallback& callback)
+    void MarketDataHistoricalClient::subscribe(const Common::MdCallback& callback)
     {
 
         streamingClient->initialize(callback);
@@ -63,8 +63,8 @@ namespace BeaconTech::MarketData
     {
         // Batch download historical data files for back-testing
         return _client->BatchDownload(
-                Utils::ConfigManager::stringConfigValueDefaultIfNull("marketData", "../src/MarketData/HistoricalData"),
-                Utils::ConfigManager::stringConfigValueDefaultIfNull("fileToDownload", ""));
+                Common::ConfigManager::stringConfigValueDefaultIfNull("marketData", "../src/MarketData/HistoricalData"),
+                Common::ConfigManager::stringConfigValueDefaultIfNull("fileToDownload", ""));
     }
 
     // Read from a file previously downloaded to avoid for testing. Will eventually need to migrate over to
@@ -72,7 +72,7 @@ namespace BeaconTech::MarketData
     // when back-testing instead of running batch downloads for each back-test.
     std::vector<std::string> MarketDataHistoricalClient::readFromFile()
     {
-        return {Utils::ConfigManager::stringConfigValueDefaultIfNull("flatHistoricalDataFile", "")};
+        return {Common::ConfigManager::stringConfigValueDefaultIfNull("flatHistoricalDataFile", "")};
     }
 
     // Used by the MarketDataConsumer to consume bookUpdates published by the market data provider (pub-sub model)
@@ -102,11 +102,11 @@ namespace BeaconTech::MarketData
             }
             catch (const databento::HttpResponseError& e)
             {
-                MarketDataUtils::log(Utils::LogLevel::SEVERE, e.what());
+                MarketDataUtils::log(Common::LogLevel::SEVERE, e.what());
             }
             catch (const std::exception& e)
             {
-                MarketDataUtils::log(Utils::LogLevel::SEVERE, e.what());
+                MarketDataUtils::log(Common::LogLevel::SEVERE, e.what());
             }
         };
     }
@@ -118,6 +118,6 @@ namespace BeaconTech::MarketData
 
     void MarketDataHistoricalClient::stop()
     {
-        MarketDataUtils::log(Utils::LogLevel::INFO, "Terminated session gateway with MarketDataClient");
+        MarketDataUtils::log(Common::LogLevel::INFO, "Terminated session gateway with MarketDataClient");
     }
 } // namespace BeaconTech::MarketData

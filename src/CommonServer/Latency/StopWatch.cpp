@@ -7,7 +7,7 @@
 
 #include "StopWatch.hpp"
 
-namespace BeaconTech::Utils
+namespace BeaconTech::Common
 {
 
     void StopWatch::start()

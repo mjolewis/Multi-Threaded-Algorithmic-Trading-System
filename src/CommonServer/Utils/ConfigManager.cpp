@@ -14,11 +14,11 @@
 #include <nlohmann/json.hpp>
 
 #include "ConfigManager.hpp"
-#include "LogLevel.hpp"
+#include "src/CommonServer/Logging/LogLevel.hpp"
 
 using json = nlohmann::json;
 
-namespace BeaconTech::Utils
+namespace BeaconTech::Common
 {
     // Loads a JSON formatted config file and builds an unordered map from the key-value pair
     void ConfigManager::loadDefaultConfigs()
@@ -36,7 +36,7 @@ namespace BeaconTech::Utils
         }
         catch (const std::exception& e)
         {
-            std::cerr << Utils::LogLevel::SEVERE.getDesc()
+            std::cerr << Common::LogLevel::SEVERE.getDesc()
                       << " : Unable to load default configs - " << e.what() << std::endl;
         }
     }
@@ -63,4 +63,4 @@ namespace BeaconTech::Utils
         auto config = configs.find(configName);
         return config == configs.cend() ? defaultValue : std::stoi(config->second);
     }
-} // namespace BeaconTech::Utils
+} // namespace BeaconTech::Common

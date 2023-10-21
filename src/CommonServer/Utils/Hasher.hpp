@@ -10,7 +10,7 @@
 #include <cstddef>
 #include <functional>
 
-namespace BeaconTech::Utils
+namespace BeaconTech::Common
 {
 
     class Hasher
@@ -22,7 +22,7 @@ namespace BeaconTech::Utils
             return std::hash<T>{}(key);
         }
     };
-} // namespace BeaconTech::Utils
+} // namespace BeaconTech::Common
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_HASHER_HPP

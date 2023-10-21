@@ -15,7 +15,7 @@ namespace BeaconTech::MessageObjects
     {
     private:
         std::string symbol;
-        UnixNanos exchangeTimestamp;
+        Common::UnixNanos exchangeTimestamp;
         int tradeDate;
 
     public:
@@ -27,9 +27,9 @@ namespace BeaconTech::MessageObjects
 
         void setSymbol(const std::string& symbol);
 
-        UnixNanos getExchangeTimestamp();
+        Common::UnixNanos getExchangeTimestamp();
 
-        void setExchangeTimestamp(UnixNanos exchangeTimestamp);
+        void setExchangeTimestamp(Common::UnixNanos exchangeTimestamp);
 
         int getTradeDate();
 

@@ -32,7 +32,7 @@ namespace BeaconTech::Strategies
         StrategyEngine(std::shared_ptr<StrategyServer<T>> server, int threadId);
         virtual ~StrategyEngine() = default;
 
-        void handle(const std::shared_ptr<Bbos>& bbos);
+        void handle(const std::shared_ptr<Common::Bbos>& bbos);
     };
 
 } // namespace BeaconTech::Strategies

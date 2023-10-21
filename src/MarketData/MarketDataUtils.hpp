@@ -16,7 +16,7 @@
 #include <databento/flag_set.hpp>
 #include <nlohmann/json.hpp>
 
-#include "CommonServer/Utils/LogLevel.hpp"
+#include "src/CommonServer/Logging/LogLevel.hpp"
 #include "OrderBook.hpp"
 #include "src/MessageObjects/MarketData/PriceLevel.hpp"
 
@@ -27,7 +27,7 @@ namespace BeaconTech::MarketData
     class MarketDataUtils
     {
     public:
-        static void log(const Utils::LogLevel& logLevel, const std::string& message);
+        static void log(const Common::LogLevel& logLevel, const std::string& message);
 
         static databento::Historical getHistoricalClient();
 

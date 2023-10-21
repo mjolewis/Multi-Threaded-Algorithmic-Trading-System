@@ -53,7 +53,7 @@ namespace BeaconTech::MarketData
         explicit MarketDataHistoricalClient(std::string clientName);
         ~MarketDataHistoricalClient() override;
 
-        void subscribe(const MdCallback& callback) override;
+        void subscribe(const Common::MdCallback& callback) override;
 
         std::function<void ()> getBookUpdate(std::shared_ptr<MarketDataProcessor>& streamingProcessor) override;
 

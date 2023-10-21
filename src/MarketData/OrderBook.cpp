@@ -24,7 +24,7 @@
 
 namespace BeaconTech::MessageObjects
 {
-    OrderBook::OrderBook() : orderBooks{std::make_shared<OrderBooks>()}, bbos{std::make_shared<Bbos>()}
+    OrderBook::OrderBook() : orderBooks{std::make_shared<Common::OrderBooks>()}, bbos{std::make_shared<Common::Bbos>()}
     {
 
     }
@@ -122,7 +122,7 @@ namespace BeaconTech::MessageObjects
         }
     }
 
-    const std::shared_ptr<Bbos>& OrderBook::getBbos()
+    const std::shared_ptr<Common::Bbos>& OrderBook::getBbos()
     {
         auto bestAsk = PriceLevel();
         auto bestBid = PriceLevel();

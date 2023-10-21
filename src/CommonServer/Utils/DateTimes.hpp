@@ -9,7 +9,7 @@
 
 #include <chrono>
 
-namespace BeaconTech
+namespace BeaconTech::Common
 {
     // Nanoseconds since the UNIX epoch.
     using UnixNanos = std::chrono::time_point<std::chrono::system_clock, std::chrono::duration<uint64_t, std::nano>>;
@@ -17,6 +17,6 @@ namespace BeaconTech
     // Measure distance between points in time
     using TimePoint = std::chrono::steady_clock::time_point;
 
-} // namespace BeaconTech
+} // namespace BeaconTech::Common
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_DATETIMES_HPP

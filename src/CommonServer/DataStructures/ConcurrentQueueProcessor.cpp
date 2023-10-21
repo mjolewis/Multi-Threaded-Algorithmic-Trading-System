@@ -14,11 +14,10 @@
 
 #include "ConcurrentQueueProcessor.hpp"
 
-namespace BeaconTech::Utils
+namespace BeaconTech::Common
 {
     // Initializes a thread pool and starts the event loop
-    ConcurrentQueueProcessor::ConcurrentQueueProcessor(const unsigned int &numThreads) noexcept
-        : numThreads{numThreads}, shouldTerminate{false}
+    ConcurrentQueueProcessor::ConcurrentQueueProcessor(const unsigned int &threadId) noexcept : shouldTerminate{false}
     {
         start();
     }
@@ -32,10 +31,7 @@ namespace BeaconTech::Utils
     // Creates the queue and starts the event loop
     void ConcurrentQueueProcessor::start()
     {
-        for (int i = 0; i < numThreads; ++i)
-        {
-            threadPool.emplace_back(&ConcurrentQueueProcessor::threadLoop, this);
-        }
+        threadPool.emplace_back(&ConcurrentQueueProcessor::threadLoop, this);
     }
 
     // Pushes work into the queue that will be processed by engine threads

@@ -19,7 +19,7 @@
 #include "MarketData/Clients/MarketDataLiveClient.hpp"
 #include "src/MessageObjects/MarketData/Quote.hpp"
 #include "CommonServer/Utils/MdTypes.hpp"
-#include "CommonServer/Utils/ConcurrentQueueProcessor.hpp"
+#include "src/CommonServer/DataStructures/ConcurrentQueueProcessor.hpp"
 
 namespace BeaconTech::Strategies
 {
@@ -34,9 +34,9 @@ namespace BeaconTech::Strategies
         int numEngineThreads;
         int numListeners;
         std::vector<StrategyEngine<T>> strategyEngines;
-        std::vector<std::shared_ptr<Utils::ConcurrentQueueProcessor>> queueProcessors;
+        std::vector<std::shared_ptr<Common::ConcurrentQueueProcessor>> queueProcessors;
         T marketDataClient;
-        MdCallback callback;
+        Common::MdCallback callback;
 
     public:
         StrategyServer();
@@ -48,7 +48,7 @@ namespace BeaconTech::Strategies
 
         void subscribeToMarketData();
 
-        void scheduleJob(int engineThreadId, const std::shared_ptr<Bbos>& bbos);
+        void scheduleJob(int engineThreadId, const std::shared_ptr<Common::Bbos>& bbos);
     };
 
 } // namespace BeaconTech::Strategies
