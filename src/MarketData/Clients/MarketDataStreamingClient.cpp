@@ -64,7 +64,7 @@ namespace BeaconTech::MarketData
     // Initialize the processor and consumer. The processor must be initialized before the consumer to avoid
     // missing any book updates that our app consumes from the publisher before the processor is able to handle it
     template<typename T>
-    void MarketDataStreamingClient<T>::initialize(const MdCallback& callback)
+    void MarketDataStreamingClient<T>::initialize(const Common::MdCallback& callback)
     {
         streamingProcessor->initialize(callback);
         streamingConsumer.start();

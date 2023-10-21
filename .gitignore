@@ -10,4 +10,4 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
-src/CommonServer/Utils/Resources/config.json
+src/CommonServer/Resources/config.json

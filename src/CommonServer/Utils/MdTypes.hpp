@@ -14,7 +14,7 @@
 #include "src/MessageObjects/MarketData/Quote.hpp"
 #include "src/MessageObjects/MarketData/PriceLevel.hpp"
 
-namespace BeaconTech
+namespace BeaconTech::Common
 {
     using OrderBook = std::unordered_map<std::uint64_t, MessageObjects::Quote>;
 
@@ -22,9 +22,8 @@ namespace BeaconTech
 
     using Bbos = std::unordered_map<std::uint32_t, std::pair<MessageObjects::PriceLevel, MessageObjects::PriceLevel>>;
 
-//    using MdCallback = std::function<void (const std::uint32_t& instrumentId, const databento::MboMsg& msg)>;
     using MdCallback = std::function<void (const std::uint32_t& instrumentId, const std::shared_ptr<Bbos>& bbos)>;
 
-} // namespace BeaconTech
+} // namespace BeaconTech::Common
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MDTYPES_HPP

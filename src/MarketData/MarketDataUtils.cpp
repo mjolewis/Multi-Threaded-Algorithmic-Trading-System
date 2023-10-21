@@ -19,7 +19,7 @@
 
 #include "MarketDataUtils.hpp"
 #include "CommonServer/Utils/ConfigManager.hpp"
-#include "CommonServer/Utils/LogLevel.hpp"
+#include "src/CommonServer/Logging/LogLevel.hpp"
 #include "src/MessageObjects/MarketData/PriceLevel.hpp"
 
 using namespace std::chrono_literals;
@@ -27,7 +27,7 @@ using namespace std::chrono_literals;
 namespace BeaconTech::MarketData
 {
     // Logging utility. Will eventually need to convert to a low-latency custom-built or 3rd party logging library
-    void MarketDataUtils::log(const Utils::LogLevel& logLevel, const std::string& message)
+    void MarketDataUtils::log(const Common::LogLevel& logLevel, const std::string& message)
     {
         std::cerr << logLevel.getDesc() << " : " << message << std::endl;
     }
@@ -42,26 +42,26 @@ namespace BeaconTech::MarketData
             {
                 ++attempts;
                 return databento::HistoricalBuilder{}
-                        .SetKey(Utils::ConfigManager::stringConfigValueDefaultIfNull("dbnApiKey", ""))
+                        .SetKey(Common::ConfigManager::stringConfigValueDefaultIfNull("dbnApiKey", ""))
                         .Build();
             }
             catch (const databento::HttpResponseError& e)
             {
                 std::string msg = "Unable to connect to market data client - Attempt=" + std::to_string(attempts);
-                log(Utils::LogLevel::WARN, msg + " : " + e.what());
+                log(Common::LogLevel::WARN, msg + " : " + e.what());
                 if (attempts == 10)
                 {
-                    log(Utils::LogLevel::SEVERE, "Exceeded max attempts connecting to market data provider");
+                    log(Common::LogLevel::SEVERE, "Exceeded max attempts connecting to market data provider");
                     throw e;
                 }
             }
             catch (const std::exception& e)
             {
                 std::string msg = "Unable to connect to market data client - Attempt=" + std::to_string(attempts);
-                log(Utils::LogLevel::WARN, msg + " : " + e.what());
+                log(Common::LogLevel::WARN, msg + " : " + e.what());
                 if (attempts == 10)
                 {
-                    log(Utils::LogLevel::SEVERE, "Exceeded max attempts connecting to market data provider");
+                    log(Common::LogLevel::SEVERE, "Exceeded max attempts connecting to market data provider");
                     throw e;
                 }
             }
@@ -74,7 +74,7 @@ namespace BeaconTech::MarketData
             catch (const std::exception& e)
             {
                 std::string msg = "Unable to connect to market data client - Attempt=" + std::to_string(attempts);
-                log(Utils::LogLevel::WARN, msg + " : " + e.what());
+                log(Common::LogLevel::WARN, msg + " : " + e.what());
             }
         }
     }
@@ -98,20 +98,20 @@ namespace BeaconTech::MarketData
             catch (const databento::HttpResponseError& e)
             {
                 std::string msg = "Unable to connect to market data client - Attempt=" + std::to_string(attempts);
-                log(Utils::LogLevel::WARN, msg + " : " + e.what());
+                log(Common::LogLevel::WARN, msg + " : " + e.what());
                 if (attempts == 10)
                 {
-                    log(Utils::LogLevel::SEVERE, "Exceeded max attempts connecting to market data provider");
+                    log(Common::LogLevel::SEVERE, "Exceeded max attempts connecting to market data provider");
                     throw e;
                 }
             }
             catch (const std::exception& e)
             {
                 std::string msg = "Unable to connect to market data client - Attempt=" + std::to_string(attempts);
-                log(Utils::LogLevel::WARN, msg + " : " + e.what());
+                log(Common::LogLevel::WARN, msg + " : " + e.what());
                 if (attempts == 10)
                 {
-                    log(Utils::LogLevel::SEVERE, "Exceeded max attempts connecting to market data provider");
+                    log(Common::LogLevel::SEVERE, "Exceeded max attempts connecting to market data provider");
                     throw e;
                 }
             }
@@ -124,7 +124,7 @@ namespace BeaconTech::MarketData
             catch (const std::exception& e)
             {
                 std::string msg = "Unable to connect to market data client - Attempt=" + std::to_string(attempts);
-                log(Utils::LogLevel::WARN, msg + " : " + e.what());
+                log(Common::LogLevel::WARN, msg + " : " + e.what());
             }
         }
     }
@@ -132,13 +132,13 @@ namespace BeaconTech::MarketData
     // Helper function used to determine which mode to run in
     std::string MarketDataUtils::getEnvironmentType()
     {
-        return Utils::ConfigManager::stringConfigValueDefaultIfNull("environmentType", "Dev");
+        return Common::ConfigManager::stringConfigValueDefaultIfNull("environmentType", "Dev");
     }
 
     // Used to partition the system into multiple symbol ranged engines (aka threads)
     int MarketDataUtils::getNumThreads()
     {
-        return Utils::ConfigManager::intConfigValueDefaultIfNull("numThreads", 1);
+        return Common::ConfigManager::intConfigValueDefaultIfNull("numThreads", 1);
     }
 
     // True if the flag is set. False otherwise
@@ -150,7 +150,7 @@ namespace BeaconTech::MarketData
     // Prints best bid and ask for each book after processing the last message in the packet
     void MarketDataUtils::printBbos(const databento::MboMsg& quote, const std::shared_ptr<Bbos>& bbos)
     {
-        if (!Utils::ConfigManager::boolConfigValueDefaultIfNull("printBbo", false)) return;
+        if (!Common::ConfigManager::boolConfigValueDefaultIfNull("printBbo", false)) return;
         if (!MarketDataUtils::isFlagSet(quote.flags, databento::FlagSet::kLast)) return;
 
         MessageObjects::PriceLevel bestBid{};

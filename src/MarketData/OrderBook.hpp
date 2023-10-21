@@ -31,8 +31,8 @@ namespace BeaconTech::MessageObjects
     class OrderBook
     {
     private:
-        std::shared_ptr<OrderBooks> orderBooks; // instrumentId -> orderId -> orderBook
-        std::shared_ptr<Bbos> bbos; // instrumentId -> priceLevels
+        std::shared_ptr<Common::OrderBooks> orderBooks; // instrumentId -> orderId -> orderBook
+        std::shared_ptr<Common::Bbos> bbos; // instrumentId -> priceLevels
 
     public:
         OrderBook();
@@ -40,7 +40,7 @@ namespace BeaconTech::MessageObjects
 
         void apply(const databento::MboMsg& mboMsg);
 
-        const std::shared_ptr<Bbos>& getBbos();
+        const std::shared_ptr<Common::Bbos>& getBbos();
     };
 
 } // namespace BeaconTech::MessageObjects

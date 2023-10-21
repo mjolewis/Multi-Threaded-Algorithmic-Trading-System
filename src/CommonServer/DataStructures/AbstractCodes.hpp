@@ -11,7 +11,7 @@
 #include "string"
 #include "map"
 
-namespace BeaconTech::DataStructures
+namespace BeaconTech::Common
 {
     class AbstractCodes
     {

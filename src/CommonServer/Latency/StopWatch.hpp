@@ -12,7 +12,7 @@
 
 #include "src/CommonServer/Utils/DateTimes.hpp"
 
-namespace BeaconTech::Utils
+namespace BeaconTech::Common
 {
     class StopWatch
     {

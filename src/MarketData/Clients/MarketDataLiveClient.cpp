@@ -16,7 +16,7 @@
 #include "MarketDataLiveClient.hpp"
 #include "MarketDataStreamingClient.hpp"
 #include "MarketData/MarketDataUtils.hpp"
-#include "CommonServer/Utils/LogLevel.hpp"
+#include "src/CommonServer/Logging/LogLevel.hpp"
 #include "CommonServer/Utils/MdTypes.hpp"
 
 using namespace std::chrono_literals;
@@ -47,7 +47,7 @@ namespace BeaconTech::MarketData
     }
 
     // Allows system components to subscribe to book updates via a callback
-    void MarketDataLiveClient::subscribe(const MdCallback& callback)
+    void MarketDataLiveClient::subscribe(const Common::MdCallback& callback)
     {
         streamingClient->initialize(callback);
     }
@@ -75,16 +75,16 @@ namespace BeaconTech::MarketData
                 }
                 else
                 {
-                    MarketDataUtils::log(Utils::LogLevel::WARN, "Timed out waiting for record");
+                    MarketDataUtils::log(Common::LogLevel::WARN, "Timed out waiting for record");
                 }
             }
             catch (const databento::HttpResponseError& e)
             {
-                MarketDataUtils::log(Utils::LogLevel::SEVERE, e.what());
+                MarketDataUtils::log(Common::LogLevel::SEVERE, e.what());
             }
             catch (const std::exception& e)
             {
-                MarketDataUtils::log(Utils::LogLevel::SEVERE, e.what());
+                MarketDataUtils::log(Common::LogLevel::SEVERE, e.what());
             }
         };
     }
@@ -98,6 +98,6 @@ namespace BeaconTech::MarketData
     void MarketDataLiveClient::stop()
     {
         client->Stop();
-        MarketDataUtils::log(Utils::LogLevel::INFO, "Terminated session gateway with MarketDataClient");
+        MarketDataUtils::log(Common::LogLevel::INFO, "Terminated session gateway with MarketDataClient");
     }
 } // namespace BeaconTech::MarketData

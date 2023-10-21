@@ -17,13 +17,12 @@
 #include <queue>
 #include <vector>
 
-namespace BeaconTech::Utils
+namespace BeaconTech::Common
 {
 
     class ConcurrentQueueProcessor
     {
     private:
-        unsigned int numThreads;
         bool shouldTerminate;
         std::mutex mutex;
         std::condition_variable conditionVariable;
@@ -33,7 +32,7 @@ namespace BeaconTech::Utils
         void threadLoop();
 
     public:
-        explicit ConcurrentQueueProcessor(const unsigned int& numThreads) noexcept;
+        explicit ConcurrentQueueProcessor(const unsigned int& threadId) noexcept;
         virtual ~ConcurrentQueueProcessor();
 
         void start();

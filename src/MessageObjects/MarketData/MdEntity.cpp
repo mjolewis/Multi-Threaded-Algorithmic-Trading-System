@@ -23,12 +23,12 @@ namespace BeaconTech::MessageObjects
         this->symbol = symbol;
     }
 
-    UnixNanos MdEntity::getExchangeTimestamp()
+    Common::UnixNanos MdEntity::getExchangeTimestamp()
     {
         return exchangeTimestamp;
     }
 
-    void MdEntity::setExchangeTimestamp(UnixNanos exchangeTimestamp)
+    void MdEntity::setExchangeTimestamp(Common::UnixNanos exchangeTimestamp)
     {
         this->exchangeTimestamp = exchangeTimestamp;
     }

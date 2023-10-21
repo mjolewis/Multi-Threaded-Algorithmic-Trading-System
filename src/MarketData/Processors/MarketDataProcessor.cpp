@@ -41,7 +41,7 @@ namespace BeaconTech::MarketData
         return *this;
     }
 
-    void MarketDataProcessor::initialize(const MdCallback& _callback)
+    void MarketDataProcessor::initialize(const Common::MdCallback& _callback)
     {
         this->callback = _callback;
     }
@@ -50,7 +50,7 @@ namespace BeaconTech::MarketData
     // The quotes are MBOs (Market by Order); however, this is configurable.
     // Performs compile-time validation via a Concept
     template<typename T>
-    requires Mbbo<T>
+    requires Common::Mbbo<T>
     void MarketDataProcessor::handle(const T& mbbo)
     {
         orderBook.apply(mbbo);
@@ -63,7 +63,7 @@ namespace BeaconTech::MarketData
     // trading. If so, trades will be required for algos such as VWAP.
     // Performs compile-time validation via a Concept
     template<typename T>
-    requires Trade<T>
+    requires Common::Trade<T>
     void MarketDataProcessor::handle(const T& trade)
     {
         /*

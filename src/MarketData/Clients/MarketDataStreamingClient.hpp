@@ -38,7 +38,7 @@ namespace BeaconTech::MarketData
 
         void createStreamingProcessor();
 
-        void initialize(const MdCallback& callback);
+        void initialize(const Common::MdCallback& callback);
     };
 } // namespace BeaconTech::MarketData
 

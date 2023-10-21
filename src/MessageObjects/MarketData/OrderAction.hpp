@@ -15,12 +15,12 @@
 namespace BeaconTech::MessageObjects
 {
 
-    class OrderAction : public DataStructures::AbstractCodes
+    class OrderAction : public Common::AbstractCodes
     {
     private:
         char fixCode;
 
-        OrderAction(int id, std::string desc, char fixCode) : AbstractCodes{id, std::move(desc)}, fixCode{fixCode} {}
+        OrderAction(int id, std::string desc, char fixCode) : Common::AbstractCodes{id, std::move(desc)}, fixCode{fixCode} {}
 
     public:
         OrderAction() : fixCode{} {};
@@ -34,7 +34,7 @@ namespace BeaconTech::MessageObjects
         static const OrderAction FILL;
 
         // todo - Implement caching logic to look up codes by id
-        static const std::map<int, AbstractCodes> CODES_BY_ID;
+        static const std::map<int, Common::AbstractCodes> CODES_BY_ID;
 
         inline char getFixCode() const { return fixCode; }
     };

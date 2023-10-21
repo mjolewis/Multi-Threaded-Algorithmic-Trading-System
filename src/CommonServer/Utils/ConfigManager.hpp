@@ -11,12 +11,12 @@
 #include <string>
 #include <unordered_map>
 
-namespace BeaconTech::Utils
+namespace BeaconTech::Common
 {
     class ConfigManager
     {
     private:
-        inline static const std::string filePath = "/Users/mlewis/CLionProjects/Multi-Threaded-Algorithmic-Trading-System/src/CommonServer/Utils/Resources/config.json";
+        inline static const std::string filePath = "/Users/mlewis/CLionProjects/Multi-Threaded-Algorithmic-Trading-System/src/CommonServer/Resources/config.json";
         inline static std::unordered_map<std::string, std::string> configs{};
 
     public:
@@ -28,7 +28,7 @@ namespace BeaconTech::Utils
 
         static int intConfigValueDefaultIfNull(const std::string& configName, const int& defaultValue);
     };
-} // namespace BeaconTech::Utils
+} // namespace BeaconTech::Common
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_CONFIGMANAGER_HPP

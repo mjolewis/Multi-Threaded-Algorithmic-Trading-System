@@ -20,7 +20,7 @@ namespace BeaconTech::MarketData
     {
     private:
         MessageObjects::OrderBook orderBook;
-        MdCallback callback;
+        Common::MdCallback callback;
 
     public:
         MarketDataProcessor();
@@ -31,15 +31,15 @@ namespace BeaconTech::MarketData
 
         MarketDataProcessor& operator=(MarketDataProcessor&& other) noexcept;
 
-        void initialize(const MdCallback& callback);
+        void initialize(const Common::MdCallback& callback);
 
         // OrderBook Updates
         template<typename T>
-        requires Mbbo<T>
+        requires Common::Mbbo<T>
         void handle(const T& quote);
 
         template<typename T>
-        requires Trade<T>
+        requires Common::Trade<T>
         void handle(const T& trade);
 
         databento::KeepGoing processBookUpdate(const databento::Record& record);

@@ -24,7 +24,7 @@ namespace BeaconTech::Strategies
     }
 
     template<typename T>
-    void StrategyEngine<T>::handle(const std::shared_ptr<Bbos>& bbos)
+    void StrategyEngine<T>::handle(const std::shared_ptr<Common::Bbos>& bbos)
     {
         std::cout << "Received bbo in strategy engine - ID_" << std::this_thread::get_id()
         << " - ListenerId_" << threadId << std::endl;
