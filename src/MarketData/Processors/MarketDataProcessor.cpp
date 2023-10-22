@@ -55,7 +55,6 @@ namespace BeaconTech::MarketData
     {
         orderBook.apply(mbbo);
         callback(mbbo.hd.instrument_id, orderBook.getBbos());
-        MarketDataUtils::printBbos(mbbo, orderBook.getBbos());
     }
 
     // The system is currently designed for high-frequency trading. As a result, it only cares about quotes.
