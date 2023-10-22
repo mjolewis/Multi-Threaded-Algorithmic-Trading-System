@@ -7,6 +7,7 @@ both live trading and backtesting infrastructure.
 2. [Components](#components)
 2. [System Architecture](#system-architecture)
 3. [External Libraries](#external-libraries)
+4. [Environment Specifications](#environment-specifications)
 
 # Introduction
 A high performance, multi-threaded trading system that supports any number of customizable strategies. 
@@ -43,3 +44,9 @@ Billed in advance each month and not prorated.
    1. Provider: nlohmann/json  
    2. Purpose: Parse JSON formatted configuration files (configuration settings will eventually be persisted to a database and loaded into memory at startup) 
    3. Getting Started: https://github.com/nlohmann/json
+
+# Environment Specifications
+1. C++: Language version 20 (ISO/IEC 14882:2020)
+2. Clang: Apple clang version 14.0.3 (clang-1403.0.22.14.1)
+2. CMake: cmake version 3.26.4
+3. Ninja: 1.11.1
