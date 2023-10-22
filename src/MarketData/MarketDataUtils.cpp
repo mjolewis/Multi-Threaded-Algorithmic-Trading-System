@@ -148,7 +148,7 @@ namespace BeaconTech::MarketData
     }
 
     // Prints best bid and ask for each book after processing the last message in the packet
-    void MarketDataUtils::printBbos(const databento::MboMsg& quote, const std::shared_ptr<Bbos>& bbos)
+    void MarketDataUtils::printBbos(const std::shared_ptr<Bbos>& bbos)
     {
         if (!Common::ConfigManager::boolConfigValueDefaultIfNull("printBbo", false)) return;
         if (!MarketDataUtils::isFlagSet(quote.flags, databento::FlagSet::kLast)) return;

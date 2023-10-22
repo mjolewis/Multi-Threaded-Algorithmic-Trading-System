@@ -17,7 +17,7 @@
 namespace BeaconTech::Common
 {
     // Initializes a thread pool and starts the event loop
-    ConcurrentQueueProcessor::ConcurrentQueueProcessor(const unsigned int &threadId) noexcept : shouldTerminate{false}
+    ConcurrentQueueProcessor::ConcurrentQueueProcessor(const unsigned int &threadId) : shouldTerminate{false}
     {
         start();
     }

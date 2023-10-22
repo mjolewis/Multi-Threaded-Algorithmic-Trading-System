@@ -13,21 +13,18 @@
 #include <memory>
 
 #include "StrategyServer.hpp"
-#include "StrategyEngine.hpp"
 #include "CommonServer/Utils/ConfigManager.hpp"
-#include "CommonServer/Utils/MdTypes.hpp"
-#include "src/CommonServer/DataStructures/ConcurrentQueueProcessor.hpp"
+#include "StrategyCommon/Handlers/CLFQProcessor.hpp"
 
 namespace BeaconTech::Strategies
 {
 
-    // Order of instantiation matters. The Client, Server, and Engines
-    // should be created before subscribing to market data
+    // Overloaded ctor
     template<typename T>
     StrategyServer<T>::StrategyServer()
         : numEngineThreads{Common::ConfigManager::intConfigValueDefaultIfNull("numEngineThreads", 1)},
           numListeners{Common::ConfigManager::intConfigValueDefaultIfNull("numListeners", 1)},
-          marketDataClient{"StrategyServer"}
+          marketDataClient{"StrategyServer"}, queueProcessors{}
     {
         createThreads();
         subscribeToMarketData();
@@ -40,7 +37,7 @@ namespace BeaconTech::Strategies
     template<typename T>
     void StrategyServer<T>::createThreads()
     {
-        for (int thread = 0; thread < numEngineThreads; ++thread)
+        for (unsigned int thread = 0; thread < numEngineThreads; ++thread)
         {
             // When numListeners > numEngineThreads, the extra threads should be used for logging
             for (int listenerId = 0; listenerId < (numListeners / numEngineThreads); ++listenerId)
@@ -48,7 +45,7 @@ namespace BeaconTech::Strategies
                 strategyEngines.emplace_back(std::make_shared<StrategyServer<T>>(*this), thread);
             }
 
-            queueProcessors.emplace_back(std::make_shared<Common::ConcurrentQueueProcessor>(thread));
+            queueProcessors.emplace_back(std::make_shared<CLFQProcessor>(thread));
         }
     }
 

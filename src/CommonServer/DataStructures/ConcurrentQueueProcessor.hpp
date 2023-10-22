@@ -20,7 +20,7 @@
 namespace BeaconTech::Common
 {
 
-    class ConcurrentQueueProcessor
+    class ConcurrentQueueProcessor final
     {
     private:
         bool shouldTerminate;
@@ -32,7 +32,7 @@ namespace BeaconTech::Common
         void threadLoop();
 
     public:
-        explicit ConcurrentQueueProcessor(const unsigned int& threadId) noexcept;
+        explicit ConcurrentQueueProcessor(const unsigned int& threadId);
         virtual ~ConcurrentQueueProcessor();
 
         void start();
