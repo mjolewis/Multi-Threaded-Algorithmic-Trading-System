@@ -10,6 +10,7 @@
 #include "MarketDataProcessor.hpp"
 #include "MarketData/MarketDataUtils.hpp"
 #include "CommonServer/Utils/BTConcepts.hpp"
+#include "MessageObjects/MarketData/Quote.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -53,27 +54,23 @@ namespace BeaconTech::MarketData
     requires Common::Mbbo<T>
     void MarketDataProcessor::handle(const T& mbbo)
     {
-        orderBook.apply(mbbo);
-        callback(mbbo.hd.instrument_id, orderBook.getBbos());
+        const MessageObjects::Quote* quote = orderBook.apply(mbbo);
+        if (quote != nullptr)
+        {
+            callback(mbbo.hd.instrument_id, *quote, orderBook.getBbos());
+            MarketDataUtils::printBbos(mbbo, orderBook.getBbos());
+        }
     }
 
-    // The system is currently designed for high-frequency trading. As a result, it only cares about quotes.
-    // A decision should be made regarding whether we want to participate in lower frequency volume based
-    // trading. If so, trades will be required for algos such as VWAP.
+    // The system is currently focused on market making strategies. As a result, the system is only processing
+    // mbo messages. However, the system is flexible enough to also use liquidity taking strategies. As a result,
+    // we have a noop interface to consumes trades, which are important for liquidity taking strategies.
     // Performs compile-time validation via a Concept
     template<typename T>
     requires Common::Trade<T>
     void MarketDataProcessor::handle(const T& trade)
     {
-        /*
-        auto instrumentId = trade.hd.instrument_id;
-        auto timestamp = trade.hd.ts_event;
-        auto action = trade.action;
-        auto price = trade.price;
-        auto depth = trade.depth;
-        auto side = trade.side;
-        auto size = trade.size;
-        */
+        // noop
     }
 
     // Process the book update from the Consumer. OrderBook updates are subsequently delegated to

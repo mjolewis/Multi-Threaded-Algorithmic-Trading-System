@@ -39,7 +39,7 @@ namespace BeaconTech::MarketData
 
         static bool isFlagSet(const databento::FlagSet& flag, std::uint8_t bit);
 
-        static void printBbos(const databento::MboMsg& quote, const std::shared_ptr<Bbos>& bbos);
+        static void printBbos(const databento::MboMsg& mboMsg, const std::shared_ptr<Bbos>& bbos);
     };
 } // namespace BeaconTech::MarketData
 

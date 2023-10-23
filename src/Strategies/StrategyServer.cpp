@@ -15,6 +15,7 @@
 #include "StrategyServer.hpp"
 #include "CommonServer/Utils/ConfigManager.hpp"
 #include "StrategyCommon/Handlers/CLFQProcessor.hpp"
+#include "MessageObjects/MarketData/Quote.hpp"
 
 namespace BeaconTech::Strategies
 {
@@ -40,40 +41,44 @@ namespace BeaconTech::Strategies
         for (unsigned int thread = 0; thread < numEngineThreads; ++thread)
         {
             // When numListeners > numEngineThreads, the extra threads should be used for logging
-            for (int listenerId = 0; listenerId < (numListeners / numEngineThreads); ++listenerId)
+            for (unsigned int listenerId = 0; listenerId < (numListeners / numEngineThreads); ++listenerId)
             {
-                strategyEngines.emplace_back(std::make_shared<StrategyServer<T>>(*this), thread);
+                strategyEngines.emplace_back(std::make_shared<StrategyEngine<T>>(*this, thread));
             }
 
             queueProcessors.emplace_back(std::make_shared<CLFQProcessor>(thread));
         }
     }
 
-    // Finds the positive modulo of the instrumentId and the number of engine threads
-    // and returns the engine at the associated index
+    // Calculates the positive modulo from the instrumentId and numEngineThreads.
+    // Returns the engine at the associated index
     template<typename T>
     int StrategyServer<T>::getEngineThread(const std::uint32_t &instrumentId) const
     {
         return (instrumentId % numEngineThreads + numEngineThreads) % numEngineThreads;
     }
 
-    // Schedules entities into a concurrent queue. The entity is scheduled onto
-    // the thread in the thread pool associated with engineThreadId
+    // Schedules entities for processing by enqueueing them into a concurrent queue
     template<typename T>
-    void StrategyServer<T>::scheduleJob(int engineThreadId, const std::shared_ptr<Common::Bbos>& bbos)
+    void StrategyServer<T>::scheduleJob(int engineThreadId,
+                                        const MessageObjects::Quote& quote,
+                                        const std::shared_ptr<Common::Bbos>& bbos)
     {
-        queueProcessors.at(engineThreadId)->enqueue([&]() { strategyEngines.at(engineThreadId).handle(bbos); });
+        queueProcessors.at(engineThreadId)->enqueue([&]() {
+            strategyEngines.at(engineThreadId)->onOrderBookUpdate(quote, bbos);
+        });
     }
 
-    // Subscribes this Strategy to market data by creating a callback that the
-    // market data streaming processor uses to schedule entities into the strategy engine
+    // Creates a callback for the streaming processor to schedule book updates onto the engine
     template<typename T>
     void StrategyServer<T>::subscribeToMarketData()
     {
-        callback = [&](const std::uint32_t& instrumentId, const std::shared_ptr<Common::Bbos>& bbos) -> void {
+        callback = [&](const std::uint32_t& instrumentId,
+                       const MessageObjects::Quote& quote,
+                       const std::shared_ptr<Common::Bbos>& bbos) -> void {
             try
             {
-                scheduleJob(getEngineThread(instrumentId), bbos);
+                scheduleJob(getEngineThread(instrumentId), quote, bbos);
             }
             catch (const std::exception& e)
             {

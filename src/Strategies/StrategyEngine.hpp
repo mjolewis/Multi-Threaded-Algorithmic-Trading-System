@@ -13,7 +13,9 @@
 #include "MarketData/Clients/MarketDataHistoricalClient.hpp"
 #include "MarketData/Clients/MarketDataLiveClient.hpp"
 #include "CommonServer/Utils/BTConcepts.hpp"
-#include "src/MarketData/OrderBook.hpp"
+#include "MarketData/OrderBook.hpp"
+#include "MessageObjects/MarketData/Quote.hpp"
+#include "Strategies/MarketMaker.hpp"
 
 namespace BeaconTech::Strategies
 {
@@ -22,17 +24,36 @@ namespace BeaconTech::Strategies
     class StrategyServer;
 
     template<typename T>
+    class MarketMaker;
+
+    template<typename T>
     class StrategyEngine
     {
     private:
-        std::shared_ptr<StrategyServer<T>> server;
-        int threadId;
+        const StrategyServer<T>& server;
+        unsigned int threadId;
+        std::shared_ptr<MarketMaker<T>> marketMakerAlgo;
 
     public:
-        StrategyEngine(std::shared_ptr<StrategyServer<T>> server, int threadId);
+        StrategyEngine(const StrategyServer<T>& server, const unsigned int& threadId);
+
         virtual ~StrategyEngine() = default;
 
-        void handle(const std::shared_ptr<Common::Bbos>& bbos);
+        void onOrderBookUpdate(const MessageObjects::Quote& quote, const std::shared_ptr<Common::Bbos>& bbos);
+
+        // Callbacks that dispatch order book updates and downstream responses to the trading algorithm
+        std::function<void (const MessageObjects::Quote &quote, const std::shared_ptr<Common::Bbos> &bbos)> onOrderBookUpdateAlgo;
+
+        // Deleted default ctors and assignment operators
+        StrategyEngine() = delete;
+
+        StrategyEngine(const StrategyEngine<T>& other) = delete;
+
+        StrategyEngine(StrategyEngine<T>&& other) = delete;
+
+        StrategyEngine<T> operator=(const StrategyEngine<T>& other) = delete;
+
+        StrategyEngine<T> operator=(StrategyEngine<T>&& other) = delete;
     };
 
 } // namespace BeaconTech::Strategies

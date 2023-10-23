@@ -24,6 +24,7 @@ namespace BeaconTech::MarketData
 
     public:
         MarketDataProcessor();
+
         virtual ~MarketDataProcessor() = default;
 
         // Operator Overloads

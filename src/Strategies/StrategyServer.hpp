@@ -22,6 +22,7 @@
 #include "CommonServer/DataStructures/ConcurrentQueueProcessor.hpp"
 #include "CommonServer/DataStructures/ConcurrentLockFreeQueue.hpp"
 #include "StrategyCommon/Handlers/CLFQProcessor.hpp"
+#include "MessageObjects/MarketData/Quote.hpp"
 
 namespace BeaconTech::Strategies
 {
@@ -37,13 +38,14 @@ namespace BeaconTech::Strategies
     private:
         int numEngineThreads;
         int numListeners;
-        std::vector<StrategyEngine<T>> strategyEngines;
+        std::vector<std::shared_ptr<StrategyEngine<T>>> strategyEngines;
         std::vector<std::shared_ptr<CLFQProcessor>> queueProcessors;
         T marketDataClient;
         Common::MdCallback callback;
 
     public:
         StrategyServer();
+
         virtual ~StrategyServer() = default;
 
         void createThreads();
@@ -52,7 +54,16 @@ namespace BeaconTech::Strategies
 
         void subscribeToMarketData();
 
-        void scheduleJob(int engineThreadId, const std::shared_ptr<Common::Bbos>& bbos);
+        void scheduleJob(int engineThreadId, const MessageObjects::Quote& quote, const std::shared_ptr<Common::Bbos>& bbos);
+
+        // Deleted default ctors and assignment operators
+        StrategyServer(const StrategyServer<T>& other) = delete;
+
+        StrategyServer(StrategyServer<T>&& other) = delete;
+
+        StrategyServer<T>& operator=(const StrategyServer<T>& other) = delete;
+
+        StrategyServer<T>& operator=(StrategyServer<T>&& other) = delete;
     };
 
 } // namespace BeaconTech::Strategies
