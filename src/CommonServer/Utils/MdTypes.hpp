@@ -22,7 +22,9 @@ namespace BeaconTech::Common
 
     using Bbos = std::unordered_map<std::uint32_t, std::pair<MessageObjects::PriceLevel, MessageObjects::PriceLevel>>;
 
-    using MdCallback = std::function<void (const std::uint32_t& instrumentId, const std::shared_ptr<Bbos>& bbos)>;
+    using MdCallback = std::function<void (const std::uint32_t& instrumentId,
+                                           const MessageObjects::Quote& quote,
+                                           const std::shared_ptr<Bbos>& bbos)>;
 
 } // namespace BeaconTech::Common
 

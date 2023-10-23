@@ -22,8 +22,8 @@
 #include "cmake-build-debug/_deps/databento-src/include/databento/timeseries.hpp"
 
 #include "CommonServer/Utils/MdTypes.hpp"
-#include "src/MessageObjects/MarketData/Quote.hpp"
-#include "src/MessageObjects/MarketData/PriceLevel.hpp"
+#include "MessageObjects/MarketData/Quote.hpp"
+#include "MessageObjects/MarketData/PriceLevel.hpp"
 #include "CommonServer/Utils/DateTimes.hpp"
 
 namespace BeaconTech::MessageObjects
@@ -36,9 +36,10 @@ namespace BeaconTech::MessageObjects
 
     public:
         OrderBook();
+
         virtual ~OrderBook() = default;
 
-        void apply(const databento::MboMsg& mboMsg);
+        const Quote* apply(const databento::MboMsg& mboMsg);
 
         const std::shared_ptr<Common::Bbos>& getBbos();
     };

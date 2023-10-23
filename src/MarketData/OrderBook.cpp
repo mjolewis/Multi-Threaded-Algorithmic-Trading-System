@@ -29,7 +29,7 @@ namespace BeaconTech::MessageObjects
 
     }
 
-    void OrderBook::apply(const databento::MboMsg& mboMsg)
+    const Quote* OrderBook::apply(const databento::MboMsg& mboMsg)
     {
         auto action = mboMsg.action;
 
@@ -37,7 +37,7 @@ namespace BeaconTech::MessageObjects
         // accompanied by cancel actions that do update the book
         if (action == OrderAction::TRADE.getFixCode() || action == OrderAction::FILL.getFixCode())
         {
-            return;
+            return nullptr;
         }
 
         auto instrumentId = mboMsg.hd.instrument_id;
@@ -47,20 +47,15 @@ namespace BeaconTech::MessageObjects
         auto price = mboMsg.price;
         auto size = mboMsg.size;
 
-        // Clear -> Clear all resting orders for the given instrumentId
-        if (action == OrderAction::CLEAR.getFixCode())
+        if (action == OrderAction::CLEAR.getFixCode())  // Clears all resting orders for the given instrumentId
         {
             const auto& orderBook = orderBooks->find(instrumentId);
             if (orderBook != orderBooks->cend())
             {
                 orderBook->second.clear();
             }
-
-            return;
         }
-
-        // Add -> Add a new order for the given instrumentId
-        if (action == OrderAction::ADD.getFixCode())
+        else if (action == OrderAction::ADD.getFixCode())  // Adds a new order for the given instrumentId
         {
             const auto& orderBook = orderBooks->find(instrumentId);
             Side side_ = Side::fromFix(side);
@@ -73,11 +68,10 @@ namespace BeaconTech::MessageObjects
             {
                 orderBook->second.insert(std::make_pair(orderId, quote));
             }
-            return;
-        }
 
-        // Cancel -> Partial or full cancel
-        if (action == OrderAction::CANCEL.getFixCode())
+            return &(orderBooks->find(instrumentId)->second.find(orderId)->second);
+        }
+        else if (action == OrderAction::CANCEL.getFixCode())  // Partial or full cancel
         {
             const auto& orderBook = orderBooks->find(instrumentId);
             if (orderBook != orderBooks->cend())
@@ -93,13 +87,11 @@ namespace BeaconTech::MessageObjects
                         orderBook->second.erase(restingOrder);
                     }
                 }
+
+                return &restingOrder->second;
             }
-
-            return;
         }
-
-        // Modify -> Modifies the price or size
-        if (action == OrderAction::MODIFY.getFixCode())
+        else if (action == OrderAction::MODIFY.getFixCode())  // Modifies the price or size
         {
             const auto& orderBook = orderBooks->find(instrumentId);
             if (orderBook != orderBooks->cend())
@@ -116,10 +108,12 @@ namespace BeaconTech::MessageObjects
                     restingOrder->second.size = size;
                     restingOrder->second.price = price;
                 }
-            }
 
-            return;
+                return &restingOrder->second;
+            }
         }
+
+        return nullptr;
     }
 
     const std::shared_ptr<Common::Bbos>& OrderBook::getBbos()
