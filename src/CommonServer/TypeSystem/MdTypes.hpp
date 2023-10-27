@@ -10,21 +10,27 @@
 #include <memory>
 #include <functional>
 
-#include "src/MarketData/OrderBook.hpp"
-#include "src/MessageObjects/MarketData/Quote.hpp"
-#include "src/MessageObjects/MarketData/PriceLevel.hpp"
+#include "MarketData/OrderBook.hpp"
+#include "MessageObjects/MarketData/Quote.hpp"
+#include "MessageObjects/MarketData/PriceLevel.hpp"
 
 namespace BeaconTech::Common
 {
+    // key = orderId -> quote
     using OrderBook = std::unordered_map<std::uint64_t, MessageObjects::Quote>;
 
+    // key = instrumentId -> OrderBook
     using OrderBooks = std::unordered_map<std::uint32_t, OrderBook>;
 
-    using Bbos = std::unordered_map<std::uint32_t, std::pair<MessageObjects::PriceLevel, MessageObjects::PriceLevel>>;
+    // instrumentId, Bid, Ask
+    using Bbo = std::tuple<std::uint32_t, MessageObjects::PriceLevel, MessageObjects::PriceLevel>;
+
+    // key = instrumentId -> std::tuple<instrumentId, bid, ask>
+    using Bbos = std::unordered_map<std::uint32_t, Bbo>;
 
     using MdCallback = std::function<void (const std::uint32_t& instrumentId,
                                            const MessageObjects::Quote& quote,
-                                           const std::shared_ptr<Bbos>& bbos)>;
+                                           const Bbo& bbo)>;
 
 } // namespace BeaconTech::Common
 

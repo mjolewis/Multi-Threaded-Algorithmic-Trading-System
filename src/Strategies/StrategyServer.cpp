@@ -25,10 +25,17 @@ namespace BeaconTech::Strategies
     StrategyServer<T>::StrategyServer()
         : numEngineThreads{Common::ConfigManager::intConfigValueDefaultIfNull("numEngineThreads", 1)},
           numListeners{Common::ConfigManager::intConfigValueDefaultIfNull("numListeners", 1)},
-          marketDataClient{"StrategyServer"}, queueProcessors{}
+          marketDataClient{std::make_shared<T>("StrategyServer")}
     {
         createThreads();
         subscribeToMarketData();
+    }
+
+    template<typename T>
+    StrategyServer<T>::~StrategyServer()
+    {
+        marketDataClient->stop();
+        for (const auto& queueProcessor : queueProcessors) queueProcessor->stop();
     }
 
     // Creates the engines and listener. The number of threads is configurable to partition the
@@ -53,19 +60,19 @@ namespace BeaconTech::Strategies
     // Calculates the positive modulo from the instrumentId and numEngineThreads.
     // Returns the engine at the associated index
     template<typename T>
-    int StrategyServer<T>::getEngineThread(const std::uint32_t &instrumentId) const
+    int StrategyServer<T>::getEngineThread(const int& instrumentId) const
     {
-        return (instrumentId % numEngineThreads + numEngineThreads) % numEngineThreads;
+        return ((instrumentId % numEngineThreads) + numEngineThreads) % numEngineThreads;
     }
 
     // Schedules entities for processing by enqueueing them into a concurrent queue
     template<typename T>
-    void StrategyServer<T>::scheduleJob(int engineThreadId,
+    void StrategyServer<T>::scheduleJob(const std::uint32_t& instrumentId,
                                         const MessageObjects::Quote& quote,
-                                        const std::shared_ptr<Common::Bbos>& bbos)
+                                        const Common::Bbo& bbo)
     {
-        queueProcessors.at(engineThreadId)->enqueue([&]() {
-            strategyEngines.at(engineThreadId)->onOrderBookUpdate(quote, bbos);
+        queueProcessors.at(getEngineThread(instrumentId))->enqueue([&]() {
+            strategyEngines.at(getEngineThread(instrumentId))->onOrderBookUpdate(quote, bbo);
         });
     }
 
@@ -75,10 +82,10 @@ namespace BeaconTech::Strategies
     {
         callback = [&](const std::uint32_t& instrumentId,
                        const MessageObjects::Quote& quote,
-                       const std::shared_ptr<Common::Bbos>& bbos) -> void {
+                       const Common::Bbo& bbo) -> void {
             try
             {
-                scheduleJob(getEngineThread(instrumentId), quote, bbos);
+                scheduleJob(instrumentId, quote, bbo);
             }
             catch (const std::exception& e)
             {
@@ -86,7 +93,7 @@ namespace BeaconTech::Strategies
             }
         };
 
-        marketDataClient.subscribe(callback);
+        marketDataClient->subscribe(marketDataClient, callback);
     }
 
 } // namespace BeaconTech::Strategies

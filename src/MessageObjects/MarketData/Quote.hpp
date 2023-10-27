@@ -13,7 +13,7 @@
 #include <utility>
 
 #include "Side.hpp"
-#include "CommonServer/Utils/DateTimes.hpp"
+#include "CommonServer/TypeSystem/DateTimes.hpp"
 
 namespace BeaconTech::MessageObjects
 {
@@ -22,13 +22,13 @@ namespace BeaconTech::MessageObjects
     {
         std::uint32_t instrumentId;
         BeaconTech::MessageObjects::Side side;
-        std::int64_t price{};
+        double price{};
         std::uint32_t size{};
         Common::UnixNanos timestamp{};
 
         Quote(std::uint32_t instrumentId, BeaconTech::MessageObjects::Side side,
-              std::int64_t price, std::uint32_t size, Common::UnixNanos timestamp)
-                : instrumentId{std::move(instrumentId)}, side{std::move(side)},
+              double price, std::uint32_t size, Common::UnixNanos timestamp)
+                : instrumentId{instrumentId}, side{std::move(side)},
                   price{price}, size{size}, timestamp{timestamp}
         {
 

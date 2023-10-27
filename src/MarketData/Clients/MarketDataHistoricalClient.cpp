@@ -8,7 +8,6 @@
 // Created by Michael Lewis on 9/29/23.
 //
 
-#include <functional>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -21,8 +20,7 @@
 #include "MarketDataStreamingClient.hpp"
 #include "MarketData/Processors/MarketDataProcessor.hpp"
 #include "CommonServer/Utils/ConfigManager.hpp"
-#include "src/CommonServer/Logging/LogLevel.hpp"
-#include "CommonServer/Utils/MdTypes.hpp"
+#include "CommonServer/Logging/LogLevel.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -30,15 +28,9 @@ namespace BeaconTech::MarketData
     MarketDataHistoricalClient::MarketDataHistoricalClient(std::string clientName)
         : IMarketDataProvider{}, clientName{std::move(clientName)},
           client{std::make_shared<databento::Historical>(MarketDataUtils::getHistoricalClient())},
-          streamingClient{std::make_shared<MarketDataStreamingClient<MarketDataHistoricalClient>>(*this)}
+          streamingClient{std::make_shared<MarketDataStreamingClient<MarketDataHistoricalClient>>()}
     {
 
-    }
-
-    // Dtor that currently terminates session gateway with MarketDataClient
-    MarketDataHistoricalClient::~MarketDataHistoricalClient()
-    {
-        stop();
     }
 
     // The system will ultimately have numerous market data clients (e.g. strategies for live trading,
@@ -50,10 +42,11 @@ namespace BeaconTech::MarketData
     }
 
     // Allows system components to subscribe to book updates via a callback
-    void MarketDataHistoricalClient::subscribe(const Common::MdCallback& callback)
+    void MarketDataHistoricalClient::subscribe(std::shared_ptr<MarketDataHistoricalClient> marketDataClient,
+                                               const Common::MdCallback& callback)
     {
 
-        streamingClient->initialize(callback);
+        streamingClient->initialize(marketDataClient, callback);
     }
 
     // Batch download historical data files for back-testing. Note - This can be converted into a
@@ -111,11 +104,7 @@ namespace BeaconTech::MarketData
         };
     }
 
-    std::shared_ptr<IMarketDataProvider> MarketDataHistoricalClient::getClient() const
-    {
-        return std::make_shared<MarketDataHistoricalClient>(*this);
-    }
-
+    // Closes the session gateway. Once closed, the session cannot be restarted.
     void MarketDataHistoricalClient::stop()
     {
         MarketDataUtils::log(Common::LogLevel::INFO, "Terminated session gateway with MarketDataClient");

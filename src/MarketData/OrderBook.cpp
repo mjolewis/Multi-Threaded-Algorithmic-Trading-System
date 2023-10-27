@@ -13,18 +13,20 @@
 #include <unordered_map>
 #include <utility>
 
-#include "cmake-build-debug/_deps/databento-src/include/databento/timeseries.hpp"
+#include "databento/timeseries.hpp"
 #include "databento/fixed_price.hpp"
 
 #include "OrderBook.hpp"
-#include "src/MessageObjects/MarketData/PriceLevel.hpp"
-#include "src/MessageObjects/MarketData/Side.hpp"
-#include "src/MessageObjects/MarketData/OrderAction.hpp"
-#include "src/MessageObjects/MarketData/Quote.hpp"
+#include "MessageObjects/MarketData/PriceLevel.hpp"
+#include "MessageObjects/MarketData/Side.hpp"
+#include "MessageObjects/MarketData/OrderAction.hpp"
+#include "MessageObjects/MarketData/Quote.hpp"
+#include "CommonServer/TypeSystem/NumericTypes.hpp"
 
 namespace BeaconTech::MessageObjects
 {
-    OrderBook::OrderBook() : orderBooks{std::make_shared<Common::OrderBooks>()}, bbos{std::make_shared<Common::Bbos>()}
+    OrderBook::OrderBook() : orderBooks{std::make_shared<Common::OrderBooks>()},
+        bbos{std::make_shared<Common::Bbos>()}, bbo{}
     {
 
     }
@@ -44,7 +46,7 @@ namespace BeaconTech::MessageObjects
         auto timestamp = mboMsg.hd.ts_event;
         auto side = (char) mboMsg.side;
         auto orderId = mboMsg.order_id;
-        auto price = mboMsg.price;
+        auto price = double(mboMsg.price) / databento::kFixedPriceScale;
         auto size = mboMsg.size;
 
         if (action == OrderAction::CLEAR.getFixCode())  // Clears all resting orders for the given instrumentId
@@ -116,52 +118,56 @@ namespace BeaconTech::MessageObjects
         return nullptr;
     }
 
-    const std::shared_ptr<Common::Bbos>& OrderBook::getBbos()
+    const Common::Bbo* OrderBook::getBbo(const std::uint32_t& instrumentId)
     {
         auto bestAsk = PriceLevel();
         auto bestBid = PriceLevel();
 
-        for (const auto& orderBook : *orderBooks)
+        const auto orderBookEntries = orderBooks->find(instrumentId);
+        if (orderBookEntries != orderBooks->cend())
         {
-            const auto& orders = orderBook.second;
-            for (const auto& orderId : orders)
+            const auto orderBookEntry = orderBookEntries->second;
+            for (const auto& order : orderBookEntry)
             {
-                const auto& order = orderId.second;
-                if (order.side == Side::SELL)
+                const auto& quote = order.second;
+                if (quote.side == Side::SELL)
                 {
-                    if (bestAsk.price == 0 || bestAsk.price > order.price)
+                    if (isnan(bestAsk.price) || bestAsk.price > quote.price)
                     {
-                        bestAsk.price = order.price;
-                        bestAsk.size = order.size;
+                        bestAsk.price = quote.price;
+                        bestAsk.size = quote.size;
                         bestAsk.count = 1;
                     }
-                    else if (bestAsk.price == order.price)
+                    else if (bestAsk.price == quote.price)
                     {
-                        bestAsk.size += order.size;
+                        bestAsk.size += quote.size;
                         ++bestAsk.count;
                     }
                 }
-                else if (order.side == Side::BUY)
+                else if (quote.side == Side::BUY)
                 {
-                    if (bestBid.price < order.price)
+                    if (isnan(bestBid.price) || bestBid.price < quote.price)
                     {
-                        bestBid.price = order.price;
-                        bestBid.size = order.size;
+                        bestBid.price = quote.price;
+                        bestBid.size = quote.size;
                         bestBid.count = 1;
                     }
-                    else if (bestBid.price == order.price)
+                    else if (bestBid.price == quote.price)
                     {
-                        bestBid.size += order.size;
+                        bestBid.size += quote.size;
                         ++bestBid.count;
                     }
                 }
+
+                bbo = std::make_tuple(instrumentId, bestBid, bestAsk);
+                if (bbos->find(instrumentId) != bbos->cend()) [[likely]] bbos->at(instrumentId) = bbo;
+                else bbos->emplace(instrumentId, bbo);
             }
 
-            const auto instrumentId = orderBook.first;
-            bbos->emplace(instrumentId, std::make_pair(bestBid, bestAsk));
+            return &bbo;
         }
 
-        return bbos;
+        return nullptr;
     }
 
 } // namespace BeaconTech::MessageObjects

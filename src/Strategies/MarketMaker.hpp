@@ -19,6 +19,7 @@
 
 #include "StrategyEngine.hpp"
 #include "MessageObjects/MarketData/Quote.hpp"
+#include "StrategyCommon/FeatureEngine.hpp"
 
 namespace BeaconTech::Strategies
 {
@@ -31,14 +32,15 @@ namespace BeaconTech::Strategies
     class MarketMaker
     {
     private:
-        StrategyEngine<T>& engine;
+        StrategyEngine<T>& strategyEngine;
+        const FeatureEngine& featureEngine;
 
     public:
-        explicit MarketMaker(StrategyEngine<T>& engine);
+        MarketMaker(StrategyEngine<T>& strategyEngine, const FeatureEngine& featureEngine);
 
         virtual ~MarketMaker() = default;
 
-        void onOrderBookUpdate(const MessageObjects::Quote &quote, const std::shared_ptr<Common::Bbos> &bbos);
+        void onOrderBookUpdate(const MessageObjects::Quote &quote, const Common::Bbo& bbo);
 
         // Deleted default ctors and assignment operators
         MarketMaker() = delete;

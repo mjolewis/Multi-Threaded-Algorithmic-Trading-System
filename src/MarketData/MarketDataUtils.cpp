@@ -148,31 +148,26 @@ namespace BeaconTech::MarketData
     }
 
     // Prints best bid and ask for each book after processing the last message in the packet
-    void MarketDataUtils::printBbos(const databento::MboMsg& mboMsg, const std::shared_ptr<Bbos>& bbos)
+    void MarketDataUtils::printBbo(const Common::Bbo& bbo, const double& fairMarketPrice)
     {
         if (!Common::ConfigManager::boolConfigValueDefaultIfNull("printBbo", false)) return;
-        if (!MarketDataUtils::isFlagSet(mboMsg.flags, databento::FlagSet::kLast)) return;
 
+        std::uint32_t instrumentId;
         MessageObjects::PriceLevel bestBid{};
         MessageObjects::PriceLevel bestAsk{};
-        for (const auto& [instrumentId, bbo] : *bbos)
-        {
-            std::tie(bestBid, bestAsk) = bbo;
 
-            auto formattedBid = boost::format("Best bid: %1% × %2%")
-                    % (float(bestBid.price) / float(databento::kFixedPriceScale))
-                    % bestBid.size;
+        std::tie(instrumentId, bestBid, bestAsk) = bbo;
+        auto formattedBid = boost::format("Best bid: %1% × %2%") % bestBid.price % bestBid.size;
+        auto formattedAsk = boost::format("Best ask: %1% × %2%") % bestAsk.price % bestAsk.size;
+        auto formattedFairPrice = boost::format("Fair market price: %1%") % fairMarketPrice;
 
-            auto formattedAsk = boost::format("Best ask: %1% × %2%")
-                    % (float(bestAsk.price) / float(databento::kFixedPriceScale))
-                    % bestAsk.size;
-
-            std::cout << std::left << std::setfill(' ')
-                      << "InstrumentId: " << std::setw(12) << instrumentId
-                      << std::setw(26)
-                      << formattedBid.str()
-                      << formattedAsk.str()
-                      << std::endl;
-        }
+        std::cout << std::left << std::setfill(' ')
+                  << "InstrumentId: " << std::setw(12) << instrumentId
+                  << std::setw(28)
+                  << formattedBid.str()
+                  << std::setw(28)
+                  << formattedAsk.str()
+                  << formattedFairPrice.str()
+                  << std::endl;
     }
 } // namespace BeaconTech::MarketData

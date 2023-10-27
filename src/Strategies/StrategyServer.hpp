@@ -9,6 +9,7 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_STRATEGYSERVER_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_STRATEGYSERVER_HPP
 
+#include <iostream>
 #include <vector>
 #include <future>
 #include <functional>
@@ -18,7 +19,7 @@
 #include "MarketData/Clients/MarketDataHistoricalClient.hpp"
 #include "MarketData/Clients/MarketDataLiveClient.hpp"
 #include "MessageObjects/MarketData/Quote.hpp"
-#include "CommonServer/Utils/MdTypes.hpp"
+#include "CommonServer/TypeSystem/MdTypes.hpp"
 #include "CommonServer/DataStructures/ConcurrentQueueProcessor.hpp"
 #include "CommonServer/DataStructures/ConcurrentLockFreeQueue.hpp"
 #include "StrategyCommon/Handlers/CLFQProcessor.hpp"
@@ -40,21 +41,21 @@ namespace BeaconTech::Strategies
         int numListeners;
         std::vector<std::shared_ptr<StrategyEngine<T>>> strategyEngines;
         std::vector<std::shared_ptr<CLFQProcessor>> queueProcessors;
-        T marketDataClient;
+        std::shared_ptr<T> marketDataClient;
         Common::MdCallback callback;
 
     public:
         StrategyServer();
 
-        virtual ~StrategyServer() = default;
+        virtual ~StrategyServer();
 
         void createThreads();
 
-        int getEngineThread(const std::uint32_t& instrumentId) const;
+        int getEngineThread(const int& instrumentId) const;
 
         void subscribeToMarketData();
 
-        void scheduleJob(int engineThreadId, const MessageObjects::Quote& quote, const std::shared_ptr<Common::Bbos>& bbos);
+        void scheduleJob(const std::uint32_t& instrumentId, const MessageObjects::Quote& quote, const Common::Bbo& bbo);
 
         // Deleted default ctors and assignment operators
         StrategyServer(const StrategyServer<T>& other) = delete;

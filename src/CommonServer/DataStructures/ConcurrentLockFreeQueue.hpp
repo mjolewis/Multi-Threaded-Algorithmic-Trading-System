@@ -35,13 +35,8 @@ namespace BeaconTech::Common
 
     public:
         explicit ConcurrentLockFreeQueue(unsigned int threadId);
-        ConcurrentLockFreeQueue() = delete;
-        ConcurrentLockFreeQueue(const ConcurrentLockFreeQueue& other) = delete;
-        ConcurrentLockFreeQueue(ConcurrentLockFreeQueue&& other) = delete;
-        virtual ~ConcurrentLockFreeQueue() = default;
 
-        ConcurrentLockFreeQueue& operator=(const ConcurrentLockFreeQueue& other) = delete;
-        ConcurrentLockFreeQueue& operator=(ConcurrentLockFreeQueue&& other) = delete;
+        virtual ~ConcurrentLockFreeQueue() = default;
 
         auto getNextToWriteTo() noexcept;
 
@@ -52,6 +47,17 @@ namespace BeaconTech::Common
         void updateNextToRead() noexcept;
 
         auto size() const noexcept;
+
+        // Deleted default ctors and assignment operators
+        ConcurrentLockFreeQueue() = delete;
+
+        ConcurrentLockFreeQueue(const ConcurrentLockFreeQueue& other) = delete;
+
+        ConcurrentLockFreeQueue(ConcurrentLockFreeQueue&& other) = delete;
+
+        ConcurrentLockFreeQueue& operator=(const ConcurrentLockFreeQueue& other) = delete;
+
+        ConcurrentLockFreeQueue& operator=(ConcurrentLockFreeQueue&& other) = delete;
     };
 
 } // BeaconTech::Common

@@ -31,14 +31,9 @@ namespace BeaconTech::Common
         void threadLoop();
 
     public:
-        explicit CLFQProcessor(const unsigned int& threadId);
-        CLFQProcessor() = delete;
-        CLFQProcessor(const CLFQProcessor& other) = delete;
-        CLFQProcessor(CLFQProcessor&& other) = delete;
-        virtual ~CLFQProcessor() = default;
+        explicit CLFQProcessor(unsigned int& threadId);
 
-        CLFQProcessor& operator=(const CLFQProcessor& other) = delete;
-        CLFQProcessor& operator=(CLFQProcessor&& other) = delete;
+        virtual ~CLFQProcessor() = default;
 
         void start();
 
@@ -47,6 +42,17 @@ namespace BeaconTech::Common
         void stop();
 
         bool busy();
+
+        // Deleted default ctors and assignment operators
+        CLFQProcessor() = delete;
+
+        CLFQProcessor(const CLFQProcessor& other) = delete;
+
+        CLFQProcessor(CLFQProcessor&& other) = delete;
+
+        CLFQProcessor& operator=(const CLFQProcessor& other) = delete;
+
+        CLFQProcessor& operator=(CLFQProcessor&& other) = delete;
     };
 
 } // BeaconTech::Common

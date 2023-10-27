@@ -19,7 +19,7 @@
 namespace BeaconTech::Common
 {
     template<typename T>
-    CLFQProcessor<T>::CLFQProcessor(const unsigned int& threadId) : CLFQueue{threadId}, shouldTerminate{false}
+    CLFQProcessor<T>::CLFQProcessor(unsigned int& threadId) : CLFQueue{threadId}, shouldTerminate{false}
     {
         start();
     }
@@ -69,15 +69,17 @@ namespace BeaconTech::Common
     template<typename T>
     bool CLFQProcessor<T>::busy()
     {
-        return CLFQueue.size() == 0;
+        return CLFQueue.size() > 0;
     }
 
     // Blocks the current thread (usually the main thread) until the thread finish working
     template<typename T>
     void CLFQProcessor<T>::stop()
     {
-        shouldTerminate = true;
+        // Flush the queue before shutting down
+        while (busy()) continue;
 
+        shouldTerminate = true;
         for (std::thread& thread : threadPool)
         {
             if (thread.joinable()) thread.join();
