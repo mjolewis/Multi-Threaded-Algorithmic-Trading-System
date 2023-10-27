@@ -17,7 +17,7 @@
 
 #include "IMarketDataProvider.hpp"
 #include "MarketDataStreamingClient.hpp"
-#include "CommonServer/Utils/MdTypes.hpp"
+#include "CommonServer/TypeSystem/MdTypes.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -40,18 +40,27 @@ namespace BeaconTech::MarketData
 
     public:
         MarketDataLiveClient() = default;
-        explicit MarketDataLiveClient(std::string clientName);
-        ~MarketDataLiveClient() override;
 
-        void subscribe(const Common::MdCallback& callback) override;
+        explicit MarketDataLiveClient(std::string clientName);
+
+        ~MarketDataLiveClient() override = default;
+
+        void subscribe(std::shared_ptr<MarketDataLiveClient> marketDataClient, const Common::MdCallback& callback);
 
         std::function<void ()> getBookUpdate(std::shared_ptr<MarketDataProcessor>& streamingProcessor) override;
 
         const std::string& getClientName() const;
 
-        std::shared_ptr<IMarketDataProvider> getClient() const override;
-
         void stop() override;
+
+        // Deleted default ctors and assignment operators
+        MarketDataLiveClient(const MarketDataLiveClient& other) = delete;
+
+        MarketDataLiveClient(MarketDataLiveClient&& other) = delete;
+
+        MarketDataLiveClient& operator=(const MarketDataLiveClient& other) = delete;
+
+        MarketDataLiveClient operator=(MarketDataLiveClient&& other) = delete;
     };
 } // namespace BeaconTech::MarketData
 

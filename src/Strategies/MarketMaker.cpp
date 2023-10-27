@@ -19,22 +19,29 @@
 #include "MarketMaker.hpp"
 #include "StrategyEngine.hpp"
 #include "MessageObjects/MarketData/Quote.hpp"
+#include "StrategyCommon/FeatureEngine.hpp"
+#include "CommonServer/TypeSystem/NumericTypes.hpp"
+#include "MarketData/MarketDataUtils.hpp"
 
 namespace BeaconTech::Strategies
 {
     template<typename T>
-    MarketMaker<T>::MarketMaker(StrategyEngine<T>& engine) : engine{engine}
+    MarketMaker<T>::MarketMaker(StrategyEngine<T>& strategyEngine, const FeatureEngine& featureEngine)
+        : strategyEngine{strategyEngine}, featureEngine{featureEngine}
     {
-        // Initialize callbacks for the engine
-        engine.onOrderBookUpdateAlgo = [this](auto quote, auto bbos) -> void { onOrderBookUpdate(quote, bbos); };
+        // Initialize callbacks for the strategyEngine
+        strategyEngine.onOrderBookUpdateAlgo = [this](auto quote, auto bbo) -> void { onOrderBookUpdate(quote, bbo); };
     }
 
-    // Process book update, calculate bid and offer prices, validate notional limits
-    // and creates/modifies/cancels passive orders
+    // Process the BBO, calculate fair market price, perform risk checks and create, modify, or cancel passive orders
     template<typename T>
-    void MarketMaker<T>::onOrderBookUpdate(const MessageObjects::Quote& quote, const std::shared_ptr<Common::Bbos>& bbos)
+    void MarketMaker<T>::onOrderBookUpdate(const MessageObjects::Quote& quote, const Common::Bbo& bbo)
     {
-        std::cout << "onOrderBookUpdate Callback" << std::endl;
+        double fairMarketPrice = featureEngine.getMarketPrice();
+        if (fairMarketPrice != Common::NaN)
+        {
+            MarketData::MarketDataUtils::printBbo(bbo, fairMarketPrice);
+        }
     }
 } // BeaconTech
 

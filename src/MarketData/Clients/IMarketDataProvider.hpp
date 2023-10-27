@@ -17,13 +17,10 @@ namespace BeaconTech::MarketData
     {
     public:
         IMarketDataProvider() = default;
+
         virtual ~IMarketDataProvider() = default;
 
-        virtual void subscribe(const Common::MdCallback& callback) = 0;
-
         virtual std::function<void ()> getBookUpdate(std::shared_ptr<MarketDataProcessor>& streamingProcessor) = 0;
-
-        virtual std::shared_ptr<IMarketDataProvider> getClient() const = 0;
 
         virtual void stop() = 0;
     };

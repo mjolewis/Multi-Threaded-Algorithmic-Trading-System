@@ -2,6 +2,8 @@
 // Created by Michael Lewis on 9/28/23.
 //
 
+#include <iostream>
+
 #include "CommonServer/Utils/ConfigManager.hpp"
 #include "MarketData/Clients/MarketDataHistoricalClient.hpp"
 #include "MarketData/Clients/MarketDataLiveClient.hpp"
@@ -13,7 +15,5 @@ int main()
 
     BeaconTech::Common::ConfigManager::loadDefaultConfigs();
     BeaconTech::Strategies::StrategyServer<Client> server{};
-//    BeaconTech::MarketData::MarketDataHistoricalClient marketDataClient{"main"};
-//    marketDataClient.stop();
     return 0;
 }

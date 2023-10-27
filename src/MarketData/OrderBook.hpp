@@ -21,18 +21,19 @@
 
 #include "cmake-build-debug/_deps/databento-src/include/databento/timeseries.hpp"
 
-#include "CommonServer/Utils/MdTypes.hpp"
+#include "CommonServer/TypeSystem/MdTypes.hpp"
 #include "MessageObjects/MarketData/Quote.hpp"
 #include "MessageObjects/MarketData/PriceLevel.hpp"
-#include "CommonServer/Utils/DateTimes.hpp"
+#include "CommonServer/TypeSystem/DateTimes.hpp"
 
 namespace BeaconTech::MessageObjects
 {
     class OrderBook
     {
     private:
-        std::shared_ptr<Common::OrderBooks> orderBooks; // instrumentId -> orderId -> orderBook
+        std::shared_ptr<Common::OrderBooks> orderBooks; // instrumentId -> orderBook
         std::shared_ptr<Common::Bbos> bbos; // instrumentId -> priceLevels
+        Common::Bbo bbo; // priceLevels for the current book update
 
     public:
         OrderBook();
@@ -41,7 +42,7 @@ namespace BeaconTech::MessageObjects
 
         const Quote* apply(const databento::MboMsg& mboMsg);
 
-        const std::shared_ptr<Common::Bbos>& getBbos();
+        const Common::Bbo* getBbo(const std::uint32_t& instrumentId);
     };
 
 } // namespace BeaconTech::MessageObjects

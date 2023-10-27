@@ -10,7 +10,7 @@
 
 #include <chrono>
 
-#include "src/CommonServer/Utils/DateTimes.hpp"
+#include "src/CommonServer/TypeSystem/DateTimes.hpp"
 
 namespace BeaconTech::Common
 {
@@ -27,8 +27,11 @@ namespace BeaconTech::Common
         StopWatch() = default;
 
         void start();
+
         void stop();
+
         void reset();
+
         double elapsedTime() const;
     };
 

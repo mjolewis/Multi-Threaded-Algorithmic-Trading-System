@@ -21,24 +21,30 @@ namespace BeaconTech::MarketData
     private:
         inline static constexpr int NUM_THREADS = 4;
 
-        T marketDataClient;
+        std::shared_ptr<T> marketDataClient;
         std::shared_ptr<MarketDataProcessor> streamingProcessor;
         std::array<std::thread, NUM_THREADS> consumerThreads;
         bool stopSignal;
 
     public:
-        MarketDataConsumer() = default;
-        MarketDataConsumer(const T& marketDataClient, std::shared_ptr<MarketDataProcessor>& streamingProcessor);
-        MarketDataConsumer(MarketDataConsumer&& other) noexcept = default;
+        explicit MarketDataConsumer(std::shared_ptr<MarketDataProcessor> streamingProcessor);
+
         virtual ~MarketDataConsumer() = default;
 
-        MarketDataConsumer<T>& operator=(const MarketDataConsumer<T>& other);
-
-        MarketDataConsumer<T>& operator=(MarketDataConsumer<T>&& other) noexcept;
-
-        void start();
+        void start(std::shared_ptr<T> marketDataClient);
 
         void stop();
+
+        // Deleted default ctors and assignment operators
+        MarketDataConsumer() = delete;
+
+        MarketDataConsumer(const MarketDataConsumer<T>& other) = delete;
+
+        MarketDataConsumer(MarketDataConsumer<T>&& other) = delete;
+
+        MarketDataConsumer<T>& operator=(const MarketDataConsumer<T>& other) = delete;
+
+        MarketDataConsumer<T>& operator=(MarketDataConsumer<T>&& other) = delete;
     };
 
 } // namespace BeaconTech::MarketData

@@ -33,6 +33,7 @@ namespace BeaconTech::Common
 
     public:
         explicit ConcurrentQueueProcessor(const unsigned int& threadId);
+
         virtual ~ConcurrentQueueProcessor();
 
         void start();
@@ -42,6 +43,17 @@ namespace BeaconTech::Common
         void stop();
 
         bool busy();
+
+        // Deleted default ctors and assignment operators
+        ConcurrentQueueProcessor() = delete;
+
+        ConcurrentQueueProcessor(const ConcurrentQueueProcessor& other) = delete;
+
+        ConcurrentQueueProcessor(ConcurrentQueueProcessor&& other) = delete;
+
+        ConcurrentQueueProcessor& operator=(const ConcurrentQueueProcessor& other) = delete;
+
+        ConcurrentQueueProcessor& operator=(ConcurrentQueueProcessor&& other) = delete;
     };
 
 } // BeachTech

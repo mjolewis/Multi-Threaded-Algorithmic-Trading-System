@@ -7,15 +7,16 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_STRATEGYENGINE_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_STRATEGYENGINE_HPP
 
+#include <iostream>
 #include <memory>
 
 #include "StrategyServer.hpp"
 #include "MarketData/Clients/MarketDataHistoricalClient.hpp"
 #include "MarketData/Clients/MarketDataLiveClient.hpp"
-#include "CommonServer/Utils/BTConcepts.hpp"
 #include "MarketData/OrderBook.hpp"
 #include "MessageObjects/MarketData/Quote.hpp"
 #include "Strategies/MarketMaker.hpp"
+#include "StrategyCommon/FeatureEngine.hpp"
 
 namespace BeaconTech::Strategies
 {
@@ -33,16 +34,17 @@ namespace BeaconTech::Strategies
         const StrategyServer<T>& server;
         unsigned int threadId;
         std::shared_ptr<MarketMaker<T>> marketMakerAlgo;
+        FeatureEngine featureEngine;
 
     public:
         StrategyEngine(const StrategyServer<T>& server, const unsigned int& threadId);
 
         virtual ~StrategyEngine() = default;
 
-        void onOrderBookUpdate(const MessageObjects::Quote& quote, const std::shared_ptr<Common::Bbos>& bbos);
+        void onOrderBookUpdate(const MessageObjects::Quote& quote, const Common::Bbo& bbo);
 
         // Callbacks that dispatch order book updates and downstream responses to the trading algorithm
-        std::function<void (const MessageObjects::Quote &quote, const std::shared_ptr<Common::Bbos> &bbos)> onOrderBookUpdateAlgo;
+        std::function<void (const MessageObjects::Quote &quote, const Common::Bbo& bbo)> onOrderBookUpdateAlgo;
 
         // Deleted default ctors and assignment operators
         StrategyEngine() = delete;

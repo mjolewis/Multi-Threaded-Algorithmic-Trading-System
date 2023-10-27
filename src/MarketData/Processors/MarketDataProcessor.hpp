@@ -10,9 +10,9 @@
 
 #include <databento/timeseries.hpp>
 
-#include "src/MarketData/OrderBook.hpp"
-#include "CommonServer/Utils/BTConcepts.hpp"
-#include "CommonServer/Utils/MdTypes.hpp"
+#include "MarketData/OrderBook.hpp"
+#include "CommonServer/Concepts/BTConcepts.hpp"
+#include "CommonServer/TypeSystem/MdTypes.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -27,11 +27,6 @@ namespace BeaconTech::MarketData
 
         virtual ~MarketDataProcessor() = default;
 
-        // Operator Overloads
-        MarketDataProcessor& operator=(const MarketDataProcessor& other);
-
-        MarketDataProcessor& operator=(MarketDataProcessor&& other) noexcept;
-
         void initialize(const Common::MdCallback& callback);
 
         // OrderBook Updates
@@ -44,6 +39,15 @@ namespace BeaconTech::MarketData
         void handle(const T& trade);
 
         databento::KeepGoing processBookUpdate(const databento::Record& record);
+
+        // Deleted default ctors and assignment operators
+        MarketDataProcessor(const MarketDataProcessor& other) = delete;
+
+        MarketDataProcessor(MarketDataProcessor&& other) = delete;
+
+        MarketDataProcessor& operator=(const MarketDataProcessor& other) = delete;
+
+        MarketDataProcessor& operator=(MarketDataProcessor&& other) = delete;
     };
 } // namespace BeaconTech::MarketData
 

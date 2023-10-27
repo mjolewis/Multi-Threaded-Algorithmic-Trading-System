@@ -16,8 +16,8 @@
 #include "MarketDataLiveClient.hpp"
 #include "MarketDataStreamingClient.hpp"
 #include "MarketData/MarketDataUtils.hpp"
-#include "src/CommonServer/Logging/LogLevel.hpp"
-#include "CommonServer/Utils/MdTypes.hpp"
+#include "CommonServer/Logging/LogLevel.hpp"
+#include "CommonServer/TypeSystem/MdTypes.hpp"
 
 using namespace std::chrono_literals;
 
@@ -27,15 +27,9 @@ namespace BeaconTech::MarketData
     MarketDataLiveClient::MarketDataLiveClient(std::string clientName)
         : IMarketDataProvider{}, clientName{std::move(clientName)},
           client{std::make_shared<databento::LiveBlocking>(MarketDataUtils::getLiveClient())},
-          streamingClient{std::make_shared<MarketDataStreamingClient<MarketDataLiveClient>>(*this)}
+          streamingClient{std::make_shared<MarketDataStreamingClient<MarketDataLiveClient>>()}
     {
 
-    }
-
-    // Dtor that currently terminates session gateway with MarketDataClient
-    MarketDataLiveClient::~MarketDataLiveClient()
-    {
-        stop();
     }
 
     // The system will ultimately have numerous market data clients (e.g. strategies for live trading,
@@ -47,9 +41,9 @@ namespace BeaconTech::MarketData
     }
 
     // Allows system components to subscribe to book updates via a callback
-    void MarketDataLiveClient::subscribe(const Common::MdCallback& callback)
+    void MarketDataLiveClient::subscribe(std::shared_ptr<MarketDataLiveClient> marketDataClient, const Common::MdCallback& callback)
     {
-        streamingClient->initialize(callback);
+        streamingClient->initialize(marketDataClient, callback);
     }
 
     // Used by the MarketDataConsumer to consume bookUpdates published by the market data provider (pub-sub model)
@@ -89,12 +83,7 @@ namespace BeaconTech::MarketData
         };
     }
 
-    std::shared_ptr<IMarketDataProvider> MarketDataLiveClient::getClient() const
-    {
-        return std::make_shared<MarketDataLiveClient>(*this);
-    }
-
-    // Stops the session with the gateway. Once stopped, the session cannot be restarted.
+    // Closes the session gateway. Once closed, the session cannot be restarted.
     void MarketDataLiveClient::stop()
     {
         client->Stop();

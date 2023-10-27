@@ -22,7 +22,6 @@
 
 namespace BeaconTech::MarketData
 {
-    using Bbos = std::unordered_map<std::uint32_t, std::pair<MessageObjects::PriceLevel, MessageObjects::PriceLevel>>;
 
     class MarketDataUtils
     {
@@ -39,7 +38,7 @@ namespace BeaconTech::MarketData
 
         static bool isFlagSet(const databento::FlagSet& flag, std::uint8_t bit);
 
-        static void printBbos(const databento::MboMsg& mboMsg, const std::shared_ptr<Bbos>& bbos);
+        static void printBbo(const Common::Bbo& bbo, const double& fairMarketPrice);
     };
 } // namespace BeaconTech::MarketData
 

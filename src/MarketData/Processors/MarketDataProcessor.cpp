@@ -5,12 +5,15 @@
 // Created by Michael Lewis on 10/2/23.
 //
 
+#include <tuple>
+
 #include <databento/timeseries.hpp>
 
 #include "MarketDataProcessor.hpp"
 #include "MarketData/MarketDataUtils.hpp"
-#include "CommonServer/Utils/BTConcepts.hpp"
+#include "CommonServer/Concepts/BTConcepts.hpp"
 #include "MessageObjects/MarketData/Quote.hpp"
+#include "CommonServer/TypeSystem/NumericTypes.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -18,28 +21,6 @@ namespace BeaconTech::MarketData
     MarketDataProcessor::MarketDataProcessor() : orderBook{}
     {
 
-    }
-
-    MarketDataProcessor& MarketDataProcessor::operator=(const MarketDataProcessor& other)
-    {
-        // Avoid self-assignment
-        if (this == &other) return *this;
-
-        orderBook = other.orderBook;
-        callback  = other.callback;
-
-        return *this;
-    }
-
-    MarketDataProcessor& MarketDataProcessor::operator=(MarketDataProcessor&& other) noexcept
-    {
-        // Avoid self-assigment
-        if (this == &other) return *this;
-
-        orderBook = other.orderBook;
-        callback = std::move(other.callback);
-
-        return *this;
     }
 
     void MarketDataProcessor::initialize(const Common::MdCallback& _callback)
@@ -55,11 +36,16 @@ namespace BeaconTech::MarketData
     void MarketDataProcessor::handle(const T& mbbo)
     {
         const MessageObjects::Quote* quote = orderBook.apply(mbbo);
-        if (quote != nullptr)
-        {
-            callback(mbbo.hd.instrument_id, *quote, orderBook.getBbos());
-            MarketDataUtils::printBbos(mbbo, orderBook.getBbos());
-        }
+        if (quote == nullptr) return;
+
+        std::uint32_t instrumentId = mbbo.hd.instrument_id;
+        const Common::Bbo* bbo = orderBook.getBbo(instrumentId);
+
+        // Only send downstream when bbo is valid
+        if (bbo == nullptr) return;
+        if (isnan(std::get<1>(*bbo).price) || isnan(std::get<2>(*bbo).price)) return;
+
+        callback(instrumentId, *quote, *bbo);
     }
 
     // The system is currently focused on market making strategies. As a result, the system is only processing
