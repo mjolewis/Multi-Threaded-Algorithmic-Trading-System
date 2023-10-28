@@ -11,9 +11,9 @@
 
 #include "MarketDataProcessor.hpp"
 #include "MarketData/MarketDataUtils.hpp"
-#include "CommonServer/concepts/BTConcepts.hpp"
-#include "MessageObjects/marketdata/Quote.hpp"
-#include "CommonServer/typesystem/NumericTypes.hpp"
+#include "CommonServer/Concepts/BTConcepts.hpp"
+#include "MessageObjects/MarketData/Quote.hpp"
+#include "CommonServer/TypeSystem/NumericTypes.hpp"
 
 namespace BeaconTech::MarketData
 {

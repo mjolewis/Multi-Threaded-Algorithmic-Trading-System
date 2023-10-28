@@ -9,7 +9,7 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_PRICELEVEL_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_PRICELEVEL_HPP
 
-#include "CommonServer/typesystem/NumericTypes.hpp"
+#include "CommonServer/TypeSystem/NumericTypes.hpp"
 
 namespace BeaconTech::MessageObjects
 {

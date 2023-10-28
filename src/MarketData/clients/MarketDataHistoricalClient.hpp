@@ -21,9 +21,9 @@
 #include <databento/log.hpp>
 
 #include "IMarketDataProvider.hpp"
-#include "MarketData/clients/MarketDataStreamingClient.hpp"
-#include "MarketData/processors/MarketDataProcessor.hpp"
-#include "CommonServer/typesystem/MdTypes.hpp"
+#include "MarketData/Clients/MarketDataStreamingClient.hpp"
+#include "MarketData/Processors/MarketDataProcessor.hpp"
+#include "CommonServer/TypeSystem/MdTypes.hpp"
 
 namespace BeaconTech::MarketData
 {

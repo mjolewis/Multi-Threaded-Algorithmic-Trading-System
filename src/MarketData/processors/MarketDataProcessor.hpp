@@ -11,8 +11,8 @@
 #include <databento/timeseries.hpp>
 
 #include "MarketData/OrderBook.hpp"
-#include "CommonServer/concepts/BTConcepts.hpp"
-#include "CommonServer/typesystem/MdTypes.hpp"
+#include "CommonServer/Concepts/BTConcepts.hpp"
+#include "CommonServer/TypeSystem/MdTypes.hpp"
 
 namespace BeaconTech::MarketData
 {

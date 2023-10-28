@@ -16,8 +16,8 @@
 #include "MarketDataLiveClient.hpp"
 #include "MarketDataStreamingClient.hpp"
 #include "MarketData/MarketDataUtils.hpp"
-#include "CommonServer/logging/LogLevel.hpp"
-#include "CommonServer/typesystem/MdTypes.hpp"
+#include "CommonServer/Logging/LogLevel.hpp"
+#include "CommonServer/TypeSystem/MdTypes.hpp"
 
 using namespace std::chrono_literals;
 
