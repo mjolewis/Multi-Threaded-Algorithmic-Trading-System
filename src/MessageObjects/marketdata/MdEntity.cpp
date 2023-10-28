@@ -33,12 +33,12 @@ namespace BeaconTech::MarketData
         this->exchangeTimestamp = exchangeTimestamp;
     }
 
-    int MdEntity::getTradeDate()
+    unsigned int MdEntity::getTradeDate()
     {
         return tradeDate;
     }
 
-    void MdEntity::setTradeDate(int tradeDate)
+    void MdEntity::setTradeDate(unsigned int tradeDate)
     {
         this->tradeDate = tradeDate;
     }

@@ -26,7 +26,7 @@ namespace BeaconTech::Common
 
         static bool boolConfigValueDefaultIfNull(const std::string& configName, const bool& defaultValue);
 
-        static int intConfigValueDefaultIfNull(const std::string& configName, const int& defaultValue);
+        static int32_t intConfigValueDefaultIfNull(const std::string& configName, const int32_t& defaultValue);
 
         static double doubleConfigValueDefaultIfNull(const std::string& configName, const double& defaultValue);
     };

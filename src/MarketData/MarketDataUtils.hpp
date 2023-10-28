@@ -34,7 +34,7 @@ namespace BeaconTech::MarketData
 
         static std::string getEnvironmentType();
 
-        static int getNumThreads();
+        static unsigned int getNumThreads();
 
         static bool isFlagSet(const databento::FlagSet& flag, std::uint8_t bit);
 

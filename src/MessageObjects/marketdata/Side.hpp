@@ -20,7 +20,7 @@ namespace BeaconTech::MarketData
     private:
         char fixCode;
 
-        Side(int id, std::string desc, char fixCode) : AbstractCodes{id, std::move(desc)}, fixCode{fixCode} {}
+        Side(int32_t id, std::string desc, char fixCode) : AbstractCodes{id, std::move(desc)}, fixCode{fixCode} {}
 
     public:
         Side() : fixCode{} {};
@@ -36,7 +36,7 @@ namespace BeaconTech::MarketData
         }
 
         // todo - Implement caching logic to look up codes by id
-        static const std::map<int, Common::AbstractCodes> CODES_BY_ID;
+        static const std::map<int32_t, Common::AbstractCodes> CODES_BY_ID;
 
         inline char getFixCode() const { return fixCode; }
 

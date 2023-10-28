@@ -19,11 +19,8 @@ namespace BeaconTech::MarketData
     class MarketDataConsumer
     {
     private:
-        inline static constexpr int NUM_THREADS = 4;
-
         std::shared_ptr<T> marketDataClient;
         std::shared_ptr<MarketDataProcessor> streamingProcessor;
-        std::array<std::thread, NUM_THREADS> consumerThreads;
         bool stopSignal;
 
     public:

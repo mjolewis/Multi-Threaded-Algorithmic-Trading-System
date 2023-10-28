@@ -60,7 +60,7 @@ namespace BeaconTech::Strategies
     // Calculates the positive modulo from the instrumentId and numEngineThreads.
     // Returns the engine at the associated index
     template<typename T>
-    int StrategyServer<T>::getEngineThread(const int& instrumentId) const
+    unsigned int StrategyServer<T>::getEngineThread(const std::uint32_t& instrumentId) const
     {
         return ((instrumentId % numEngineThreads) + numEngineThreads) % numEngineThreads;
     }
