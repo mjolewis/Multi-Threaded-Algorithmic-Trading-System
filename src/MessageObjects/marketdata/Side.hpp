@@ -12,7 +12,7 @@
 
 #include "CommonServer/datastructures/AbstractCodes.hpp"
 
-namespace BeaconTech::MessageObjects
+namespace BeaconTech::MarketData
 {
 
     class Side : public Common::AbstractCodes
@@ -59,7 +59,7 @@ namespace BeaconTech::MessageObjects
     inline const Side Side::SELL = Side{2, "Sell", 'A'};
     inline const Side Side::UNKNOWN = Side{3, "Unknown", 'N'};
 
-} // namespace BeaconTech::MessageObjects
+} // namespace BeaconTech::MarketData
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_SIDE_HPP

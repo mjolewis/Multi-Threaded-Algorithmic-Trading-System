@@ -35,16 +35,16 @@ namespace BeaconTech::Strategies
     private:
         StrategyEngine<T>& strategyEngine;
         const FeatureEngine& featureEngine;
-        const std::shared_ptr<OrderManager>& orderManager;
+        const std::shared_ptr<StrategyCommon::OrderManager>& orderManager;
         double targetSpreadBps;
 
     public:
         MarketMaker(StrategyEngine<T>& strategyEngine, const FeatureEngine& featureEngine,
-                    const std::shared_ptr<OrderManager>& orderManager);
+                    const std::shared_ptr<StrategyCommon::OrderManager>& orderManager);
 
         virtual ~MarketMaker() = default;
 
-        void onOrderBookUpdate(const MessageObjects::Quote &quote, const Common::Bbo& bbo);
+        void onOrderBookUpdate(const MarketData::Quote &quote, const Common::Bbo& bbo);
 
         // Deleted default ctors and assignment operators
         MarketMaker() = delete;

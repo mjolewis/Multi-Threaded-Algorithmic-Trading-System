@@ -15,18 +15,18 @@
 #include "Side.hpp"
 #include "CommonServer/typesystem/DateTimes.hpp"
 
-namespace BeaconTech::MessageObjects
+namespace BeaconTech::MarketData
 {
 
     struct Quote
     {
         std::uint32_t instrumentId;
-        BeaconTech::MessageObjects::Side side;
+        Side side;
         double price{};
         std::uint32_t size{};
         Common::UnixNanos timestamp{};
 
-        Quote(std::uint32_t instrumentId, BeaconTech::MessageObjects::Side side,
+        Quote(std::uint32_t instrumentId, Side side,
               double price, std::uint32_t size, Common::UnixNanos timestamp)
                 : instrumentId{instrumentId}, side{std::move(side)},
                   price{price}, size{size}, timestamp{timestamp}
@@ -34,7 +34,7 @@ namespace BeaconTech::MessageObjects
 
         }
     };
-} // namespace BeaconTech::MessageObjects
+} // namespace BeaconTech::MarketData
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_QUOTE_HPP

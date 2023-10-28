@@ -26,7 +26,7 @@
 #include "MessageObjects/marketdata/PriceLevel.hpp"
 #include "CommonServer/typesystem/DateTimes.hpp"
 
-namespace BeaconTech::MessageObjects
+namespace BeaconTech::MarketData
 {
     class OrderBook
     {
@@ -45,7 +45,7 @@ namespace BeaconTech::MessageObjects
         const Common::Bbo* getBbo(const std::uint32_t& instrumentId);
     };
 
-} // namespace BeaconTech::MessageObjects
+} // namespace BeaconTech::MarketData
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_ORDERBOOK_HPP

@@ -29,7 +29,7 @@ namespace BeaconTech::Strategies
 {
     template<typename T>
     MarketMaker<T>::MarketMaker(StrategyEngine<T>& strategyEngine, const FeatureEngine& featureEngine,
-                                const std::shared_ptr<OrderManager>& orderManager)
+                                const std::shared_ptr<StrategyCommon::OrderManager>& orderManager)
         : strategyEngine{strategyEngine}, featureEngine{featureEngine}, orderManager{orderManager},
           targetSpreadBps{Common::ConfigManager::doubleConfigValueDefaultIfNull("targetSpreadBps", 0.0002)}
     {
@@ -39,7 +39,7 @@ namespace BeaconTech::Strategies
 
     // Process the BBO, calculate fair market price, perform risk checks and create, modify, or cancel passive orders
     template<typename T>
-    void MarketMaker<T>::onOrderBookUpdate(const MessageObjects::Quote& quote, const Common::Bbo& bbo)
+    void MarketMaker<T>::onOrderBookUpdate(const MarketData::Quote& quote, const Common::Bbo& bbo)
     {
         double fairMarketPrice = featureEngine.getMarketPrice();
         if (fairMarketPrice == Common::NaN) return;

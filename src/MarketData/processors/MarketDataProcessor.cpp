@@ -35,7 +35,7 @@ namespace BeaconTech::MarketData
     requires Common::Mbbo<T>
     void MarketDataProcessor::handle(const T& mbbo)
     {
-        const MessageObjects::Quote* quote = orderBook.apply(mbbo);
+        const MarketData::Quote* quote = orderBook.apply(mbbo);
         if (quote == nullptr) return;
 
         std::uint32_t instrumentId = mbbo.hd.instrument_id;

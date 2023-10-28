@@ -19,7 +19,7 @@ namespace BeaconTech::MarketData
     class MarketDataProcessor
     {
     private:
-        MessageObjects::OrderBook orderBook;
+        MarketData::OrderBook orderBook;
         Common::MdCallback callback;
 
     public:

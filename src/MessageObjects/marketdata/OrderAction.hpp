@@ -12,7 +12,7 @@
 
 #include "CommonServer/datastructures/AbstractCodes.hpp"
 
-namespace BeaconTech::MessageObjects
+namespace BeaconTech::MarketData
 {
 
     class OrderAction : public Common::AbstractCodes
@@ -47,7 +47,7 @@ namespace BeaconTech::MessageObjects
     inline const OrderAction OrderAction::TRADE = OrderAction{5, "Trade", 'T'};
     inline const OrderAction OrderAction::FILL = OrderAction{6, "Fill", 'F'};
 
-} // namespace BeaconTech::MessageObjects
+} // namespace BeaconTech::MarketData
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_ORDERACTION_HPP

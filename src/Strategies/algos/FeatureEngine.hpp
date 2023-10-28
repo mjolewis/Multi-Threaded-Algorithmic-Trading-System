@@ -29,7 +29,7 @@ namespace BeaconTech::Strategies
 
         double getMarketPrice() const;
 
-        void onOrderBookUpdate(const MessageObjects::Quote& quote, const Common::Bbo& bbo);
+        void onOrderBookUpdate(const MarketData::Quote& quote, const Common::Bbo& bbo);
 
         // Deleted default ctors and assignment operators
         FeatureEngine(const FeatureEngine& other) = delete;

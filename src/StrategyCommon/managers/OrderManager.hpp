@@ -5,7 +5,7 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_ORDERMANAGER_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_ORDERMANAGER_HPP
 
-namespace BeaconTech
+namespace BeaconTech::StrategyCommon
 {
 
     class OrderManager
@@ -25,6 +25,6 @@ namespace BeaconTech
         OrderManager& operator=(OrderManager&& other) = delete;
     };
 
-} // BeaconTech
+} // BeaconTech::StrategyCommon
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_ORDERMANAGER_HPP

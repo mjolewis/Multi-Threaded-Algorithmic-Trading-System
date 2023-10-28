@@ -150,8 +150,8 @@ namespace BeaconTech::MarketData
         if (!Common::ConfigManager::boolConfigValueDefaultIfNull("printBbo", false)) return;
 
         std::uint32_t instrumentId;
-        MessageObjects::PriceLevel bestBid{};
-        MessageObjects::PriceLevel bestAsk{};
+        MarketData::PriceLevel bestBid{};
+        MarketData::PriceLevel bestAsk{};
 
         std::tie(instrumentId, bestBid, bestAsk) = bbo;
         auto formattedBid = boost::format("Best bid: %1% × %2%") % bestBid.price % bestBid.size;

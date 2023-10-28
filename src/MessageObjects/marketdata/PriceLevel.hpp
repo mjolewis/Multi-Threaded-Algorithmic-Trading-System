@@ -11,7 +11,7 @@
 
 #include "CommonServer/typesystem/NumericTypes.hpp"
 
-namespace BeaconTech::MessageObjects
+namespace BeaconTech::MarketData
 {
 
     struct PriceLevel
@@ -30,7 +30,7 @@ namespace BeaconTech::MessageObjects
 
         }
     };
-} // namespace BeaconTech::MessageObjects
+} // namespace BeaconTech::MarketData
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_PRICELEVEL_HPP
