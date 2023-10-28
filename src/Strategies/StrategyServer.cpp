@@ -45,10 +45,10 @@ namespace BeaconTech::Strategies
     template<typename T>
     void StrategyServer<T>::createThreads()
     {
-        for (unsigned int thread = 0; thread < numEngineThreads; ++thread)
+        for (uint32_t thread = 0; thread < numEngineThreads; ++thread)
         {
             // When numListeners > numEngineThreads, the extra threads should be used for logging
-            for (unsigned int listenerId = 0; listenerId < (numListeners / numEngineThreads); ++listenerId)
+            for (uint32_t listenerId = 0; listenerId < (numListeners / numEngineThreads); ++listenerId)
             {
                 strategyEngines.emplace_back(std::make_shared<StrategyEngine<T>>(*this, thread));
             }
@@ -60,14 +60,14 @@ namespace BeaconTech::Strategies
     // Calculates the positive modulo from the instrumentId and numEngineThreads.
     // Returns the engine at the associated index
     template<typename T>
-    unsigned int StrategyServer<T>::getEngineThread(const std::uint32_t& instrumentId) const
+    uint32_t StrategyServer<T>::getEngineThread(const uint32_t& instrumentId) const
     {
         return ((instrumentId % numEngineThreads) + numEngineThreads) % numEngineThreads;
     }
 
     // Schedules entities for processing by enqueueing them into a concurrent queue
     template<typename T>
-    void StrategyServer<T>::scheduleJob(const std::uint32_t& instrumentId,
+    void StrategyServer<T>::scheduleJob(const uint32_t& instrumentId,
                                         const MarketData::Quote& quote,
                                         const Common::Bbo& bbo)
     {
@@ -80,7 +80,7 @@ namespace BeaconTech::Strategies
     template<typename T>
     void StrategyServer<T>::subscribeToMarketData()
     {
-        callback = [&](const std::uint32_t& instrumentId,
+        callback = [&](const uint32_t& instrumentId,
                        const MarketData::Quote& quote,
                        const Common::Bbo& bbo) -> void {
             try

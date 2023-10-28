@@ -19,8 +19,9 @@
 
 #include "MarketMaker.hpp"
 #include "Strategies/StrategyEngine.hpp"
-#include "CommonServer/utils/ConfigManager.hpp"
 #include "FeatureEngine.hpp"
+#include "StrategyCommon/managers/OrderManager.hpp"
+#include "CommonServer/utils/ConfigManager.hpp"
 #include "MessageObjects/marketdata/Quote.hpp"
 #include "CommonServer/typesystem/NumericTypes.hpp"
 #include "MarketData/MarketDataUtils.hpp"
@@ -29,9 +30,10 @@ namespace BeaconTech::Strategies
 {
     template<typename T>
     MarketMaker<T>::MarketMaker(StrategyEngine<T>& strategyEngine, const FeatureEngine& featureEngine,
-                                const std::shared_ptr<StrategyCommon::OrderManager>& orderManager)
+                                const std::shared_ptr<OrderManager>& orderManager)
         : strategyEngine{strategyEngine}, featureEngine{featureEngine}, orderManager{orderManager},
-          targetSpreadBps{Common::ConfigManager::doubleConfigValueDefaultIfNull("targetSpreadBps", 0.0002)}
+          targetSpreadBps{Common::ConfigManager::doubleConfigValueDefaultIfNull("targetSpreadBps", 0.0002)},
+          targetSize{Common::ConfigManager::intConfigValueDefaultIfNull("targetSize", 100)}
     {
         // Initialize callbacks for the strategyEngine
         strategyEngine.onOrderBookUpdateAlgo = [this](auto quote, auto bbo) -> void { onOrderBookUpdate(quote, bbo); };
@@ -42,8 +44,9 @@ namespace BeaconTech::Strategies
     void MarketMaker<T>::onOrderBookUpdate(const MarketData::Quote& quote, const Common::Bbo& bbo)
     {
         double fairMarketPrice = featureEngine.getMarketPrice();
-        if (fairMarketPrice == Common::NaN) return;
+        if (fairMarketPrice == Common::NaN || std::isnan(fairMarketPrice)) return;
 
+        // todo - this is for illustration purpose. Should be removed when going to production
         MarketData::MarketDataUtils::printBbo(bbo, fairMarketPrice);
 
         double bidPrice = std::get<1>(bbo).price;
@@ -59,6 +62,7 @@ namespace BeaconTech::Strategies
         // between our fair market price and the BBO is >= to the threshold. The intuition is simple -
         // Use the BBO is when the security is undervalued (for bids) or overvalued (for asks)
         // relative to our fair market price.
+        //
         // The system will use a $1 offset to the BBO for orders it sends into the market whenever
         // the difference between our fair market price and the BBO is less than the threshold.
         // The intuition is simple - Use the offset price when the security is overvalued (for bids)
@@ -67,6 +71,8 @@ namespace BeaconTech::Strategies
         // price and the market is too narrow.
         bidPrice = bidPrice - (fairMarketPrice - bidPrice >= (bidPrice * targetSpreadBps) ? 0 : 1);
         askPrice = askPrice + (askPrice - fairMarketPrice >= (askPrice * targetSpreadBps) ? 0 : 1);
+
+        orderManager->onOrderRequest(std::get<0>(bbo), bidPrice, askPrice, targetSize);
     }
 } // BeaconTech
 

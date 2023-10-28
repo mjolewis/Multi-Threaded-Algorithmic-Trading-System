@@ -23,7 +23,7 @@ namespace BeaconTech::MarketData
         Side(int32_t id, std::string desc, char fixCode) : AbstractCodes{id, std::move(desc)}, fixCode{fixCode} {}
 
     public:
-        Side() : fixCode{} {};
+//        Side() : fixCode{} {};
 
         // Enum Declarations
         static const Side SELL;

@@ -35,12 +35,13 @@ namespace BeaconTech::Strategies
     private:
         StrategyEngine<T>& strategyEngine;
         const FeatureEngine& featureEngine;
-        const std::shared_ptr<StrategyCommon::OrderManager>& orderManager;
+        const std::shared_ptr<OrderManager>& orderManager;
         double targetSpreadBps;
+        std::uint32_t targetSize;
 
     public:
         MarketMaker(StrategyEngine<T>& strategyEngine, const FeatureEngine& featureEngine,
-                    const std::shared_ptr<StrategyCommon::OrderManager>& orderManager);
+                    const std::shared_ptr<OrderManager>& orderManager);
 
         virtual ~MarketMaker() = default;
 

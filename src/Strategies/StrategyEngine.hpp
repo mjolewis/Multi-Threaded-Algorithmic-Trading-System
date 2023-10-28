@@ -35,7 +35,7 @@ namespace BeaconTech::Strategies
         const StrategyServer<T>& server;
         unsigned int threadId;
         FeatureEngine featureEngine;
-        std::shared_ptr<StrategyCommon::OrderManager> orderManager;
+        std::shared_ptr<OrderManager> orderManager;
         std::shared_ptr<MarketMaker<T>> marketMaker;
 
     public:

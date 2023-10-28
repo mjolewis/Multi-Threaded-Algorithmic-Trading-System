@@ -19,7 +19,7 @@ namespace BeaconTech::Strategies
     template<typename T>
     StrategyEngine<T>::StrategyEngine(const StrategyServer<T>& server, const unsigned int& threadId)
         : server{server}, threadId{threadId}, featureEngine{},
-          orderManager{std::make_shared<StrategyCommon::OrderManager>()}
+          orderManager{std::make_shared<OrderManager>()}
     {
         marketMaker = std::make_shared<MarketMaker<T>>(*this, featureEngine, orderManager);
     }
