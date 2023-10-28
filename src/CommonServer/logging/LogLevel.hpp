@@ -9,7 +9,7 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_LOGLEVEL_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_LOGLEVEL_HPP
 
-#include "CommonServer/DataStructures/AbstractCodes.hpp"
+#include "CommonServer/datastructures/AbstractCodes.hpp"
 
 namespace BeaconTech::Common
 {
@@ -35,7 +35,7 @@ namespace BeaconTech::Common
     inline const LogLevel LogLevel::WARN = LogLevel{2, "Warn"};
     inline const LogLevel LogLevel::SEVERE = LogLevel{3, "Severe"};
 
-} // namespace BeaconTech::Utils
+} // namespace BeaconTech::utils
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_LOGLEVEL_HPP

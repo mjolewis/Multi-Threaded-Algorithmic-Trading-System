@@ -18,7 +18,7 @@
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_CONCURRENTLOCKFREEQUEUE_CPP
 
 #include "ConcurrentLockFreeQueue.hpp"
-#include "CommonServer/Utils/ConfigManager.hpp"
+#include "CommonServer/utils/ConfigManager.hpp"
 
 namespace BeaconTech::Common
 {

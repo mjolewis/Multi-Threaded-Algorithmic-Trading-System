@@ -21,9 +21,9 @@
 #include <databento/log.hpp>
 
 #include "IMarketDataProvider.hpp"
-#include "MarketData/Clients/MarketDataStreamingClient.hpp"
-#include "MarketData/Processors/MarketDataProcessor.hpp"
-#include "CommonServer/TypeSystem/MdTypes.hpp"
+#include "MarketData/clients/MarketDataStreamingClient.hpp"
+#include "MarketData/processors/MarketDataProcessor.hpp"
+#include "CommonServer/typesystem/MdTypes.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -72,7 +72,7 @@ namespace BeaconTech::MarketData
 
         MarketDataHistoricalClient& operator=(MarketDataHistoricalClient&& other) = delete;
     };
-} // namespace BeaconTech::MarketData
+} // namespace BeaconTech::marketdata
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATAHISTORICALCLIENT_HPP
