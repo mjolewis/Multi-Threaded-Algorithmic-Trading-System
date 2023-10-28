@@ -10,7 +10,7 @@
 #include <array>
 #include <memory>
 
-#include "MarketData/processors/MarketDataProcessor.hpp"
+#include "MarketData/Processors/MarketDataProcessor.hpp"
 #include "MarketData/MarketDataUtils.hpp"
 
 namespace BeaconTech::MarketData
@@ -47,7 +47,7 @@ namespace BeaconTech::MarketData
         MarketDataConsumer<T>& operator=(MarketDataConsumer<T>&& other) = delete;
     };
 
-} // namespace BeaconTech::marketdata
+} // namespace BeaconTech::MarketData
 
 
 // ********** Start Template Definitions **********
