@@ -18,7 +18,7 @@ namespace BeaconTech::MessageObjects
     class EnvironmentType : public DataStructures::AbstractCodes
         {
         private:
-            EnvironmentType(int id, std::string desc) : AbstractCodes(id, std::move(desc)) {}
+            EnvironmentType(int32_t id, std::string desc) : AbstractCodes(id, std::move(desc)) {}
 
         public:
             EnvironmentType() = default;
@@ -30,7 +30,7 @@ namespace BeaconTech::MessageObjects
             static const EnvironmentType PROD;
 
             // todo - Implement caching logic to look up codes by id
-            static const std::map<int, AbstractCodes> CODES_BY_ID;
+            static const std::map<int32_t, AbstractCodes> CODES_BY_ID;
         };
 
     // Enum definitions

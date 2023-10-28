@@ -16,11 +16,11 @@ namespace BeaconTech::Common
     class AbstractCodes
     {
     private:
-        int id{};
+        int32_t id{};
         std::string desc;
 
     protected:
-        AbstractCodes(int id, std::string desc)
+        AbstractCodes(int32_t id, std::string desc)
         {
             this->id = id;
             this->desc = std::move(desc);
@@ -31,9 +31,9 @@ namespace BeaconTech::Common
 
         virtual ~AbstractCodes() = default;
 
-        inline virtual std::string getDesc() const {return this->desc;}
+        inline virtual std::string getDesc() const { return this->desc; }
 
-        inline virtual constexpr explicit operator int() const {return id;}
+        inline virtual constexpr explicit operator int32_t() const { return id; }
     };
 }
 

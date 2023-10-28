@@ -16,7 +16,7 @@ namespace BeaconTech::Common
     class LogLevel : public Common::AbstractCodes
     {
     private:
-        LogLevel(int id, std::string desc) : Common::AbstractCodes(id, std::move(desc)) {}
+        LogLevel(int32_t id, std::string desc) : Common::AbstractCodes(id, std::move(desc)) {}
 
     public:
         LogLevel() = default;
@@ -27,7 +27,7 @@ namespace BeaconTech::Common
         static const LogLevel SEVERE;
 
         // todo - Implement caching logic to look up codes by id
-        static const std::map<int, AbstractCodes> CODES_BY_ID;
+        static const std::map<int32_t, AbstractCodes> CODES_BY_ID;
     };
 
     // Enum definitions

@@ -31,9 +31,9 @@ namespace BeaconTech::MarketData
 
         void setExchangeTimestamp(Common::UnixNanos exchangeTimestamp);
 
-        int getTradeDate();
+        unsigned int getTradeDate();
 
-        void setTradeDate(int tradeDate);
+        void setTradeDate(unsigned int tradeDate);
     };
 } // namespace BeaconTech::MarketData
 

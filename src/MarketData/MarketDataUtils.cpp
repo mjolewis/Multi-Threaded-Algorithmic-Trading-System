@@ -32,7 +32,7 @@ namespace BeaconTech::MarketData
     // Build the market data client. Retry up to a maximum of 10 times before throwing an error
     databento::Historical MarketDataUtils::getHistoricalClient()
     {
-        int attempts = 0;
+        unsigned int attempts = 0;
         while (true)
         {
             try
@@ -79,7 +79,7 @@ namespace BeaconTech::MarketData
     // Build the market data client. Retry up to a maximum of 10 times before throwing an error
     databento::LiveBlocking MarketDataUtils::getLiveClient()
     {
-        int attempts = 0;
+        unsigned int attempts = 0;
         while (true)
         {
             try
@@ -133,7 +133,7 @@ namespace BeaconTech::MarketData
     }
 
     // Used to partition the system into multiple symbol ranged engines (aka threads)
-    int MarketDataUtils::getNumThreads()
+    unsigned int MarketDataUtils::getNumThreads()
     {
         return Common::ConfigManager::intConfigValueDefaultIfNull("numThreads", 1);
     }

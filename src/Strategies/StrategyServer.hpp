@@ -51,7 +51,7 @@ namespace BeaconTech::Strategies
 
         void createThreads();
 
-        int getEngineThread(const int& instrumentId) const;
+        unsigned int getEngineThread(const std::uint32_t& instrumentId) const;
 
         void subscribeToMarketData();
 

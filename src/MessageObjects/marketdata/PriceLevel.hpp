@@ -18,14 +18,14 @@ namespace BeaconTech::MarketData
     {
         double price;
         std::uint32_t size;
-        int count;
+        unsigned int count;
 
         PriceLevel() : price{Common::NaN}, size{0}, count{0}
         {
 
         }
 
-        PriceLevel(double price, std::uint32_t size, int count) : price{price}, size{size}, count{count}
+        PriceLevel(double price, std::uint32_t size, unsigned count) : price{price}, size{size}, count{count}
         {
 
         }

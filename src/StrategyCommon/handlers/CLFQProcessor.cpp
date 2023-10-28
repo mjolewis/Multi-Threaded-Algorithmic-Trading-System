@@ -19,7 +19,7 @@
 namespace BeaconTech::Common
 {
     template<typename T>
-    CLFQProcessor<T>::CLFQProcessor(unsigned int& threadId) : CLFQueue{threadId}, shouldTerminate{false}
+    CLFQProcessor<T>::CLFQProcessor(const unsigned int& threadId) : CLFQueue{threadId}, shouldTerminate{false}
     {
         start();
     }

@@ -59,7 +59,7 @@ namespace BeaconTech::Common
     }
 
     // Extracts a string value from the config and converts it into an int. Default if null
-    int ConfigManager::intConfigValueDefaultIfNull(const std::string& configName, const int& defaultValue)
+    int32_t ConfigManager::intConfigValueDefaultIfNull(const std::string& configName, const int32_t& defaultValue)
     {
         auto config = configs.find(configName);
         return config == configs.cend() ? defaultValue : std::stoi(config->second);

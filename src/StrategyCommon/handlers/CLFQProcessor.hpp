@@ -32,7 +32,7 @@ namespace BeaconTech::Common
         void threadLoop();
 
     public:
-        explicit CLFQProcessor(unsigned int& threadId);
+        explicit CLFQProcessor(const unsigned int& threadId);
 
         virtual ~CLFQProcessor() = default;
 
