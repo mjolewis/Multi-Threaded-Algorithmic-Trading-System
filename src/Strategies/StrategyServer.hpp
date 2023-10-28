@@ -37,8 +37,8 @@ namespace BeaconTech::Strategies
     class StrategyServer
     {
     private:
-        int numEngineThreads;
-        int numListeners;
+        uint32_t numEngineThreads;
+        uint32_t numListeners;
         std::vector<std::shared_ptr<StrategyEngine<T>>> strategyEngines;
         std::vector<std::shared_ptr<CLFQProcessor>> queueProcessors;
         std::shared_ptr<T> marketDataClient;
@@ -51,7 +51,7 @@ namespace BeaconTech::Strategies
 
         void createThreads();
 
-        unsigned int getEngineThread(const std::uint32_t& instrumentId) const;
+        uint32_t getEngineThread(const uint32_t& instrumentId) const;
 
         void subscribeToMarketData();
 

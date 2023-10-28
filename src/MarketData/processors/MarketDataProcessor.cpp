@@ -28,22 +28,20 @@ namespace BeaconTech::MarketData
         this->callback = _callback;
     }
 
-    // Handles incoming quotes and applies it to the order book.
-    // The quotes are MBOs (Market by Order); however, this is configurable.
+    // Handles incoming market by order messages and updates the order book.
     // Performs compile-time validation via a Concept
     template<typename T>
     requires Common::Mbbo<T>
     void MarketDataProcessor::handle(const T& mbbo)
     {
         const MarketData::Quote* quote = orderBook.apply(mbbo);
-        if (quote == nullptr) return;
+        if (quote == nullptr) [[unlikely]] return;
 
         std::uint32_t instrumentId = mbbo.hd.instrument_id;
         const Common::Bbo* bbo = orderBook.getBbo(instrumentId);
 
         // Only send downstream when bbo is valid
-        if (bbo == nullptr) return;
-        if (isnan(std::get<1>(*bbo).price) || isnan(std::get<2>(*bbo).price)) return;
+        if (bbo == nullptr) [[unlikely]] return;
 
         callback(instrumentId, *quote, *bbo);
     }
