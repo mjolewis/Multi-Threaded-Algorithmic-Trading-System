@@ -23,7 +23,9 @@ using a binary protocol (order submission is currently under development).
 1. Feed Handlers
 2. Order Book Builder
 3. Strategies
-4. OMS
+4. Order Manager (In Development)
+5. Position Manager (Scoping)
+6. Risk Manager (Backlog)
 
 # System Architecture
 
