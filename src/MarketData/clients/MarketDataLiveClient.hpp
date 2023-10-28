@@ -17,7 +17,7 @@
 
 #include "IMarketDataProvider.hpp"
 #include "MarketDataStreamingClient.hpp"
-#include "CommonServer/TypeSystem/MdTypes.hpp"
+#include "CommonServer/typesystem/MdTypes.hpp"
 
 namespace BeaconTech::MarketData
 {

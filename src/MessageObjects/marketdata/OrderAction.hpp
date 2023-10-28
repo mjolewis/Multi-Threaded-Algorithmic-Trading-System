@@ -10,7 +10,7 @@
 #include <map>
 #include <string>
 
-#include "CommonServer/DataStructures/AbstractCodes.hpp"
+#include "CommonServer/datastructures/AbstractCodes.hpp"
 
 namespace BeaconTech::MessageObjects
 {

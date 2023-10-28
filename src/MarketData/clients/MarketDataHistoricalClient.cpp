@@ -18,9 +18,9 @@
 #include "MarketDataHistoricalClient.hpp"
 #include "MarketData/MarketDataUtils.hpp"
 #include "MarketDataStreamingClient.hpp"
-#include "MarketData/Processors/MarketDataProcessor.hpp"
-#include "CommonServer/Utils/ConfigManager.hpp"
-#include "CommonServer/Logging/LogLevel.hpp"
+#include "MarketData/processors/MarketDataProcessor.hpp"
+#include "CommonServer/utils/ConfigManager.hpp"
+#include "CommonServer/logging/LogLevel.hpp"
 
 namespace BeaconTech::MarketData
 {
