@@ -19,12 +19,12 @@
 #include <string>
 #include <utility>
 
-#include "databento/timeseries.hpp"
+#include "cmake-build-debug/_deps/databento-src/include/databento/timeseries.hpp"
 
-#include "CommonServer/typesystem/MdTypes.hpp"
-#include "MessageObjects/marketdata/Quote.hpp"
-#include "MessageObjects/marketdata/PriceLevel.hpp"
-#include "CommonServer/typesystem/DateTimes.hpp"
+#include "CommonServer/TypeSystem/MdTypes.hpp"
+#include "MessageObjects/MarketData/Quote.hpp"
+#include "MessageObjects/MarketData/PriceLevel.hpp"
+#include "CommonServer/TypeSystem/DateTimes.hpp"
 
 namespace BeaconTech::MessageObjects
 {

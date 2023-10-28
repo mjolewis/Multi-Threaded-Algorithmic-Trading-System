@@ -13,7 +13,7 @@
 #include <utility>
 
 #include "Side.hpp"
-#include "CommonServer/typesystem/DateTimes.hpp"
+#include "CommonServer/TypeSystem/DateTimes.hpp"
 
 namespace BeaconTech::MessageObjects
 {

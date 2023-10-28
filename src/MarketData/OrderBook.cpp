@@ -17,11 +17,11 @@
 #include "databento/fixed_price.hpp"
 
 #include "OrderBook.hpp"
-#include "MessageObjects/marketdata/PriceLevel.hpp"
-#include "MessageObjects/marketdata/Side.hpp"
-#include "MessageObjects/marketdata/OrderAction.hpp"
-#include "MessageObjects/marketdata/Quote.hpp"
-#include "CommonServer/typesystem/NumericTypes.hpp"
+#include "MessageObjects/MarketData/PriceLevel.hpp"
+#include "MessageObjects/MarketData/Side.hpp"
+#include "MessageObjects/MarketData/OrderAction.hpp"
+#include "MessageObjects/MarketData/Quote.hpp"
+#include "CommonServer/TypeSystem/NumericTypes.hpp"
 
 namespace BeaconTech::MessageObjects
 {

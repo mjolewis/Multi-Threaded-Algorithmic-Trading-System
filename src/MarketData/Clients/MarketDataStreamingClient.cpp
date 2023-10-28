@@ -12,7 +12,7 @@
 
 #include "MarketDataStreamingClient.hpp"
 #include "MarketDataHistoricalClient.hpp"
-#include "CommonServer/typesystem/MdTypes.hpp"
+#include "CommonServer/TypeSystem/MdTypes.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -29,7 +29,7 @@ namespace BeaconTech::MarketData
     {
         // Each supported installation will eventually have their own processors. This function
         // will then determine which processor to create based on the installation configuration.
-        // processors are installation specific because market data and the governing regulations vary
+        // Processors are installation specific because market data and the governing regulations vary
         // across regions, which impacts data attributes in the book update. The processors will be customized
         // to handle these differences appropriately. (Example installations US, EU, CA).
         streamingProcessor = std::make_shared<MarketDataProcessor>();
@@ -44,7 +44,7 @@ namespace BeaconTech::MarketData
         streamingProcessor->initialize(callback);
         streamingConsumer.start(marketDataClient);
     }
-} // namespace BeaconTech::marketdata
+} // namespace BeaconTech::MarketData
 
 
 #endif

@@ -16,14 +16,14 @@
 #include <memory>
 
 #include "StrategyEngine.hpp"
-#include "MarketData/clients/MarketDataHistoricalClient.hpp"
-#include "MarketData/clients/MarketDataLiveClient.hpp"
-#include "MessageObjects/marketdata/Quote.hpp"
-#include "CommonServer/typesystem/MdTypes.hpp"
-#include "CommonServer/datastructures/ConcurrentQueueProcessor.hpp"
-#include "CommonServer/datastructures/ConcurrentLockFreeQueue.hpp"
-#include "StrategyCommon/handlers/CLFQProcessor.hpp"
-#include "MessageObjects/marketdata/Quote.hpp"
+#include "MarketData/Clients/MarketDataHistoricalClient.hpp"
+#include "MarketData/Clients/MarketDataLiveClient.hpp"
+#include "MessageObjects/MarketData/Quote.hpp"
+#include "CommonServer/TypeSystem/MdTypes.hpp"
+#include "CommonServer/DataStructures/ConcurrentQueueProcessor.hpp"
+#include "CommonServer/DataStructures/ConcurrentLockFreeQueue.hpp"
+#include "StrategyCommon/Handlers/CLFQProcessor.hpp"
+#include "MessageObjects/MarketData/Quote.hpp"
 
 namespace BeaconTech::Strategies
 {

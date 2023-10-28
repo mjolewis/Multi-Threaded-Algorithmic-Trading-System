@@ -8,7 +8,7 @@
 #include <functional>
 #include <memory>
 
-#include "MarketData/processors/MarketDataProcessor.hpp"
+#include "MarketData/Processors/MarketDataProcessor.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -24,7 +24,7 @@ namespace BeaconTech::MarketData
 
         virtual void stop() = 0;
     };
-} // namespace BeaconTech::marketdata
+} // namespace BeaconTech::MarketData
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_IMARKETDATAPROVIDER_HPP

@@ -11,9 +11,9 @@
 
 #include "MarketDataProcessor.hpp"
 #include "MarketData/MarketDataUtils.hpp"
-#include "CommonServer/concepts/BTConcepts.hpp"
-#include "MessageObjects/marketdata/Quote.hpp"
-#include "CommonServer/typesystem/NumericTypes.hpp"
+#include "CommonServer/Concepts/BTConcepts.hpp"
+#include "MessageObjects/MarketData/Quote.hpp"
+#include "CommonServer/TypeSystem/NumericTypes.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -60,7 +60,7 @@ namespace BeaconTech::MarketData
     }
 
     // Process the book update from the Consumer. OrderBook updates are subsequently delegated to
-    // a templated handler that performs compile-time validation via concepts
+    // a templated handler that performs compile-time validation via Concepts
     databento::KeepGoing MarketDataProcessor::processBookUpdate(const databento::Record& record)
     {
         auto mbo = record.Get<databento::MboMsg>();
@@ -71,4 +71,4 @@ namespace BeaconTech::MarketData
 
         return databento::KeepGoing::Continue;
     }
-} // namespace BeaconTech::marketdata
+} // namespace BeaconTech::MarketData

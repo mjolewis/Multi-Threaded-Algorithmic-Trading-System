@@ -16,9 +16,9 @@
 #include <databento/flag_set.hpp>
 #include <nlohmann/json.hpp>
 
-#include "CommonServer/logging/LogLevel.hpp"
+#include "src/CommonServer/Logging/LogLevel.hpp"
 #include "OrderBook.hpp"
-#include "MessageObjects/marketdata/PriceLevel.hpp"
+#include "src/MessageObjects/MarketData/PriceLevel.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -40,7 +40,7 @@ namespace BeaconTech::MarketData
 
         static void printBbo(const Common::Bbo& bbo, const double& fairMarketPrice);
     };
-} // namespace BeaconTech::marketdata
+} // namespace BeaconTech::MarketData
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATAUTILS_HPP

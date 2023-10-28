@@ -4,9 +4,9 @@
 
 #include <iostream>
 
-#include "CommonServer/utils/ConfigManager.hpp"
-#include "MarketData/clients/MarketDataHistoricalClient.hpp"
-#include "MarketData/clients/MarketDataLiveClient.hpp"
+#include "CommonServer/Utils/ConfigManager.hpp"
+#include "MarketData/Clients/MarketDataHistoricalClient.hpp"
+#include "MarketData/Clients/MarketDataLiveClient.hpp"
 #include "Strategies/StrategyServer.hpp"
 
 int main()

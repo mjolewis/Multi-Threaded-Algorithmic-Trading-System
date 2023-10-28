@@ -17,7 +17,7 @@
 
 #include "IMarketDataProvider.hpp"
 #include "MarketDataStreamingClient.hpp"
-#include "CommonServer/typesystem/MdTypes.hpp"
+#include "CommonServer/TypeSystem/MdTypes.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -62,7 +62,7 @@ namespace BeaconTech::MarketData
 
         MarketDataLiveClient operator=(MarketDataLiveClient&& other) = delete;
     };
-} // namespace BeaconTech::marketdata
+} // namespace BeaconTech::MarketData
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATALIVECLIENT_HPP

@@ -15,15 +15,18 @@
 #include <databento/exceptions.hpp>
 #include <databento/log.hpp>
 #include <databento/flag_set.hpp>
+#include <databento/fixed_price.hpp>
 
 #include "MarketDataUtils.hpp"
-#include "CommonServer/utils/ConfigManager.hpp"
+#include "CommonServer/Utils/ConfigManager.hpp"
+#include "src/CommonServer/Logging/LogLevel.hpp"
+#include "src/MessageObjects/MarketData/PriceLevel.hpp"
 
 using namespace std::chrono_literals;
 
 namespace BeaconTech::MarketData
 {
-    // logging utility. Will eventually need to convert to a low-latency custom-built or 3rd party logging library
+    // Logging utility. Will eventually need to convert to a low-latency custom-built or 3rd party logging library
     void MarketDataUtils::log(const Common::LogLevel& logLevel, const std::string& message)
     {
         std::cerr << logLevel.getDesc() << " : " << message << std::endl;
@@ -167,4 +170,4 @@ namespace BeaconTech::MarketData
                   << formattedFairPrice.str()
                   << std::endl;
     }
-} // namespace BeaconTech::marketdata
+} // namespace BeaconTech::MarketData

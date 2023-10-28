@@ -13,9 +13,9 @@
 #include <memory>
 
 #include "StrategyServer.hpp"
-#include "CommonServer/utils/ConfigManager.hpp"
-#include "StrategyCommon/handlers/CLFQProcessor.hpp"
-#include "MessageObjects/marketdata/Quote.hpp"
+#include "CommonServer/Utils/ConfigManager.hpp"
+#include "StrategyCommon/Handlers/CLFQProcessor.hpp"
+#include "MessageObjects/MarketData/Quote.hpp"
 
 namespace BeaconTech::Strategies
 {
