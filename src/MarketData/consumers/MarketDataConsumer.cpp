@@ -10,7 +10,7 @@
 #include <future>
 
 #include "MarketDataConsumer.hpp"
-#include "MarketData/processors/MarketDataProcessor.hpp"
+#include "MarketData/Processors/MarketDataProcessor.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -42,7 +42,7 @@ namespace BeaconTech::MarketData
     {
         stopSignal = true;
     }
-} // namespace BeaconTech::marketdata
+} // namespace BeaconTech::MarketData
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATACONSUMER_CPP

@@ -32,4 +32,4 @@ namespace BeaconTech::Common
 
         return std::chrono::duration<double>(elapsedTime).count();
     }
-} // namespace BeaconTech::utils
+} // namespace BeaconTech::Utils
