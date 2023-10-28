@@ -11,8 +11,8 @@
 
 #include "StrategyEngine.hpp"
 #include "StrategyServer.hpp"
-#include "MessageObjects/MarketData/Quote.hpp"
-#include "Strategies/MarketMaker.hpp"
+#include "MessageObjects/marketdata/Quote.hpp"
+#include "Strategies/algos/MarketMaker.hpp"
 
 namespace BeaconTech::Strategies
 {
