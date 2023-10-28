@@ -12,7 +12,7 @@
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_FEATUREENGINE_HPP
 
 #include "MarketData/OrderBook.hpp"
-#include "MessageObjects/MarketData/Quote.hpp"
+#include "MessageObjects/marketdata/Quote.hpp"
 
 namespace BeaconTech::Strategies
 {
