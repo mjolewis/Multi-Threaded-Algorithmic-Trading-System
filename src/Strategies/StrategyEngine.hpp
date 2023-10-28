@@ -16,7 +16,8 @@
 #include "MarketData/OrderBook.hpp"
 #include "MessageObjects/MarketData/Quote.hpp"
 #include "Strategies/MarketMaker.hpp"
-#include "StrategyCommon/FeatureEngine.hpp"
+#include "FeatureEngine.hpp"
+#include "StrategyCommon/OrderManager.hpp"
 
 namespace BeaconTech::Strategies
 {
@@ -33,8 +34,10 @@ namespace BeaconTech::Strategies
     private:
         const StrategyServer<T>& server;
         unsigned int threadId;
-        std::shared_ptr<MarketMaker<T>> marketMakerAlgo;
         FeatureEngine featureEngine;
+        std::shared_ptr<OrderManager> orderManager;
+        std::shared_ptr<MarketMaker<T>> marketMaker;
+
 
     public:
         StrategyEngine(const StrategyServer<T>& server, const unsigned int& threadId);

@@ -10,6 +10,7 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_CLFQPROCESSOR_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_CLFQPROCESSOR_HPP
 
+#include <atomic>
 #include <functional>
 #include <memory>
 #include <thread>

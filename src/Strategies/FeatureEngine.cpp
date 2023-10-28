@@ -8,8 +8,6 @@
 // Created by Michael Lewis on 10/24/23.
 //
 
-#include <iostream>
-
 #include "FeatureEngine.hpp"
 #include "MessageObjects/MarketData/Quote.hpp"
 #include "CommonServer/TypeSystem/NumericTypes.hpp"
@@ -39,15 +37,10 @@ namespace BeaconTech::Strategies
         std::tie(instrumentId, bestBid, bestAsk) = bbo;
 
         double bidPrice = bestBid.price;
-        std::int64_t bidSize = bestBid.size;
+        double bidSize = static_cast<double>(bestBid.size);
         double askPrice = bestAsk.price;
-        std::int64_t askSize = bestAsk.size;
+        double askSize = static_cast<double>(bestAsk.size);
 
-        marketPrice = (bidPrice * askSize + askPrice * bidSize) / static_cast<double>(bidSize + askSize);
-
-//        std::cout << "InstrumentId=" << instrumentId
-//                  << ", bidPrice=" << bidPrice << ", bidSize=" << bidSize
-//                  << ", askPrice=" << askPrice << ", askSize=" << askSize
-//                  << ", fairPrice=" << marketPrice << std::endl;
+        marketPrice = (bidPrice * askSize + askPrice * bidSize) / (bidSize + askSize);
     }
 } // BeaconTech

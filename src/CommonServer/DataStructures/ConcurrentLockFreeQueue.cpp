@@ -17,8 +17,6 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_CONCURRENTLOCKFREEQUEUE_CPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_CONCURRENTLOCKFREEQUEUE_CPP
 
-#include <iostream>
-
 #include "ConcurrentLockFreeQueue.hpp"
 #include "CommonServer/Utils/ConfigManager.hpp"
 
@@ -45,7 +43,7 @@ namespace BeaconTech::Common
     void ConcurrentLockFreeQueue<T>::updateWriteIndex() noexcept
     {
         nextWriteIndex = (nextWriteIndex + 1) % CLFQueue.size();
-        ++numElements;
+        numElements++;
     }
 
     // Returns a pointer to the next element to be consumed or a nullPtr if there is no element available
@@ -60,7 +58,7 @@ namespace BeaconTech::Common
     void ConcurrentLockFreeQueue<T>::updateNextToRead() noexcept
     {
         nextReadIndex = (nextReadIndex + 1) % CLFQueue.size();
-        --numElements;
+        numElements--;
     }
 
     template<typename T>

@@ -48,7 +48,7 @@ namespace BeaconTech::Common
             try
             {
                 // Terminate the event loop
-                if (shouldTerminate) return;
+                if (shouldTerminate) break;
 
                 // Gets a pointer to the next element to be consumed or a nullPtr
                 const auto job = CLFQueue.getNextToRead();
@@ -76,9 +76,6 @@ namespace BeaconTech::Common
     template<typename T>
     void CLFQProcessor<T>::stop()
     {
-        // Flush the queue before shutting down
-        while (busy()) continue;
-
         shouldTerminate = true;
         for (std::thread& thread : threadPool)
         {
