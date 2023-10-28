@@ -11,8 +11,8 @@
 #include <databento/timeseries.hpp>
 
 #include "MarketData/OrderBook.hpp"
-#include "CommonServer/Concepts/BTConcepts.hpp"
-#include "CommonServer/TypeSystem/MdTypes.hpp"
+#include "CommonServer/concepts/BTConcepts.hpp"
+#include "CommonServer/typesystem/MdTypes.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -49,7 +49,7 @@ namespace BeaconTech::MarketData
 
         MarketDataProcessor& operator=(MarketDataProcessor&& other) = delete;
     };
-} // namespace BeaconTech::MarketData
+} // namespace BeaconTech::marketdata
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATAPROCESSOR_HPP

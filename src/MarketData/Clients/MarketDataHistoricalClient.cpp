@@ -18,9 +18,9 @@
 #include "MarketDataHistoricalClient.hpp"
 #include "MarketData/MarketDataUtils.hpp"
 #include "MarketDataStreamingClient.hpp"
-#include "MarketData/Processors/MarketDataProcessor.hpp"
-#include "CommonServer/Utils/ConfigManager.hpp"
-#include "CommonServer/Logging/LogLevel.hpp"
+#include "MarketData/processors/MarketDataProcessor.hpp"
+#include "CommonServer/utils/ConfigManager.hpp"
+#include "CommonServer/logging/LogLevel.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -56,7 +56,7 @@ namespace BeaconTech::MarketData
     {
         // Batch download historical data files for back-testing
         return _client->BatchDownload(
-                Common::ConfigManager::stringConfigValueDefaultIfNull("marketData", "../src/MarketData/HistoricalData"),
+                Common::ConfigManager::stringConfigValueDefaultIfNull("marketData", "../src/marketdata/historicaldata"),
                 Common::ConfigManager::stringConfigValueDefaultIfNull("fileToDownload", ""));
     }
 
@@ -109,4 +109,4 @@ namespace BeaconTech::MarketData
     {
         MarketDataUtils::log(Common::LogLevel::INFO, "Terminated session gateway with MarketDataClient");
     }
-} // namespace BeaconTech::MarketData
+} // namespace BeaconTech::marketdata
