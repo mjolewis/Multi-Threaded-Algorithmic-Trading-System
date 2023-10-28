@@ -29,11 +29,11 @@ namespace BeaconTech::Strategies
     // For example, the market is likely to trend toward the offer when there are more open bids,
     // so the fair price is tilted toward the offer. Conversely, the market is likely to trend toward
     // the bid when there are more open offers, so the fair price is tilted toward the bid.
-    void FeatureEngine::onOrderBookUpdate(const MessageObjects::Quote& quote, const Common::Bbo& bbo)
+    void FeatureEngine::onOrderBookUpdate(const MarketData::Quote& quote, const Common::Bbo& bbo)
     {
         std::uint32_t instrumentId;
-        MessageObjects::PriceLevel bestBid{};
-        MessageObjects::PriceLevel bestAsk{};
+        MarketData::PriceLevel bestBid{};
+        MarketData::PriceLevel bestAsk{};
         std::tie(instrumentId, bestBid, bestAsk) = bbo;
 
         double bidPrice = bestBid.price;

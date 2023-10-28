@@ -23,7 +23,7 @@
 #include "MessageObjects/marketdata/Quote.hpp"
 #include "CommonServer/typesystem/NumericTypes.hpp"
 
-namespace BeaconTech::MessageObjects
+namespace BeaconTech::MarketData
 {
     OrderBook::OrderBook() : orderBooks{std::make_shared<Common::OrderBooks>()},
         bbos{std::make_shared<Common::Bbos>()}, bbo{}

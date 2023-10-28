@@ -5,7 +5,7 @@
 #include "MdEntity.hpp"
 #include "CommonServer/typesystem/DateTimes.hpp"
 
-namespace BeaconTech::MessageObjects
+namespace BeaconTech::MarketData
 {
     MdEntity::MdEntity(const MdEntity& mdEntity)
             : symbol{mdEntity.symbol}, exchangeTimestamp{mdEntity.exchangeTimestamp}, tradeDate{mdEntity.tradeDate}
@@ -42,4 +42,4 @@ namespace BeaconTech::MessageObjects
     {
         this->tradeDate = tradeDate;
     }
-}
+} // namespace BeaconTech::MarketData

@@ -18,14 +18,15 @@ namespace BeaconTech::Strategies
 {
     template<typename T>
     StrategyEngine<T>::StrategyEngine(const StrategyServer<T>& server, const unsigned int& threadId)
-        : server{server}, threadId{threadId}, featureEngine{}, orderManager{std::make_shared<OrderManager>()}
+        : server{server}, threadId{threadId}, featureEngine{},
+          orderManager{std::make_shared<StrategyCommon::OrderManager>()}
     {
         marketMaker = std::make_shared<MarketMaker<T>>(*this, featureEngine, orderManager);
     }
 
     // Informs the feature engine and strategy about quotes and book updates
     template<typename T>
-    void StrategyEngine<T>::onOrderBookUpdate(const MessageObjects::Quote& quote, const Common::Bbo& bbo)
+    void StrategyEngine<T>::onOrderBookUpdate(const MarketData::Quote& quote, const Common::Bbo& bbo)
     {
         featureEngine.onOrderBookUpdate(quote, bbo);
         onOrderBookUpdateAlgo(quote, bbo);

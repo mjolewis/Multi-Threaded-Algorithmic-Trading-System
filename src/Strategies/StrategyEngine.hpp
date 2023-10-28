@@ -35,7 +35,7 @@ namespace BeaconTech::Strategies
         const StrategyServer<T>& server;
         unsigned int threadId;
         FeatureEngine featureEngine;
-        std::shared_ptr<OrderManager> orderManager;
+        std::shared_ptr<StrategyCommon::OrderManager> orderManager;
         std::shared_ptr<MarketMaker<T>> marketMaker;
 
     public:
@@ -43,10 +43,10 @@ namespace BeaconTech::Strategies
 
         virtual ~StrategyEngine() = default;
 
-        void onOrderBookUpdate(const MessageObjects::Quote& quote, const Common::Bbo& bbo);
+        void onOrderBookUpdate(const MarketData::Quote& quote, const Common::Bbo& bbo);
 
         // Callbacks that dispatch order book updates and downstream responses to the trading algorithm
-        std::function<void (const MessageObjects::Quote &quote, const Common::Bbo& bbo)> onOrderBookUpdateAlgo;
+        std::function<void (const MarketData::Quote &quote, const Common::Bbo& bbo)> onOrderBookUpdateAlgo;
 
         // Deleted default ctors and assignment operators
         StrategyEngine() = delete;

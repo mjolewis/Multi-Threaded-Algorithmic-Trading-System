@@ -4,6 +4,6 @@
 
 #include "OrderManager.hpp"
 
-namespace BeaconTech
+namespace BeaconTech::StrategyCommon
 {
-} // BeaconTech
+} // BeaconTech::StrategyCommon

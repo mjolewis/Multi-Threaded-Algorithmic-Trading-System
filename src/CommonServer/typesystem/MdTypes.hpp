@@ -17,19 +17,19 @@
 namespace BeaconTech::Common
 {
     // key = orderId -> quote
-    using OrderBook = std::unordered_map<std::uint64_t, MessageObjects::Quote>;
+    using OrderBook = std::unordered_map<std::uint64_t, MarketData::Quote>;
 
     // key = instrumentId -> OrderBook
     using OrderBooks = std::unordered_map<std::uint32_t, OrderBook>;
 
     // instrumentId, Bid, Ask
-    using Bbo = std::tuple<std::uint32_t, MessageObjects::PriceLevel, MessageObjects::PriceLevel>;
+    using Bbo = std::tuple<std::uint32_t, MarketData::PriceLevel, MarketData::PriceLevel>;
 
     // key = instrumentId -> std::tuple<instrumentId, bid, ask>
     using Bbos = std::unordered_map<std::uint32_t, Bbo>;
 
     using MdCallback = std::function<void (const std::uint32_t& instrumentId,
-                                           const MessageObjects::Quote& quote,
+                                           const MarketData::Quote& quote,
                                            const Bbo& bbo)>;
 
 } // namespace BeaconTech::Common

@@ -55,7 +55,7 @@ namespace BeaconTech::Strategies
 
         void subscribeToMarketData();
 
-        void scheduleJob(const std::uint32_t& instrumentId, const MessageObjects::Quote& quote, const Common::Bbo& bbo);
+        void scheduleJob(const std::uint32_t& instrumentId, const MarketData::Quote& quote, const Common::Bbo& bbo);
 
         // Deleted default ctors and assignment operators
         StrategyServer(const StrategyServer<T>& other) = delete;

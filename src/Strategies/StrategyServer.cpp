@@ -68,7 +68,7 @@ namespace BeaconTech::Strategies
     // Schedules entities for processing by enqueueing them into a concurrent queue
     template<typename T>
     void StrategyServer<T>::scheduleJob(const std::uint32_t& instrumentId,
-                                        const MessageObjects::Quote& quote,
+                                        const MarketData::Quote& quote,
                                         const Common::Bbo& bbo)
     {
         queueProcessors.at(getEngineThread(instrumentId))->enqueue([&]() {
@@ -81,7 +81,7 @@ namespace BeaconTech::Strategies
     void StrategyServer<T>::subscribeToMarketData()
     {
         callback = [&](const std::uint32_t& instrumentId,
-                       const MessageObjects::Quote& quote,
+                       const MarketData::Quote& quote,
                        const Common::Bbo& bbo) -> void {
             try
             {
