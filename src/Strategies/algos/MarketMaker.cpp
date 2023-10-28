@@ -18,12 +18,11 @@
 #include <tuple>
 
 #include "MarketMaker.hpp"
-#include "StrategyEngine.hpp"
-#include "CommonServer/Utils/ConfigManager.hpp"
+#include "Strategies/StrategyEngine.hpp"
+#include "CommonServer/utils/ConfigManager.hpp"
 #include "FeatureEngine.hpp"
-#include "StrategyCommon/OrderManager.hpp"
-#include "MessageObjects/MarketData/Quote.hpp"
-#include "CommonServer/TypeSystem/NumericTypes.hpp"
+#include "MessageObjects/marketdata/Quote.hpp"
+#include "CommonServer/typesystem/NumericTypes.hpp"
 #include "MarketData/MarketDataUtils.hpp"
 
 namespace BeaconTech::Strategies

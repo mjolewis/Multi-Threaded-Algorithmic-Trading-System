@@ -9,8 +9,8 @@
 //
 
 #include "FeatureEngine.hpp"
-#include "MessageObjects/MarketData/Quote.hpp"
-#include "CommonServer/TypeSystem/NumericTypes.hpp"
+#include "MessageObjects/marketdata/Quote.hpp"
+#include "CommonServer/typesystem/NumericTypes.hpp"
 
 namespace BeaconTech::Strategies
 {
