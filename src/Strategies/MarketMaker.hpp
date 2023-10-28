@@ -18,8 +18,9 @@
 #include <memory>
 
 #include "StrategyEngine.hpp"
+#include "FeatureEngine.hpp"
+#include "StrategyCommon/OrderManager.hpp"
 #include "MessageObjects/MarketData/Quote.hpp"
-#include "StrategyCommon/FeatureEngine.hpp"
 
 namespace BeaconTech::Strategies
 {
@@ -34,9 +35,12 @@ namespace BeaconTech::Strategies
     private:
         StrategyEngine<T>& strategyEngine;
         const FeatureEngine& featureEngine;
+        const std::shared_ptr<OrderManager>& orderManager;
+        double targetSpreadBps;
 
     public:
-        MarketMaker(StrategyEngine<T>& strategyEngine, const FeatureEngine& featureEngine);
+        MarketMaker(StrategyEngine<T>& strategyEngine, const FeatureEngine& featureEngine,
+                    const std::shared_ptr<OrderManager>& orderManager);
 
         virtual ~MarketMaker() = default;
 

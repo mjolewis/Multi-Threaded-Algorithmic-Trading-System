@@ -41,13 +41,14 @@ namespace BeaconTech::Common
         }
     }
 
+    // Extracts a string value from the config. Default if null
     std::string ConfigManager::stringConfigValueDefaultIfNull(const std::string& configName, const std::string& defaultValue)
     {
         auto config = configs.find(configName);
         return config == configs.cend() ? defaultValue : config->second;
     }
 
-    // Extracts a string value from the config and converts it into a bool
+    // Extracts a string value from the config and converts it into a bool. Default if null
     bool ConfigManager::boolConfigValueDefaultIfNull(const std::string& configName, const bool& defaultValue)
     {
         auto config = configs.find(configName);
@@ -57,10 +58,17 @@ namespace BeaconTech::Common
                                    [&](char lhs, char rhs) { return std::tolower(lhs) == std::tolower(rhs); } );
     }
 
-    // Extracts a string value from the config and converts it into an int
+    // Extracts a string value from the config and converts it into an int. Default if null
     int ConfigManager::intConfigValueDefaultIfNull(const std::string& configName, const int& defaultValue)
     {
         auto config = configs.find(configName);
         return config == configs.cend() ? defaultValue : std::stoi(config->second);
+    }
+
+    // Extracts a string value from the config and converts it into a double. Default if null
+    double ConfigManager::doubleConfigValueDefaultIfNull(const std::string& configName, const double& defaultValue)
+    {
+        auto config = configs.find(configName);
+        return config == configs.cend() ? defaultValue : std::stod(config->second);
     }
 } // namespace BeaconTech::Common
