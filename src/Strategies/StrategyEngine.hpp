@@ -11,13 +11,13 @@
 #include <memory>
 
 #include "StrategyServer.hpp"
-#include "MarketData/Clients/MarketDataHistoricalClient.hpp"
-#include "MarketData/Clients/MarketDataLiveClient.hpp"
+#include "MarketData/clients/MarketDataHistoricalClient.hpp"
+#include "MarketData/clients/MarketDataLiveClient.hpp"
 #include "MarketData/OrderBook.hpp"
-#include "MessageObjects/MarketData/Quote.hpp"
-#include "Strategies/MarketMaker.hpp"
-#include "FeatureEngine.hpp"
-#include "StrategyCommon/OrderManager.hpp"
+#include "MessageObjects/marketdata/Quote.hpp"
+#include "Strategies/algos/MarketMaker.hpp"
+#include "Strategies/algos/FeatureEngine.hpp"
+#include "StrategyCommon/managers/OrderManager.hpp"
 
 namespace BeaconTech::Strategies
 {

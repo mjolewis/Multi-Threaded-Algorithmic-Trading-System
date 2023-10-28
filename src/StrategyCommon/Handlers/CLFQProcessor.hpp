@@ -16,7 +16,7 @@
 #include <thread>
 #include <vector>
 
-#include "CommonServer/DataStructures/ConcurrentLockFreeQueue.hpp"
+#include "CommonServer/datastructures/ConcurrentLockFreeQueue.hpp"
 
 namespace BeaconTech::Common
 {

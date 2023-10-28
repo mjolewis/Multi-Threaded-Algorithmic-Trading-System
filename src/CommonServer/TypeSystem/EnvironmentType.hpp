@@ -11,7 +11,7 @@
 
 #include <map>
 
-#include "src/DataStructures/AbstractCodes.hpp"
+#include "datastructures/AbstractCodes.hpp"
 
 namespace BeaconTech::MessageObjects
 {

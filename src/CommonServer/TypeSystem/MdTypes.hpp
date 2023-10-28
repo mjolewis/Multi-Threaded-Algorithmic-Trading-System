@@ -11,8 +11,8 @@
 #include <functional>
 
 #include "MarketData/OrderBook.hpp"
-#include "MessageObjects/MarketData/Quote.hpp"
-#include "MessageObjects/MarketData/PriceLevel.hpp"
+#include "MessageObjects/marketdata/Quote.hpp"
+#include "MessageObjects/marketdata/PriceLevel.hpp"
 
 namespace BeaconTech::Common
 {

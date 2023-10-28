@@ -10,7 +10,7 @@
 
 #include <chrono>
 
-#include "src/CommonServer/TypeSystem/DateTimes.hpp"
+#include "CommonServer/typesystem/DateTimes.hpp"
 
 namespace BeaconTech::Common
 {
@@ -35,7 +35,7 @@ namespace BeaconTech::Common
         double elapsedTime() const;
     };
 
-} // namespace BeaconTech::Utils
+} // namespace BeaconTech::utils
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_STOPWATCH_HPP

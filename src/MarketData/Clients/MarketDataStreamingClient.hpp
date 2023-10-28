@@ -10,9 +10,9 @@
 
 #include "memory"
 
-#include "MarketData/Processors/MarketDataProcessor.hpp"
-#include "MarketData/Consumers/MarketDataConsumer.hpp"
-#include "CommonServer/TypeSystem/MdTypes.hpp"
+#include "MarketData/processors/MarketDataProcessor.hpp"
+#include "MarketData/consumers/MarketDataConsumer.hpp"
+#include "CommonServer/typesystem/MdTypes.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -45,7 +45,7 @@ namespace BeaconTech::MarketData
 
         MarketDataStreamingClient<T>& operator=(MarketDataStreamingClient&& other) = delete;
     };
-} // namespace BeaconTech::MarketData
+} // namespace BeaconTech::marketdata
 
 
 // ********** Start Template Definitions **********
