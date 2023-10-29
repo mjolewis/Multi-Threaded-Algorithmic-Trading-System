@@ -23,15 +23,15 @@
 #include "StrategyCommon/managers/OrderManager.hpp"
 #include "CommonServer/utils/ConfigManager.hpp"
 #include "MessageObjects/marketdata/Quote.hpp"
-#include "CommonServer/typesystem/NumericTypes.hpp"
 #include "MarketData/MarketDataUtils.hpp"
+#include "CommonServer/utils/Clock.hpp"
 
 namespace BeaconTech::Strategies
 {
     template<typename T>
-    MarketMaker<T>::MarketMaker(StrategyEngine<T>& strategyEngine, const FeatureEngine& featureEngine,
-                                const std::shared_ptr<OrderManager>& orderManager)
-        : strategyEngine{strategyEngine}, featureEngine{featureEngine}, orderManager{orderManager},
+    MarketMaker<T>::MarketMaker(StrategyEngine<T>& strategyEngine, const std::shared_ptr<Common::Clock>& clock,
+                                const FeatureEngine& featureEngine, const std::shared_ptr<OrderManager>& orderManager)
+        : strategyEngine{strategyEngine}, clock{clock}, featureEngine{featureEngine}, orderManager{orderManager},
           targetSpreadBps{Common::ConfigManager::doubleConfigValueDefaultIfNull("targetSpreadBps", 0.0002)},
           targetSize{Common::ConfigManager::intConfigValueDefaultIfNull("targetSize", 100)}
     {
@@ -44,7 +44,7 @@ namespace BeaconTech::Strategies
     void MarketMaker<T>::onOrderBookUpdate(const MarketData::Quote& quote, const Common::Bbo& bbo)
     {
         double fairMarketPrice = featureEngine.getMarketPrice();
-        if (fairMarketPrice == Common::NaN || std::isnan(fairMarketPrice)) return;
+        if (std::isnan(fairMarketPrice)) return;
 
         // todo - this is for illustration purpose. Should be removed when going to production
         MarketData::MarketDataUtils::printBbo(bbo, fairMarketPrice);

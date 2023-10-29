@@ -11,9 +11,7 @@
 
 #include "MarketDataProcessor.hpp"
 #include "MarketData/MarketDataUtils.hpp"
-#include "CommonServer/concepts/BTConcepts.hpp"
 #include "MessageObjects/marketdata/Quote.hpp"
-#include "CommonServer/typesystem/NumericTypes.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -35,6 +33,11 @@ namespace BeaconTech::MarketData
     void MarketDataProcessor::handle(const T& mbbo)
     {
         const MarketData::Quote* quote = orderBook.apply(mbbo);
+
+        // FlagSet::kLast indicates the last message in the packet from the venue for a given instrument
+        // and the book should only be inspected for the instrument after this messages is received
+        if (!MarketDataUtils::isFlagSet(mbbo.flags, databento::FlagSet::kLast)) return;
+
         if (quote == nullptr) [[unlikely]] return;
 
         std::uint32_t instrumentId = mbbo.hd.instrument_id;
@@ -64,8 +67,9 @@ namespace BeaconTech::MarketData
         auto mbo = record.Get<databento::MboMsg>();
         handle<databento::MboMsg>(mbo);
 
-        auto trade = record.Get<databento::TradeMsg>();
-        handle<databento::TradeMsg>(trade);
+        // todo uncomment if we want to build liquidity taking strategies
+        // auto trade = record.Get<databento::TradeMsg>();
+        // handle<databento::TradeMsg>(trade);
 
         return databento::KeepGoing::Continue;
     }

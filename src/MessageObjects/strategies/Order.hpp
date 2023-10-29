@@ -19,14 +19,16 @@ namespace BeaconTech::Strategies
 
     struct Order
     {
-        uint32_t createTime{0};
+        int64_t clOrdId{};  // todo need to build a number generator. Format <ProcId_TradeDate_9 slots for order counter>
+        Common::TimePoint createTime{};
         ExecType execType{ExecType::UNKNOWN};
         uint32_t instrumentId{0};
+        Common::TimePoint lastModTime{};
         double price{0};
         OrderStatus orderStatus{OrderStatus::UNKNOWN};
         uint32_t qty{0};
         MarketData::Side side{MarketData::Side::UNKNOWN};
-        uint32_t tradeDate{0};
+        Common::TradeDate tradeDate{};
         int32_t version{0};
     };
 }
