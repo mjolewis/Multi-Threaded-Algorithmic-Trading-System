@@ -16,23 +16,29 @@
 
 namespace BeaconTech::Strategies
 {
-    OrderManager::OrderManager() : openOrders{std::unique_ptr<std::unordered_map<std::uint32_t, Strategies::Order>>()}
+    OrderManager::OrderManager(const std::shared_ptr<Common::Clock>& clock)
+        : clock{clock}, openOrders{std::make_unique<std::unordered_map<uint32_t, Strategies::Order>>()}
     {
 
     }
 
     // Creates buy and sell orders for the MarketMaker, uses the RiskManager for pre-trade risk checks,
     // and sends the orders into the market
-    void OrderManager::onOrderRequest(const std::uint32_t& instrumentId, double bidPrice, double askPrice, uint32_t qty)
+    void OrderManager::onOrderRequest(const uint32_t& instrumentId, double bidPrice, double askPrice, uint32_t qty)
     {
-        Strategies::Order buyOrder = OrderUtil::createOrder(instrumentId, bidPrice, qty,
-                                                         MarketData::Side::BUY, ExecType::SUBMIT,
-                                                         OrderStatus::SUBMIT_PENDING);
-
-        Strategies::Order sellOrder = OrderUtil::createOrder(instrumentId, bidPrice, qty,
-                                                            MarketData::Side::SELL, ExecType::SUBMIT,
+        Strategies::Order buyOrder = OrderUtil::createOrder(instrumentId, clock, bidPrice, qty,
+                                                            MarketData::Side::BUY, ExecType::SUBMIT,
                                                             OrderStatus::SUBMIT_PENDING);
 
-        // todo have the RiskManager perform pre-trade risk checks
+        Strategies::Order sellOrder = OrderUtil::createOrder(instrumentId, clock, askPrice, qty,
+                                                             MarketData::Side::SELL, ExecType::SUBMIT,
+                                                             OrderStatus::SUBMIT_PENDING);
+
+        // todo cancel/modify open orders if necessary, perform pre-trade risk checks in RiskManager
+        //      need a SubmitHandler, ReplaceHandler, CancelHandler and will pass the order to the
+        //      respective handler
+
+        openOrders->emplace(buyOrder.clOrdId, buyOrder);
+        openOrders->emplace(sellOrder.clOrdId, sellOrder);
     }
 } // BeaconTech::StrategyCommon

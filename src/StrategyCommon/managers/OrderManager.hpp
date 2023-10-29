@@ -12,6 +12,7 @@
 #include <unordered_map>
 
 #include "MessageObjects/strategies/Order.hpp"
+#include "CommonServer/utils/Clock.hpp"
 
 namespace BeaconTech::Strategies
 {
@@ -19,14 +20,15 @@ namespace BeaconTech::Strategies
     class OrderManager
     {
     private:
-        std::unique_ptr<std::unordered_map<std::uint32_t, Strategies::Order>> openOrders;
+        const std::shared_ptr<Common::Clock>& clock;
+        std::unique_ptr<std::unordered_map<uint32_t, Strategies::Order>> openOrders; // instrumentId -> order
 
     public:
-        OrderManager();
+        OrderManager(const std::shared_ptr<Common::Clock>& clock);
 
         virtual ~OrderManager() = default;
 
-        static void onOrderRequest(const std::uint32_t& instrumentId, double bidPrice, double askPrice, uint32_t qty);
+        void onOrderRequest(const uint32_t& instrumentId, double bidPrice, double askPrice, uint32_t qty);
 
         // Deleted default ctors and assignment operators
         OrderManager(const OrderManager& other) = delete;

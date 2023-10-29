@@ -17,6 +17,9 @@ namespace BeaconTech::Common
     // Measure distance between points in time
     using TimePoint = std::chrono::steady_clock::time_point;
 
+    // YYYY-MM-DD
+    using TradeDate = std::chrono::year_month_weekday;
+
 } // namespace BeaconTech::Common
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_DATETIMES_HPP

@@ -11,11 +11,11 @@
 
 #include <map>
 
-#include "datastructures/AbstractCodes.hpp"
+#include "CommonServer/datastructures/AbstractCodes.hpp"
 
 namespace BeaconTech::MessageObjects
 {
-    class EnvironmentType : public DataStructures::AbstractCodes
+    class EnvironmentType : public Common::AbstractCodes
         {
         private:
             EnvironmentType(int32_t id, std::string desc) : AbstractCodes(id, std::move(desc)) {}

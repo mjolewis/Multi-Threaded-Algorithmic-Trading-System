@@ -18,6 +18,7 @@
 #include "Strategies/algos/MarketMaker.hpp"
 #include "Strategies/algos/FeatureEngine.hpp"
 #include "StrategyCommon/managers/OrderManager.hpp"
+#include "CommonServer/utils/Clock.hpp"
 
 namespace BeaconTech::Strategies
 {
@@ -34,6 +35,7 @@ namespace BeaconTech::Strategies
     private:
         const StrategyServer<T>& server;
         unsigned int threadId;
+        std::shared_ptr<Common::Clock> clock;
         FeatureEngine featureEngine;
         std::shared_ptr<OrderManager> orderManager;
         std::shared_ptr<MarketMaker<T>> marketMaker;
