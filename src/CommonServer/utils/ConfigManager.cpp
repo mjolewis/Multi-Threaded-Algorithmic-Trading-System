@@ -52,6 +52,8 @@ namespace BeaconTech::Common
     bool ConfigManager::boolConfigValueDefaultIfNull(const std::string& configName, const bool& defaultValue)
     {
         auto config = configs.find(configName);
+        if (config == configs.cend()) return defaultValue;
+
         const std::string& testValue = "true";
         return std::equal(config->second.cbegin(), config->second.cend(),
                                    testValue.cbegin(), testValue.cend(),

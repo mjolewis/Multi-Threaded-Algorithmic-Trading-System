@@ -9,7 +9,7 @@
 
 #include <cstdint>
 
-#include "marketdata/Side.hpp"
+#include "MessageObjects/marketdata/Side.hpp"
 #include "ExecType.hpp"
 #include "OrderStatus.hpp"
 #include "CommonServer/typesystem/DateTimes.hpp"

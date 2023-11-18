@@ -46,7 +46,7 @@ namespace BeaconTech::Strategies
 
         inline char getFixCode() const { return fixCode; }
 
-        inline static OrderStatus fromFix(char fixCode_, int32_t id)
+        inline static OrderStatus fromFix(char fixCode_)
         {
             switch(fixCode_)
             {
