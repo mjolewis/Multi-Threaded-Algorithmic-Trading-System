@@ -19,7 +19,7 @@
 #include "OrderBook.hpp"
 #include "MessageObjects/marketdata/PriceLevel.hpp"
 #include "MessageObjects/marketdata/Side.hpp"
-#include "MessageObjects/marketdata/OrderAction.hpp"
+#include "MessageObjects/marketdata/OrderBookAction.hpp"
 #include "MessageObjects/marketdata/Quote.hpp"
 #include "CommonServer/typesystem/NumericTypes.hpp"
 
@@ -37,7 +37,7 @@ namespace BeaconTech::MarketData
 
         // Trade or Fill -> No change to book because all fills are
         // accompanied by cancel actions that do update the book
-        if (action == OrderAction::TRADE.getFixCode() || action == OrderAction::FILL.getFixCode())
+        if (action == OrderBookAction::TRADE.getFixCode() || action == OrderBookAction::FILL.getFixCode())
         {
             return nullptr;
         }
@@ -49,7 +49,7 @@ namespace BeaconTech::MarketData
         auto price = double(mboMsg.price) / databento::kFixedPriceScale;
         auto size = mboMsg.size;
 
-        if (action == OrderAction::CLEAR.getFixCode())  // Clears all resting orders for the given instrumentId
+        if (action == OrderBookAction::CLEAR.getFixCode())  // Clears all resting orders for the given instrumentId
         {
             const auto& orderBook = orderBooks->find(instrumentId);
             if (orderBook != orderBooks->cend())
@@ -57,7 +57,7 @@ namespace BeaconTech::MarketData
                 orderBook->second.clear();
             }
         }
-        else if (action == OrderAction::ADD.getFixCode())  // Adds a new order for the given instrumentId
+        else if (action == OrderBookAction::ADD.getFixCode())  // Adds a new order for the given instrumentId
         {
             const auto& orderBook = orderBooks->find(instrumentId);
             Side side_ = Side::fromFix(side);
@@ -73,7 +73,7 @@ namespace BeaconTech::MarketData
 
             return &(orderBooks->find(instrumentId)->second.find(orderId)->second);
         }
-        else if (action == OrderAction::CANCEL.getFixCode())  // Partial or full cancel
+        else if (action == OrderBookAction::CANCEL.getFixCode())  // Partial or full cancel
         {
             const auto& orderBook = orderBooks->find(instrumentId);
             if (orderBook != orderBooks->cend())
@@ -93,7 +93,7 @@ namespace BeaconTech::MarketData
                 return &restingOrder->second;
             }
         }
-        else if (action == OrderAction::MODIFY.getFixCode())  // Modifies the price or size
+        else if (action == OrderBookAction::MODIFY.getFixCode())  // Modifies the price or size
         {
             const auto& orderBook = orderBooks->find(instrumentId);
             if (orderBook != orderBooks->cend())
