@@ -9,7 +9,9 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_PRICELEVEL_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_PRICELEVEL_HPP
 
-#include "CommonServer/typesystem/NumericTypes.hpp"
+#include <utility>
+
+#include "CommonServer/types/NumericTypes.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -18,14 +20,16 @@ namespace BeaconTech::MarketData
     {
         double price;
         std::uint32_t size;
+        MarketData::Side side;
         unsigned int count;
 
-        PriceLevel() : price{Common::NaN}, size{0}, count{0}
+        PriceLevel() : price{Common::NaN}, size{0}, side{MarketData::Side::UNKNOWN}, count{0}
         {
 
         }
 
-        PriceLevel(double price, std::uint32_t size, unsigned count) : price{price}, size{size}, count{count}
+        PriceLevel(double price, std::uint32_t size, MarketData::Side side, unsigned count)
+            : price{price}, size{size}, side{std::move(side)}, count{count}
         {
 
         }
