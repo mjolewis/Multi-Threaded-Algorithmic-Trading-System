@@ -12,7 +12,6 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATAHISTORICALCLIENT_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATAHISTORICALCLIENT_HPP
 
-#include <functional>
 #include <memory>
 #include <vector>
 #include <string>
@@ -23,7 +22,6 @@
 #include "IMarketDataProvider.hpp"
 #include "MarketData/clients/MarketDataStreamingClient.hpp"
 #include "MarketData/processors/MarketDataProcessor.hpp"
-#include "CommonServer/typesystem/MdTypes.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -41,29 +39,29 @@ namespace BeaconTech::MarketData
     {
     private:
         std::string clientName;
-        std::shared_ptr<databento::Historical> client;
-        std::shared_ptr<MarketDataStreamingClient<MarketDataHistoricalClient>> streamingClient;
+        databento::Historical client;
+        std::unique_ptr<MarketDataStreamingClient<MarketDataHistoricalClient>> streamingClient;
 
-        static std::vector<std::string> doBatchDownload(const std::shared_ptr<databento::Historical>& _client);
+        static std::vector<std::string> doBatchDownload(databento::Historical& _client);
 
         static std::vector<std::string> readFromFile();
 
     public:
-        MarketDataHistoricalClient() = default;
-
         explicit MarketDataHistoricalClient(std::string clientName);
 
         ~MarketDataHistoricalClient() override = default;
 
-        void subscribe(std::shared_ptr<MarketDataHistoricalClient> marketDataClient, const Common::MdCallback& callback);
+        void subscribe(MarketDataHistoricalClient& marketDataClient, const Common::MdCallback& callback);
 
-        std::function<void ()> getBookUpdate(std::shared_ptr<MarketDataProcessor>& streamingProcessor) override;
+        std::function<void ()> getBookUpdate(MarketDataProcessor& streamingProcessor) override;
 
         const std::string& getClientName() const;
 
         void stop() override;
 
         // Deleted default ctors and assignment operators
+        MarketDataHistoricalClient() = delete;
+
         MarketDataHistoricalClient(const MarketDataHistoricalClient& other) = delete;
 
         MarketDataHistoricalClient(MarketDataHistoricalClient&& other) = delete;

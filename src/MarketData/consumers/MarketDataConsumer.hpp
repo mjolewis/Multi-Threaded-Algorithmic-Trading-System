@@ -7,9 +7,6 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATACONSUMER_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATACONSUMER_HPP
 
-#include <array>
-#include <memory>
-
 #include "MarketData/processors/MarketDataProcessor.hpp"
 #include "MarketData/MarketDataUtils.hpp"
 
@@ -19,16 +16,16 @@ namespace BeaconTech::MarketData
     class MarketDataConsumer
     {
     private:
-        std::shared_ptr<T> marketDataClient;
-        std::shared_ptr<MarketDataProcessor> streamingProcessor;
+        T* marketDataClient;
+        MarketDataProcessor& streamingProcessor;
         bool stopSignal;
 
     public:
-        explicit MarketDataConsumer(std::shared_ptr<MarketDataProcessor> streamingProcessor);
+        explicit MarketDataConsumer(MarketDataProcessor& streamingProcessor);
 
         virtual ~MarketDataConsumer() = default;
 
-        void start(std::shared_ptr<T> marketDataClient);
+        void start(T& marketDataClient);
 
         void stop();
 

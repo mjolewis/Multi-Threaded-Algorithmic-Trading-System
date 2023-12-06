@@ -20,7 +20,7 @@ namespace BeaconTech::MarketData
 
         virtual ~IMarketDataProvider() = default;
 
-        virtual std::function<void ()> getBookUpdate(std::shared_ptr<MarketDataProcessor>& streamingProcessor) = 0;
+        virtual std::function<void ()> getBookUpdate(MarketDataProcessor& streamingProcessor) = 0;
 
         virtual void stop() = 0;
     };
