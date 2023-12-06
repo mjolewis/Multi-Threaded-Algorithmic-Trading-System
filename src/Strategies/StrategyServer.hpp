@@ -19,7 +19,7 @@
 #include "MarketData/clients/MarketDataHistoricalClient.hpp"
 #include "MarketData/clients/MarketDataLiveClient.hpp"
 #include "MessageObjects/marketdata/Quote.hpp"
-#include "CommonServer/typesystem/MdTypes.hpp"
+#include "CommonServer/types/MdTypes.hpp"
 #include "CommonServer/datastructures/ConcurrentQueueProcessor.hpp"
 #include "CommonServer/datastructures/ConcurrentLockFreeQueue.hpp"
 #include "StrategyCommon/handlers/CLFQProcessor.hpp"
@@ -39,9 +39,9 @@ namespace BeaconTech::Strategies
     private:
         uint32_t numEngineThreads;
         uint32_t numListeners;
-        std::vector<std::shared_ptr<StrategyEngine<T>>> strategyEngines;
-        std::vector<std::shared_ptr<CLFQProcessor>> queueProcessors;
-        std::shared_ptr<T> marketDataClient;
+        std::vector<std::unique_ptr<StrategyEngine<T>>> strategyEngines;
+        std::vector<std::unique_ptr<CLFQProcessor>> queueProcessors;
+        T marketDataClient;
         Common::MdCallback callback;
 
     public:

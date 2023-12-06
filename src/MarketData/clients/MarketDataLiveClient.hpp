@@ -8,16 +8,13 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATALIVECLIENT_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATALIVECLIENT_HPP
 
-#include <functional>
 #include <memory>
 #include <string>
 
 #include <databento/live.hpp>
-#include <databento/log.hpp>
 
 #include "IMarketDataProvider.hpp"
 #include "MarketDataStreamingClient.hpp"
-#include "CommonServer/typesystem/MdTypes.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -35,25 +32,26 @@ namespace BeaconTech::MarketData
     {
     private:
         std::string clientName;
-        std::shared_ptr<databento::LiveBlocking> client;
-        std::shared_ptr<MarketDataStreamingClient<MarketDataLiveClient>> streamingClient;
+        databento::LiveBlocking client;
+        std::unique_ptr<MarketDataStreamingClient<MarketDataLiveClient>> streamingClient;
 
     public:
-        MarketDataLiveClient() = default;
 
         explicit MarketDataLiveClient(std::string clientName);
 
         ~MarketDataLiveClient() override = default;
 
-        void subscribe(std::shared_ptr<MarketDataLiveClient> marketDataClient, const Common::MdCallback& callback);
+        void subscribe(MarketDataLiveClient& marketDataClient, const Common::MdCallback& callback);
 
-        std::function<void ()> getBookUpdate(std::shared_ptr<MarketDataProcessor>& streamingProcessor) override;
+        std::function<void ()> getBookUpdate(MarketDataProcessor& streamingProcessor) override;
 
         const std::string& getClientName() const;
 
         void stop() override;
 
         // Deleted default ctors and assignment operators
+        MarketDataLiveClient() = delete;
+
         MarketDataLiveClient(const MarketDataLiveClient& other) = delete;
 
         MarketDataLiveClient(MarketDataLiveClient&& other) = delete;

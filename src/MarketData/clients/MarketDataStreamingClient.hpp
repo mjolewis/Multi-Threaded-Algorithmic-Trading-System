@@ -12,7 +12,6 @@
 
 #include "MarketData/processors/MarketDataProcessor.hpp"
 #include "MarketData/consumers/MarketDataConsumer.hpp"
-#include "CommonServer/typesystem/MdTypes.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -24,7 +23,7 @@ namespace BeaconTech::MarketData
     class MarketDataStreamingClient
     {
     private:
-        std::shared_ptr<MarketDataProcessor> streamingProcessor;
+        MarketDataProcessor streamingProcessor;
         MarketDataConsumer<T> streamingConsumer;
 
     public:
@@ -32,9 +31,9 @@ namespace BeaconTech::MarketData
 
         virtual ~MarketDataStreamingClient() = default;
 
-        std::shared_ptr<MarketDataProcessor> createStreamingProcessor();
+        MarketDataProcessor& createStreamingProcessor();
 
-        void initialize(std::shared_ptr<T> marketDataClient, const Common::MdCallback& callback);
+        void initialize(T& marketDataClient, const Common::MdCallback& callback);
 
         // Deleted default ctors and assignment operators
         MarketDataStreamingClient(const MarketDataStreamingClient<T>& other) = delete;

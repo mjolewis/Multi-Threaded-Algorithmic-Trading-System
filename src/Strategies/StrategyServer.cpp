@@ -25,7 +25,7 @@ namespace BeaconTech::Strategies
     StrategyServer<T>::StrategyServer()
         : numEngineThreads{Common::ConfigManager::intConfigValueDefaultIfNull("numEngineThreads", 1)},
           numListeners{Common::ConfigManager::intConfigValueDefaultIfNull("numListeners", 1)},
-          marketDataClient{std::make_shared<T>("StrategyServer")}
+          marketDataClient{"StrategyServer"}
     {
         createThreads();
         subscribeToMarketData();
@@ -34,7 +34,7 @@ namespace BeaconTech::Strategies
     template<typename T>
     StrategyServer<T>::~StrategyServer()
     {
-        marketDataClient->stop();
+        marketDataClient.stop();
         for (const auto& queueProcessor : queueProcessors) queueProcessor->stop();
     }
 
@@ -50,10 +50,10 @@ namespace BeaconTech::Strategies
             // When numListeners > numEngineThreads, the extra threads should be used for logging
             for (uint32_t listenerId = 0; listenerId < (numListeners / numEngineThreads); ++listenerId)
             {
-                strategyEngines.emplace_back(std::make_shared<StrategyEngine<T>>(*this, thread));
+                strategyEngines.emplace_back(std::make_unique<StrategyEngine<T>>(*this, thread));
             }
 
-            queueProcessors.emplace_back(std::make_shared<CLFQProcessor>(thread));
+            queueProcessors.emplace_back(std::make_unique<CLFQProcessor>(thread));
         }
     }
 
@@ -93,7 +93,7 @@ namespace BeaconTech::Strategies
             }
         };
 
-        marketDataClient->subscribe(marketDataClient, callback);
+        marketDataClient.subscribe(marketDataClient, callback);
     }
 
 } // namespace BeaconTech::Strategies
