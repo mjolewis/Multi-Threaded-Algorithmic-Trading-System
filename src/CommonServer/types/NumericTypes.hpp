@@ -10,6 +10,14 @@
 
 namespace BeaconTech::Common
 {
+    // Matching Engine Constants
+    constexpr std::size_t ME_MAX_NUM_CLIENTS = 256;
+    constexpr std::size_t ME_MAX_PRICE_LEVELS = 256;
+    constexpr std::size_t ME_MAX_ORDER_IDS = 1024 * 1024;
+
+    // Logging Constants
+    constexpr std::size_t LOG_QUEUE_SIZE = 8 * 1024 * 1024;
+
     constexpr auto NaN = std::numeric_limits<double>::quiet_NaN();
 
     // Order identifier
@@ -65,7 +73,6 @@ namespace BeaconTech::Common
         if (priority == Priority_INVALID) return "INVALID";
         else return std::to_string(priority);
     }
-
 
 } // namespace BeaconTech::Common
 

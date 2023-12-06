@@ -1,5 +1,6 @@
 //
-// A structure to represent and publish market data updates from the matching engine
+// A structure to represent the order book updates from the matching engine.
+// This object get published out over the wire to market data consumers.
 //
 // Created by Michael Lewis on 11/18/23.
 //
@@ -11,10 +12,10 @@
 
 #include "MessageObjects/marketdata/OrderBookAction.hpp"
 #include "MessageObjects/marketdata/Side.hpp"
-#include "CommonServer/typesystem/NumericTypes.hpp"
+#include "CommonServer/types/NumericTypes.hpp"
 #include "CommonServer/datastructures/ConcurrentLockFreeQueue.hpp"
 
-namespace BeaconTech::MarketData
+namespace BeaconTech::Exchange
 {
 
 // Directive to tightly pack the structure without extra padding.
@@ -52,6 +53,7 @@ namespace BeaconTech::MarketData
 #pragma pack(pop)
 
     using MarketUpdateLFQueue = Common::ConcurrentLockFreeQueue<MarketUpdate>;
-}
+
+} //namespace BeaconTech::Exchange
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETUPDATE_HPP
