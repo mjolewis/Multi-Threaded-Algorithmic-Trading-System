@@ -21,10 +21,10 @@
 
 #include "databento/timeseries.hpp"
 
-#include "CommonServer/typesystem/MdTypes.hpp"
+#include "CommonServer/types/MdTypes.hpp"
 #include "MessageObjects/marketdata/Quote.hpp"
 #include "MessageObjects/marketdata/PriceLevel.hpp"
-#include "CommonServer/typesystem/DateTimes.hpp"
+#include "CommonServer/types/DateTimes.hpp"
 
 namespace BeaconTech::MarketData
 {

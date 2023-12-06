@@ -21,7 +21,6 @@
 #include "MessageObjects/marketdata/Side.hpp"
 #include "MessageObjects/marketdata/OrderBookAction.hpp"
 #include "MessageObjects/marketdata/Quote.hpp"
-#include "CommonServer/typesystem/NumericTypes.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -120,8 +119,8 @@ namespace BeaconTech::MarketData
 
     const Common::Bbo* OrderBook::getBbo(const std::uint32_t& instrumentId)
     {
-        auto bestAsk = PriceLevel();
-        auto bestBid = PriceLevel();
+        auto bestAsk = PriceLevel{};
+        auto bestBid = PriceLevel{};
 
         const auto orderBookEntries = orderBooks->find(instrumentId);
         if (orderBookEntries != orderBooks->cend())
@@ -159,6 +158,8 @@ namespace BeaconTech::MarketData
                     }
                 }
 
+                bestBid.side = MarketData::Side::BUY;
+                bestAsk.side = MarketData::Side::SELL;
                 bbo = std::make_tuple(instrumentId, bestBid, bestAsk);
                 if (bbos->find(instrumentId) != bbos->cend()) [[likely]] bbos->at(instrumentId) = bbo;
                 else bbos->emplace(instrumentId, bbo);

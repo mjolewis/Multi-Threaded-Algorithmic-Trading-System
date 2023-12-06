@@ -1,11 +1,11 @@
 //
-// A structure to represent information for a single order request from the client to the exchange
+// A structure to represent information for a single order response from the exchange to the client
 //
 // Created by Michael Lewis on 11/17/23.
 //
 
-#ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_CLIENTREQUEST_HPP
-#define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_CLIENTREQUEST_HPP
+#ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MECLIENTRESPONSE_HPP
+#define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MECLIENTRESPONSE_HPP
 
 #include <sstream>
 
@@ -21,27 +21,31 @@ namespace BeaconTech::Exchange
 // Enables the structure to be sent over the network as a flat binary structure.
 #pragma pack(push, 1)
 
-    struct ClientRequest
+    struct MEClientResponse
     {
         MarketData::OrderEvent orderEvent = MarketData::OrderEvent::INVALID;
         Common::ClientId clientId = Common::ClientId_INVALID;
         Common::TickerId tickerId = Common::TickerId_INVALID;
-        Common::OrderId orderId = Common::OrderId_INVALID;
+        Common::OrderId clOrdId = Common::OrderId_INVALID; // Client order identifier
+        Common::OrderId marketOrderId = Common::OrderId_INVALID; // Public identifier use in market data stream
         MarketData::Side side = MarketData::Side::UNKNOWN;
         Common::Price price = Common::Price_INVALID;
-        Common::Qty qty = Common::Qty_INVALID;
+        Common::Qty execQty = Common::Qty_INVALID;
+        Common::Qty leavesQty = Common::Qty_INVALID;
 
         auto toString() const
         {
             std::stringstream stream;
-            stream << "MatchingEngineClientRequest ["
+            stream << "MatchingEngineClientResponse ["
                    << "orderEvent=" << orderEvent.getDesc()
                    << ", clientId=" << Common::clientIdToString(clientId)
                    << ", tickerId=" << Common::tickerIdToString(tickerId)
-                   << ", orderId=" << Common::orderIdToString(orderId)
+                   << ", clOrdId=" << Common::orderIdToString(clOrdId)
+                   << ", marketOrderId=" << Common::orderIdToString(marketOrderId)
                    << ", side=" << side.getDesc()
                    << ", price=" << Common::priceToString(price)
-                   << ", qty=" << Common::qtyToString(qty)
+                   << ", execQty=" << Common::qtyToString(execQty)
+                   << ", leavesQty=" << Common::qtyToString(leavesQty)
                    << "]";
 
             return stream.str();
@@ -51,11 +55,8 @@ namespace BeaconTech::Exchange
 // Only tightly pack structures sent over the network, so restore alignment to the default
 #pragma pack(pop)
 
-    // Orders incoming to the matching engine are written to a lock free queue
-    // Occurs in a separate thread from client responses so incoming orders
-    // don't have to wait on any response actions
-    using ClientRequestLFQueue = Common::ConcurrentLockFreeQueue<ClientRequest>;
+    using ClientResponseLFQueue = Common::ConcurrentLockFreeQueue<MEClientResponse>;
 
-} // BeaconTech::Exchange
+} //namespace BeaconTech::Exchange
 
-#endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_CLIENTREQUEST_HPP
+#endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MECLIENTRESPONSE_HPP
