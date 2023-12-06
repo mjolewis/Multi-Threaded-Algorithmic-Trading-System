@@ -12,7 +12,6 @@
 
 #include "MarketData/OrderBook.hpp"
 #include "CommonServer/concepts/BTConcepts.hpp"
-#include "CommonServer/typesystem/MdTypes.hpp"
 
 namespace BeaconTech::MarketData
 {
