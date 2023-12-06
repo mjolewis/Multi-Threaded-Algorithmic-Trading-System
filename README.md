@@ -10,22 +10,24 @@ both live trading and backtesting infrastructure.
 4. [Environment Specifications](#environment-specifications)
 
 # Introduction
-A high performance, multi-threaded trading system that supports any number of customizable strategies. 
-The system directly consumes multicast market-data from a low-latency market data provider and deterministically 
-sequences the update events into downstream, lock-free components. Additionally, these update events are partitioned and 
-scheduled onto distinct threads based on the instrument id as a way to optimize tick-to-order latency, which 
-is a critical metric for HFT systems. 
+A high performance, multi-threaded trading system that currently specializes in market making strategies. However, the 
+system can easily attach new liquidity taking strategies as the business model matures.
 
-In summary, the system handles market data feeds internally, makes a trade decision, and emits an order 
-using a binary protocol (order submission is currently under development).
+Additionally, the system consumes market-data published by a low-latency market-data provider and deterministically 
+sequences the update events into downstream, lock-free components. The update events are partitioned by instrument id
+and scheduled onto distinct engine threads to improve load balancing and to minimize tick-to-order latency. 
+
+In summary, the system handles market-data feeds internally, makes a trade decision, and emits an order 
+using a binary protocol. 
 
 # Components
-1. Feed Handlers
-2. Order Book Builder
-3. Strategies
-4. Order Manager (In Development)
-5. Position Manager (Scoping)
-6. Risk Manager (Backlog)
+1. Matching Engine Simulator 
+2. Feed Handlers 
+3. Order Book Builder 
+4. Strategies 
+5. Order Manager (In Development)
+6. Position Manager (Scoping)
+7. Risk Manager (Backlog)
 
 # System Architecture
 
