@@ -24,11 +24,11 @@ namespace BeaconTech::Common
 {
     // Pre-allocates the size of the CLFQueue with numElements and default initializes the write and read indices
     template<typename T>
-    ConcurrentLockFreeQueue<T>::ConcurrentLockFreeQueue(unsigned int threadId)
+    ConcurrentLockFreeQueue<T>::ConcurrentLockFreeQueue()
         : nextWriteIndex{0}, nextReadIndex{0}, numElements{0}
     {
         size_t size = Common::ConfigManager::intConfigValueDefaultIfNull("CLFQSize", 4096);
-        CLFQueue = std::vector<std::function<void ()>>{size};
+        CLFQueue = std::vector<T>{size};
     }
 
     // Returns a pointer to the next element to write new data to

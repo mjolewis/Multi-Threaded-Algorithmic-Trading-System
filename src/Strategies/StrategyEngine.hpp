@@ -7,8 +7,8 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_STRATEGYENGINE_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_STRATEGYENGINE_HPP
 
-#include <iostream>
 #include <memory>
+#include <string>
 
 #include "StrategyServer.hpp"
 #include "MarketData/clients/MarketDataHistoricalClient.hpp"
@@ -19,6 +19,7 @@
 #include "Strategies/algos/FeatureEngine.hpp"
 #include "StrategyCommon/managers/OrderManager.hpp"
 #include "CommonServer/utils/Clock.hpp"
+#include "CommonServer/logging/Logger.hpp"
 
 namespace BeaconTech::Strategies
 {
@@ -33,7 +34,10 @@ namespace BeaconTech::Strategies
     class StrategyEngine
     {
     private:
+        inline static const std::string CLASS = "StrategyEngine";
+
         const StrategyServer<T>& server;
+        BeaconTech::Common::Logger* logger = nullptr;
         unsigned int threadId;
         std::shared_ptr<Common::Clock> clock;
         FeatureEngine featureEngine;
@@ -41,7 +45,7 @@ namespace BeaconTech::Strategies
         std::shared_ptr<MarketMaker<T>> marketMaker;
 
     public:
-        StrategyEngine(const StrategyServer<T>& server, const unsigned int& threadId);
+        StrategyEngine(const StrategyServer<T>& server, const unsigned int& threadId, BeaconTech::Common::Logger* logger);
 
         virtual ~StrategyEngine() = default;
 

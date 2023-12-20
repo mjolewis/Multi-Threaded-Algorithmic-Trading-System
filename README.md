@@ -57,11 +57,11 @@ or Java (via the sequencer framework) for the core system.
 I am a software engineer with a deep passion for algorithmic trading and have extensive experience in building 
 end-to-end high-frequency trading systems. Throughout my experience, I have developed a thorough understanding of the 
 technical challenges and complex market dynamics faced by today's most advanced organizations. As a result, I am able
-to add immediate impact and help firms grow revenues while streaming costs.
+to add immediate impact and help firms grow revenues while streamlining costs.
 
-My journey in electronic trading began at a algorithmic trading firm, where I developed and optimized high-frequency 
+My journey in electronic trading began at an algorithmic trading firm, where I developed and optimized high-frequency 
 trading and order management systems for cash equities and equity swaps. This experience gave me a firsthand look at 
-the exciting world of today's markets and lead to the creation of Beacon Tech.
+the exciting world of today's markets and led to the creation of Beacon Tech.
 
 In addition to my work in electronic trading, I am a life-long learner who always stays at the cutting edge of new 
 language features and technologies. This discipline allows me to distill modern approaches to complex problems that 

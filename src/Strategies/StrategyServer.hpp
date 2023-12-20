@@ -9,10 +9,7 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_STRATEGYSERVER_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_STRATEGYSERVER_HPP
 
-#include <iostream>
 #include <vector>
-#include <future>
-#include <functional>
 #include <memory>
 
 #include "StrategyEngine.hpp"
@@ -20,10 +17,9 @@
 #include "MarketData/clients/MarketDataLiveClient.hpp"
 #include "MessageObjects/marketdata/Quote.hpp"
 #include "CommonServer/types/MdTypes.hpp"
-#include "CommonServer/datastructures/ConcurrentQueueProcessor.hpp"
 #include "CommonServer/datastructures/ConcurrentLockFreeQueue.hpp"
-#include "StrategyCommon/handlers/CLFQProcessor.hpp"
-#include "MessageObjects/marketdata/Quote.hpp"
+#include "CommonServer/handlers/CLFQProcessor.hpp"
+#include "CommonServer/logging/Logger.hpp"
 
 namespace BeaconTech::Strategies
 {
@@ -37,6 +33,9 @@ namespace BeaconTech::Strategies
     class StrategyServer
     {
     private:
+        inline static const std::string CLASS = "StrategyServer";
+
+        BeaconTech::Common::Logger logger;
         uint32_t numEngineThreads;
         uint32_t numListeners;
         std::vector<std::unique_ptr<StrategyEngine<T>>> strategyEngines;
