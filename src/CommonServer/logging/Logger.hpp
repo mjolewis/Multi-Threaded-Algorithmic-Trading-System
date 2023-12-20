@@ -18,6 +18,7 @@
 #include "CommonServer/datastructures/ConcurrentLockFreeQueue.hpp"
 #include "CommonServer/logging/LogLevel.hpp"
 #include "CommonServer/logging/LogElement.hpp"
+#include "CommonServer/utils/Clock.hpp"
 
 namespace BeaconTech::Common
 {
@@ -85,7 +86,9 @@ namespace BeaconTech::Common
         void logInfo(const std::string& className, const std::string& funcName,
                              const char* s, const T& value, Args... args) noexcept
         {
-            std::string msg = LogLevel::INFO.getDesc() + " " + className + " " + funcName + ": " + s;
+            std::string dateAndTime = BeaconTech::Common::Clock::getLocalDateAndTime();
+            std::string msg = dateAndTime + " " + LogLevel::INFO.getDesc() + " " + className + " " + funcName + ": " + s;
+
             log(msg.c_str(), value, args...);
         }
 
@@ -94,7 +97,9 @@ namespace BeaconTech::Common
         void logWarn(const std::string &className, const std::string &funcName,
                              const char *s, const T &value, Args ...args) noexcept
         {
-            std::string msg = LogLevel::WARN.getDesc() + " " + className + " " + funcName + ": " + s;
+            std::string dateAndTime = BeaconTech::Common::Clock::getLocalDateAndTime();
+            std::string msg = dateAndTime + " " + LogLevel::WARN.getDesc() + " " + className + " " + funcName + ": " + s;
+
             log(msg.c_str(), value, args...);
         }
 
@@ -103,7 +108,8 @@ namespace BeaconTech::Common
         void logSevere(const std::string &className, const std::string &funcName,
                                const char *s, const T &value, Args ...args) noexcept
         {
-            std::string msg = LogLevel::SEVERE.getDesc() + " " + className + " " + funcName + ": " + s;
+            std::string dateAndTime = BeaconTech::Common::Clock::getLocalDateAndTime();
+            std::string msg = dateAndTime + " " + LogLevel::SEVERE.getDesc() + " " + className + " " + funcName + ": " + s;
             log(msg.c_str(), value, args...);
         }
 

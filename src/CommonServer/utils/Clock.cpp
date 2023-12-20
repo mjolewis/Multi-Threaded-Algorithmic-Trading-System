@@ -6,6 +6,9 @@
 //
 
 #include <chrono>
+#include <iostream>
+#include <sstream>
+#include <iomanip>
 
 #include "Clock.hpp"
 
@@ -47,6 +50,21 @@ namespace BeaconTech::Common
     TimePoint Clock::createTime()
     {
         return std::chrono::steady_clock::now();
+    }
+
+    const std::string Clock::getLocalDateAndTime()
+    {
+        auto now = std::chrono::system_clock::now();
+        auto time = std::chrono::system_clock::to_time_t(now);
+//            auto tm = *std::gmtime(&time);
+        auto tm = *std::localtime(&time);
+
+        auto epoch = now.time_since_epoch();
+        auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(epoch).count() % 1000000000;
+
+        std::ostringstream oss;
+        oss << std::put_time(&tm, "%Y%m%d-%T.") << ns;
+        return oss.str();
     }
 
 } // namespace BeaconTech::utils

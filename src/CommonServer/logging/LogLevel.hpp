@@ -28,9 +28,9 @@ namespace BeaconTech::Common
     };
 
     // Enum definitions
-    inline const LogLevel LogLevel::INFO = LogLevel{1, "Info"};
-    inline const LogLevel LogLevel::WARN = LogLevel{2, "Warn"};
-    inline const LogLevel LogLevel::SEVERE = LogLevel{3, "Severe"};
+    inline const LogLevel LogLevel::INFO = LogLevel{1, "INFO"};
+    inline const LogLevel LogLevel::WARN = LogLevel{2, "WARN"};
+    inline const LogLevel LogLevel::SEVERE = LogLevel{3, "ERROR"};
 
 } // namespace BeaconTech::Common
 
