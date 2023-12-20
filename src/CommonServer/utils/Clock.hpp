@@ -20,6 +20,7 @@ namespace BeaconTech::Common
         TimePoint startTime;
         TimePoint stopTime;
         TradeDate tradeDate_;
+        UnixNanos timePoint;
 
     public:
         Clock();
@@ -34,7 +35,9 @@ namespace BeaconTech::Common
 
         const TradeDate& tradeDate() const;
 
-        static TimePoint createTime() ;
+        static TimePoint createTime();
+
+        static const std::string getLocalDateAndTime();
 
         // Deleted default ctors and assignment operators
         Clock(const Clock& other) = delete;

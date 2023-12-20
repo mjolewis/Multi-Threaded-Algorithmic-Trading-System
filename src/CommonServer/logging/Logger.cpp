@@ -10,10 +10,12 @@
 #include <filesystem>
 #include <iostream>
 #include <string>
+#include <sstream>
 
 #include "Logger.hpp"
 #include "CommonServer/logging/LogLevel.hpp"
 #include "CommonServer/logging/LogElement.hpp"
+#include "CommonServer/utils/Clock.hpp"
 
 namespace BeaconTech::Common
 {
@@ -168,21 +170,27 @@ namespace BeaconTech::Common
     // Logs an info message to disk
     void Logger::logInfo(const std::string &clazz, const std::string &method, const char *s) noexcept
     {
-        std::string msg = LogLevel::INFO.getDesc() + " " + clazz + " " + method + ": " + s;
+        std::string dateAndTime = BeaconTech::Common::Clock::getLocalDateAndTime();
+        std::string msg = dateAndTime + " " + LogLevel::INFO.getDesc() + " " + clazz + " " + method + ": " + s;
+
         log(msg.c_str());
     }
 
     // Logs a warning message to disk
     void Logger::logWarn(const std::string &clazz, const std::string &method, const char *s) noexcept
     {
-        std::string msg = LogLevel::WARN.getDesc() + " " + clazz + " " + method + ": " + s;
+        std::string dateAndTime = BeaconTech::Common::Clock::getLocalDateAndTime();
+        std::string msg = dateAndTime + " " + LogLevel::WARN.getDesc() + " " + clazz + " " + method + ": " + s;
+
         log(msg.c_str());
     }
 
     // Logs an error message to disk
     void Logger::logSevere(const std::string &clazz, const std::string &method, const char *s) noexcept
     {
-        std::string msg = LogLevel::SEVERE.getDesc() + " " + clazz + " " + method + ": " + s;
+        std::string dateAndTime = BeaconTech::Common::Clock::getLocalDateAndTime();
+        std::string msg = dateAndTime + " " + LogLevel::SEVERE.getDesc() + " " + clazz + " " + method + ": " + s;
+
         log(msg.c_str());
     }
 
