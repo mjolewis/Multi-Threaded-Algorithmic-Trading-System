@@ -9,13 +9,17 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_STRATEGYSERVER_CPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_STRATEGYSERVER_CPP
 
-#include <iostream>
+#include <cstdlib>
+#include <exception>
 #include <memory>
+
+#include <databento/exceptions.hpp>
 
 #include "StrategyServer.hpp"
 #include "CommonServer/utils/ConfigManager.hpp"
-#include "StrategyCommon/handlers/CLFQProcessor.hpp"
+#include "CommonServer/handlers/CLFQProcessor.hpp"
 #include "MessageObjects/marketdata/Quote.hpp"
+#include "CommonServer/logging/Logger.hpp"
 
 namespace BeaconTech::Strategies
 {
@@ -23,10 +27,25 @@ namespace BeaconTech::Strategies
     // Overloaded ctor
     template<typename T>
     StrategyServer<T>::StrategyServer()
-        : numEngineThreads{Common::ConfigManager::intConfigValueDefaultIfNull("numEngineThreads", 1)},
+        : logger{CLASS},
+          numEngineThreads{Common::ConfigManager::intConfigValueDefaultIfNull("numEngineThreads", 1)},
           numListeners{Common::ConfigManager::intConfigValueDefaultIfNull("numListeners", 1)},
-          marketDataClient{"StrategyServer"}
+          marketDataClient{"StrategyServer", &logger}
     {
+//        try
+//        {
+//            marketDataClient = new T{"StrategyServer", &LOGGER};
+//        }
+//        catch (const databento::HttpResponseError& e)
+//        {
+//            LOGGER.logSevere(CLASS, "StrategyServer", "Databento Exception during startup");
+//            exit(EXIT_FAILURE);
+//        }
+//        catch (std::exception& e)
+//        {
+//            LOGGER.logSevere(CLASS, "StrategyServer", "Exception Starting Server! %", e.what());
+//        }
+
         createThreads();
         subscribeToMarketData();
     }
@@ -50,10 +69,10 @@ namespace BeaconTech::Strategies
             // When numListeners > numEngineThreads, the extra threads should be used for logging
             for (uint32_t listenerId = 0; listenerId < (numListeners / numEngineThreads); ++listenerId)
             {
-                strategyEngines.emplace_back(std::make_unique<StrategyEngine<T>>(*this, thread));
+                strategyEngines.emplace_back(std::make_unique<StrategyEngine<T>>(*this, thread, &logger));
             }
 
-            queueProcessors.emplace_back(std::make_unique<CLFQProcessor>(thread));
+            queueProcessors.emplace_back(std::make_unique<CLFQProcessor>());
         }
     }
 
@@ -89,7 +108,7 @@ namespace BeaconTech::Strategies
             }
             catch (const std::exception& e)
             {
-                std::cerr << e.what() << std::endl;
+                logger.logSevere(CLASS, "subscribeToMarketData", e.what());
             }
         };
 

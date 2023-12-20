@@ -25,9 +25,6 @@ namespace BeaconTech::Common
         static const LogLevel INFO;
         static const LogLevel WARN;
         static const LogLevel SEVERE;
-
-        // todo - Implement caching logic to look up codes by id
-        static const std::map<int32_t, AbstractCodes> CODES_BY_ID;
     };
 
     // Enum definitions
@@ -35,7 +32,7 @@ namespace BeaconTech::Common
     inline const LogLevel LogLevel::WARN = LogLevel{2, "Warn"};
     inline const LogLevel LogLevel::SEVERE = LogLevel{3, "Severe"};
 
-} // namespace BeaconTech::utils
+} // namespace BeaconTech::Common
 
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_LOGLEVEL_HPP

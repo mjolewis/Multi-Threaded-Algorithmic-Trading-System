@@ -23,12 +23,6 @@ using namespace std::chrono_literals;
 
 namespace BeaconTech::MarketData
 {
-    // logging utility. Will eventually need to convert to a low-latency custom-built or 3rd party logging library
-    void MarketDataUtils::log(const Common::LogLevel& logLevel, const std::string& message)
-    {
-        std::cerr << logLevel.getDesc() << " : " << message << std::endl;
-    }
-
     // Build the market data client. Retry up to a maximum of 10 times before throwing an error
     databento::Historical MarketDataUtils::getHistoricalClient()
     {
@@ -44,21 +38,23 @@ namespace BeaconTech::MarketData
             }
             catch (const databento::HttpResponseError& e)
             {
-                std::string msg = "Unable to connect to market data client - Attempt=" + std::to_string(attempts);
-                log(Common::LogLevel::WARN, msg + " : " + e.what());
+                std::string msg = "Unable to connect to market data client - Attempt="
+                        + std::to_string(attempts) + ": " + e.what();
+                LOGGER.logWarn(CLASS, "getHistoricalClient", msg.c_str());
                 if (attempts == 10)
                 {
-                    log(Common::LogLevel::SEVERE, "Exceeded max attempts connecting to market data provider");
+                    LOGGER.logSevere(CLASS, "getHistoricalClient", "Exceeded max attempts connecting to market data provider");
                     throw e;
                 }
             }
             catch (const std::exception& e)
             {
-                std::string msg = "Unable to connect to market data client - Attempt=" + std::to_string(attempts);
-                log(Common::LogLevel::WARN, msg + " : " + e.what());
+                std::string msg = "Unable to connect to market data client - Attempt="
+                        + std::to_string(attempts) + ": " + e.what();
+                LOGGER.logWarn(CLASS, "getHistoricalClient", msg.c_str());
                 if (attempts == 10)
                 {
-                    log(Common::LogLevel::SEVERE, "Exceeded max attempts connecting to market data provider");
+                    LOGGER.logSevere(CLASS, "getHistoricalClient", "Exceeded max attempts connecting to market data provider");
                     throw e;
                 }
             }
@@ -70,8 +66,9 @@ namespace BeaconTech::MarketData
             }
             catch (const std::exception& e)
             {
-                std::string msg = "Unable to connect to market data client - Attempt=" + std::to_string(attempts);
-                log(Common::LogLevel::WARN, msg + " : " + e.what());
+                std::string msg = "Unable to connect to market data client - Attempt="
+                        + std::to_string(attempts) + ": " + e.what();
+                LOGGER.logWarn(CLASS, "getHistoricalClient", msg.c_str());
             }
         }
     }
@@ -94,21 +91,23 @@ namespace BeaconTech::MarketData
             }
             catch (const databento::HttpResponseError& e)
             {
-                std::string msg = "Unable to connect to market data client - Attempt=" + std::to_string(attempts);
-                log(Common::LogLevel::WARN, msg + " : " + e.what());
+                std::string msg = "Unable to connect to market data client - Attempt="
+                        + std::to_string(attempts) + ": " + e.what();
+                LOGGER.logWarn(CLASS, "getLiveClient", msg.c_str());
                 if (attempts == 10)
                 {
-                    log(Common::LogLevel::SEVERE, "Exceeded max attempts connecting to market data provider");
+                    LOGGER.logSevere(CLASS, "getLiveClient", "Exceeded max attempts connecting to market data provider");
                     throw e;
                 }
             }
             catch (const std::exception& e)
             {
-                std::string msg = "Unable to connect to market data client - Attempt=" + std::to_string(attempts);
-                log(Common::LogLevel::WARN, msg + " : " + e.what());
+                std::string msg = "Unable to connect to market data client - Attempt="
+                        + std::to_string(attempts) + ": " + e.what();
+                LOGGER.logWarn(CLASS, "getLiveClient", msg.c_str());
                 if (attempts == 10)
                 {
-                    log(Common::LogLevel::SEVERE, "Exceeded max attempts connecting to market data provider");
+                    LOGGER.logSevere(CLASS, "getLiveClient", "Exceeded max attempts connecting to market data provider");
                     throw e;
                 }
             }
@@ -120,8 +119,9 @@ namespace BeaconTech::MarketData
             }
             catch (const std::exception& e)
             {
-                std::string msg = "Unable to connect to market data client - Attempt=" + std::to_string(attempts);
-                log(Common::LogLevel::WARN, msg + " : " + e.what());
+                std::string msg = "Unable to connect to market data client - Attempt="
+                        + std::to_string(attempts) + e.what();
+                LOGGER.logWarn(CLASS, "getLiveClient", msg.c_str());
             }
         }
     }
@@ -154,17 +154,20 @@ namespace BeaconTech::MarketData
         MarketData::PriceLevel bestAsk{};
 
         std::tie(instrumentId, bestBid, bestAsk) = bbo;
-        auto formattedBid = boost::format("Best bid: %1% × %2%") % bestBid.price % bestBid.size;
-        auto formattedAsk = boost::format("Best ask: %1% × %2%") % bestAsk.price % bestAsk.size;
-        auto formattedFairPrice = boost::format("Fair market price: %1%") % fairMarketPrice;
 
-        std::cout << std::left << std::setfill(' ')
-                  << "InstrumentId: " << std::setw(12) << instrumentId
-                  << std::setw(28)
-                  << formattedBid.str()
-                  << std::setw(28)
-                  << formattedAsk.str()
-                  << formattedFairPrice.str()
-                  << std::endl;
+        LOGGER.logInfo(CLASS, "printBbo", "InstrumentId=% bestBid=$% x % bestAsk=$% x % fairPrice=$%",
+                       instrumentId, bestBid.price, bestBid.size, bestAsk.price, bestAsk.size, fairMarketPrice);
+//        auto formattedBid = boost::format("Best bid: %1% × %2%") % bestBid.price % bestBid.size;
+//        auto formattedAsk = boost::format("Best ask: %1% × %2%") % bestAsk.price % bestAsk.size;
+//        auto formattedFairPrice = boost::format("Fair market price: %1%") % fairMarketPrice;
+
+//        std::cout << std::left << std::setfill(' ')
+//                  << "InstrumentId: " << std::setw(12) << instrumentId
+//                  << std::setw(28)
+//                  << formattedBid.str()
+//                  << std::setw(28)
+//                  << formattedAsk.str()
+//                  << formattedFairPrice.str()
+//                  << std::endl;
     }
 } // namespace BeaconTech::marketdata

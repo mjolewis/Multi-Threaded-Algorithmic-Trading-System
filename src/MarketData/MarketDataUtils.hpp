@@ -19,15 +19,18 @@
 #include "CommonServer/logging/LogLevel.hpp"
 #include "OrderBook.hpp"
 #include "MessageObjects/marketdata/PriceLevel.hpp"
+#include "CommonServer/logging/Logger.hpp"
 
 namespace BeaconTech::MarketData
 {
 
     class MarketDataUtils
     {
-    public:
-        static void log(const Common::LogLevel& logLevel, const std::string& message);
+    private:
+        inline static const std::string CLASS = "MarketDataUtils";
+        inline static BeaconTech::Common::Logger LOGGER{CLASS};
 
+    public:
         static databento::Historical getHistoricalClient();
 
         static databento::LiveBlocking getLiveClient();

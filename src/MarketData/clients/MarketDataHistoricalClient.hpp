@@ -22,6 +22,7 @@
 #include "IMarketDataProvider.hpp"
 #include "MarketData/clients/MarketDataStreamingClient.hpp"
 #include "MarketData/processors/MarketDataProcessor.hpp"
+#include "CommonServer/logging/Logger.hpp"
 
 namespace BeaconTech::MarketData
 {
@@ -38,6 +39,9 @@ namespace BeaconTech::MarketData
     class MarketDataHistoricalClient : public IMarketDataProvider
     {
     private:
+        inline static const std::string CLASS = "MarketDataHistoricalClient";
+
+        BeaconTech::Common::Logger* logger = nullptr;
         std::string clientName;
         databento::Historical client;
         std::unique_ptr<MarketDataStreamingClient<MarketDataHistoricalClient>> streamingClient;
@@ -47,7 +51,7 @@ namespace BeaconTech::MarketData
         static std::vector<std::string> readFromFile();
 
     public:
-        explicit MarketDataHistoricalClient(std::string clientName);
+        explicit MarketDataHistoricalClient(std::string clientName, BeaconTech::Common::Logger* logger);
 
         ~MarketDataHistoricalClient() override = default;
 

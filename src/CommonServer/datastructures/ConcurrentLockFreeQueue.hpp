@@ -28,13 +28,13 @@ namespace BeaconTech::Common
     class ConcurrentLockFreeQueue final
     {
     private:
-        std::vector<std::function<void ()>> CLFQueue;
+        std::vector<T> CLFQueue;
         std::atomic<size_t> nextWriteIndex;  // Index where the next element will be written to
         std::atomic<size_t> nextReadIndex;   // Index where the next element to be read can be found
         std::atomic<size_t> numElements;
 
     public:
-        explicit ConcurrentLockFreeQueue(unsigned int threadId);
+        ConcurrentLockFreeQueue();
 
         virtual ~ConcurrentLockFreeQueue() = default;
 
@@ -49,8 +49,6 @@ namespace BeaconTech::Common
         auto size() const noexcept;
 
         // Deleted default ctors and assignment operators
-        ConcurrentLockFreeQueue() = delete;
-
         ConcurrentLockFreeQueue(const ConcurrentLockFreeQueue& other) = delete;
 
         ConcurrentLockFreeQueue(ConcurrentLockFreeQueue&& other) = delete;

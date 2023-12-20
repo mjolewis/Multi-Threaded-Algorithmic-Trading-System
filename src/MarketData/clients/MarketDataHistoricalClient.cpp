@@ -20,13 +20,13 @@
 #include "MarketDataStreamingClient.hpp"
 #include "MarketData/processors/MarketDataProcessor.hpp"
 #include "CommonServer/utils/ConfigManager.hpp"
-#include "CommonServer/logging/LogLevel.hpp"
+#include "CommonServer/logging/Logger.hpp"
 
 namespace BeaconTech::MarketData
 {
     // Overloaded ctor that initializes the client and downstream components
-    MarketDataHistoricalClient::MarketDataHistoricalClient(std::string clientName)
-        : IMarketDataProvider{}, clientName{std::move(clientName)},
+    MarketDataHistoricalClient::MarketDataHistoricalClient(std::string clientName, BeaconTech::Common::Logger* logger)
+        : IMarketDataProvider{}, logger(logger), clientName{std::move(clientName)},
           client{MarketDataUtils::getHistoricalClient()},
           streamingClient{std::make_unique<MarketDataStreamingClient<MarketDataHistoricalClient>>()}
     {
@@ -95,11 +95,11 @@ namespace BeaconTech::MarketData
             }
             catch (const databento::HttpResponseError& e)
             {
-                MarketDataUtils::log(Common::LogLevel::SEVERE, e.what());
+                logger->logSevere(CLASS, "getBookUpdate", e.what());
             }
             catch (const std::exception& e)
             {
-                MarketDataUtils::log(Common::LogLevel::SEVERE, e.what());
+                logger->logSevere(clientName, "getBookUpdate", e.what());
             }
         };
     }
@@ -107,6 +107,6 @@ namespace BeaconTech::MarketData
     // Closes the session gateway. Once closed, the session cannot be restarted.
     void MarketDataHistoricalClient::stop()
     {
-        MarketDataUtils::log(Common::LogLevel::INFO, "Terminated session gateway with MarketDataClient");
+        logger->logInfo(CLASS, "stop", "Terminated session gateway with MarketDataClient");
     }
 } // namespace BeaconTech::marketdata

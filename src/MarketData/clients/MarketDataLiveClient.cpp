@@ -13,15 +13,15 @@
 #include "MarketDataLiveClient.hpp"
 #include "MarketDataStreamingClient.hpp"
 #include "MarketData/MarketDataUtils.hpp"
-#include "CommonServer/logging/LogLevel.hpp"
+#include "CommonServer/logging/Logger.hpp"
 
 using namespace std::chrono_literals;
 
 namespace BeaconTech::MarketData
 {
     // Overloaded ctor that initializes the client and downstream components
-    MarketDataLiveClient::MarketDataLiveClient(std::string clientName)
-        : IMarketDataProvider{}, clientName{std::move(clientName)},
+    MarketDataLiveClient::MarketDataLiveClient(std::string clientName, BeaconTech::Common::Logger* logger)
+        : IMarketDataProvider{}, logger(logger), clientName{std::move(clientName)},
           client{MarketDataUtils::getLiveClient()},
           streamingClient{std::make_unique<MarketDataStreamingClient<MarketDataLiveClient>>()}
     {
@@ -65,16 +65,16 @@ namespace BeaconTech::MarketData
                 }
                 else
                 {
-                    MarketDataUtils::log(Common::LogLevel::WARN, "Timed out waiting for record");
+                    logger->logWarn(CLASS, "getBookUpdate", "Timed out waiting for record");
                 }
             }
             catch (const databento::HttpResponseError& e)
             {
-                MarketDataUtils::log(Common::LogLevel::SEVERE, e.what());
+                logger->logSevere(CLASS, "getBookUpdate", e.what());
             }
             catch (const std::exception& e)
             {
-                MarketDataUtils::log(Common::LogLevel::SEVERE, e.what());
+                logger->logSevere(CLASS, "getBookUpdate", e.what());
             }
         };
     }
@@ -82,7 +82,8 @@ namespace BeaconTech::MarketData
     // Closes the session gateway. Once closed, the session cannot be restarted.
     void MarketDataLiveClient::stop()
     {
+        logger->logInfo(CLASS, "stop", "Terminated session gateway with MarketDataClient");
+
         client.Stop();
-        MarketDataUtils::log(Common::LogLevel::INFO, "Terminated session gateway with MarketDataClient");
     }
 } // namespace BeaconTech::marketdata
