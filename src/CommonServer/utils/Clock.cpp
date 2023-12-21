@@ -63,7 +63,7 @@ namespace BeaconTech::Common
         auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(epoch).count() % 1000000000;
 
         std::ostringstream oss;
-        oss << std::put_time(&tm, "%Y%m%d-%T.") << ns;
+        oss << std::put_time(&tm, "%Y-%m-%d %T.") << ns;
         return oss.str();
     }
 
