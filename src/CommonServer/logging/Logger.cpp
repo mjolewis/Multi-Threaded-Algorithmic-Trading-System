@@ -171,7 +171,7 @@ namespace BeaconTech::Common
     void Logger::logInfo(const std::string &clazz, const std::string &method, const char *s) noexcept
     {
         std::string dateAndTime = BeaconTech::Common::Clock::getLocalDateAndTime();
-        std::string msg = dateAndTime + " " + LogLevel::INFO.getDesc() + " " + clazz + " " + method + ": " + s;
+        std::string msg = dateAndTime + " " + LogLevel::INFO.getDesc() + "  " + clazz + " " + method + ": " + s;
 
         log(msg.c_str());
     }
@@ -180,7 +180,7 @@ namespace BeaconTech::Common
     void Logger::logWarn(const std::string &clazz, const std::string &method, const char *s) noexcept
     {
         std::string dateAndTime = BeaconTech::Common::Clock::getLocalDateAndTime();
-        std::string msg = dateAndTime + " " + LogLevel::WARN.getDesc() + " " + clazz + " " + method + ": " + s;
+        std::string msg = dateAndTime + " " + LogLevel::WARN.getDesc() + "  " + clazz + " " + method + ": " + s;
 
         log(msg.c_str());
     }
@@ -189,7 +189,7 @@ namespace BeaconTech::Common
     void Logger::logSevere(const std::string &clazz, const std::string &method, const char *s) noexcept
     {
         std::string dateAndTime = BeaconTech::Common::Clock::getLocalDateAndTime();
-        std::string msg = dateAndTime + " " + LogLevel::SEVERE.getDesc() + " " + clazz + " " + method + ": " + s;
+        std::string msg = dateAndTime + " " + LogLevel::SEVERE.getDesc() + "  " + clazz + " " + method + ": " + s;
 
         log(msg.c_str());
     }
