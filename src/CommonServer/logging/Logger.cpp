@@ -9,6 +9,7 @@
 
 #include <filesystem>
 #include <iostream>
+#include <mutex>
 #include <string>
 #include <sstream>
 
@@ -19,12 +20,13 @@
 
 namespace BeaconTech::Common
 {
-    Logger::Logger(const std::string& appName)
-        : fileName{"./" + appName + "/logs/" + appName + ".log"}, clfq{}, running{true}, loggerThread()
+    Logger::Logger(const std::string& filePath, const std::string& appName)
+        : directory{filePath + "/logs/"}, fileName{filePath + "/logs/" + appName + ".log"},
+          clfq{}, running{true}, loggerThread()
     {
         while (!file.is_open())
         {
-            std::filesystem::create_directories("./" + appName + "/logs/");
+            std::filesystem::create_directories(directory);
             file.open(this->fileName, std::ios_base::out);
         }
 
@@ -98,21 +100,21 @@ namespace BeaconTech::Common
     }
 
     // Writes the log element onto the lock free queue and updates its index
-    void Logger::pushValue(const BeaconTech::Common::LogElement &logElement) noexcept
+    void Logger::pushValue(const BeaconTech::Common::LogElement &logElement) const noexcept
     {
         *(clfq.getNextToWriteTo()) = logElement;
         clfq.updateWriteIndex();
     }
 
     // Creates a LogElement and passes it to the function that actually writes to the CLFQ
-    void Logger::pushValue(const char value) noexcept
+    void Logger::pushValue(const char value) const noexcept
     {
         pushValue(LogElement{LogType::CHAR, { .c = value }});
     }
 
     // Accepts a collection of characters (e.g. char*) and pushes each char into the CLFQ one at a time
     // todo - Upgrade to use memcpy while handling the wrapping of indices at the end of the queue
-    void Logger::pushValue(const char* value) noexcept
+    void Logger::pushValue(const char* value) const noexcept
     {
         while (*value)
         {
@@ -122,80 +124,89 @@ namespace BeaconTech::Common
     }
 
     // Converts a string into a pointer to an array of characters and push each char into the CLFQ one at a time
-    void Logger::pushValue(const std::string& value) noexcept
+    void Logger::pushValue(const std::string& value) const noexcept
     {
         pushValue(value.c_str());
     }
 
-    void Logger::pushValue(const int value) noexcept
+    void Logger::pushValue(const int value) const noexcept
     {
         pushValue(LogElement{LogType::INTEGER, { .i = value }});
     }
 
-    void Logger::pushValue(const long value) noexcept
+    void Logger::pushValue(const long value) const noexcept
     {
         pushValue(LogElement{LogType::LONG_INTEGER, { .l = value }});
     }
 
-    void Logger::pushValue(const long long value) noexcept
+    void Logger::pushValue(const long long value) const noexcept
     {
         pushValue(LogElement{LogType::LONG_LONG_INTEGER, { .ll = value }});
     }
 
-    void Logger::pushValue(const unsigned value) noexcept
+    void Logger::pushValue(const unsigned value) const noexcept
     {
         pushValue(LogElement{LogType::UNSIGNED_INTEGER, { .u = value }});
     }
 
-    void Logger::pushValue(const unsigned long value) noexcept
+    void Logger::pushValue(const unsigned long value) const noexcept
     {
         pushValue(LogElement{LogType::UNSIGNED_LONG_INTEGER, { .ul = value }});
     }
 
-    void Logger::pushValue(const unsigned long long value) noexcept
+    void Logger::pushValue(const unsigned long long value) const noexcept
     {
         pushValue(LogElement{LogType::UNSIGNED_LONG_LONG_INTEGER, { .ull = value }});
     }
 
-    void Logger::pushValue(const float value) noexcept
+    void Logger::pushValue(const float value) const noexcept
     {
         pushValue(LogElement{LogType::FLOAT, { .f = value }});
     }
 
-    void Logger::pushValue(const double value) noexcept
+    void Logger::pushValue(const double value) const noexcept
     {
         pushValue(LogElement{LogType::DOUBLE, { .d = value }});
     }
 
     // Logs an info message to disk
-    void Logger::logInfo(const std::string &clazz, const std::string &method, const char *s) noexcept
+    void Logger::logInfo(const std::string &clazz, const std::string &method, const char *s) const noexcept
     {
-        std::string dateAndTime = BeaconTech::Common::Clock::getLocalDateAndTime();
-        std::string msg = dateAndTime + " " + LogLevel::INFO.getDesc() + "  " + clazz + " " + method + ": " + s;
-
-        log(msg.c_str());
+        createAndLogMsg(clazz, method, s, LogLevel::INFO);
     }
 
     // Logs a warning message to disk
-    void Logger::logWarn(const std::string &clazz, const std::string &method, const char *s) noexcept
+    void Logger::logWarn(const std::string &clazz, const std::string &method, const char *s) const noexcept
     {
-        std::string dateAndTime = BeaconTech::Common::Clock::getLocalDateAndTime();
-        std::string msg = dateAndTime + " " + LogLevel::WARN.getDesc() + "  " + clazz + " " + method + ": " + s;
-
-        log(msg.c_str());
+        createAndLogMsg(clazz, method, s, LogLevel::WARN);
     }
 
     // Logs an error message to disk
-    void Logger::logSevere(const std::string &clazz, const std::string &method, const char *s) noexcept
+    void Logger::logSevere(const std::string &clazz, const std::string &method, const char *s) const noexcept
     {
+        createAndLogMsg(clazz, method, s, LogLevel::SEVERE);
+    }
+
+    void Logger::createAndLogMsg(const std::string &clazz, const std::string &method, const char *s, const LogLevel& logLevel) const noexcept
+    {
+        // A blocking lock to ensure that all messages are written.
+        // A non-blocking lock might cause a message to be skipped if the lock is already held.
+        const std::lock_guard<std::mutex> lock{mutex};
+
+        std::stringstream ss;
+        ss << std::this_thread::get_id();
+
         std::string dateAndTime = BeaconTech::Common::Clock::getLocalDateAndTime();
-        std::string msg = dateAndTime + " " + LogLevel::SEVERE.getDesc() + "  " + clazz + " " + method + ": " + s;
+        std::string msg = dateAndTime + " " + logLevel.getDesc() + "  " + clazz + " " + method
+                          + " [CLFQ-" + ss.str() + "]: " + s;
 
         log(msg.c_str());
+
+        // The lock_guard is destroyed and the mutex is released at the end of the scope
     }
 
     // Formats the log string with no arguments and pushes those characters into the CLFQ
-    void Logger::log(const char* s) noexcept
+    void Logger::log(const char* s) const noexcept
     {
         while (*s)
         {

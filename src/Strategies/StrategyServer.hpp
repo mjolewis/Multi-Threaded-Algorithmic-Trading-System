@@ -9,6 +9,8 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_STRATEGYSERVER_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_STRATEGYSERVER_HPP
 
+#define CLASS_FILE_PATH (std::filesystem::path(__FILE__).parent_path().string())
+
 #include <vector>
 #include <memory>
 
@@ -33,13 +35,15 @@ namespace BeaconTech::Strategies
     class StrategyServer
     {
     private:
+        inline static const std::string CLASS_PATH = CLASS_FILE_PATH;
+        inline static const std::string APP_NAME = "Strategies";
         inline static const std::string CLASS = "StrategyServer";
 
         BeaconTech::Common::Logger logger;
         uint32_t numEngineThreads;
         uint32_t numListeners;
-        std::vector<std::unique_ptr<StrategyEngine<T>>> strategyEngines;
-        std::vector<std::unique_ptr<CLFQProcessor>> queueProcessors;
+        std::vector<StrategyEngine<T>*> strategyEngines;
+        std::vector<CLFQProcessor*> queueProcessors;
         T marketDataClient;
         Common::MdCallback callback;
 

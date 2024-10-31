@@ -31,6 +31,34 @@ namespace BeaconTech::Common
         CLFQueue = std::vector<T>{size};
     }
 
+    template<typename T>
+    ConcurrentLockFreeQueue<T>::ConcurrentLockFreeQueue(ConcurrentLockFreeQueue<T> &&source) noexcept
+    {
+        if (this != &source)
+        {
+            nextWriteIndex = std::move(source.nextWriteIndex);
+            nextReadIndex = std::move(source.nextReadIndex);
+            numElements = std::move(source.numElements);
+
+            CLFQueue = std::move(source.CLFQueue);
+        }
+    }
+
+    template<typename T>
+    ConcurrentLockFreeQueue<T>& ConcurrentLockFreeQueue<T>::operator=(ConcurrentLockFreeQueue<T>&& source) noexcept
+    {
+        // Avoid self move
+        if (this == &source) return *this;
+
+        nextWriteIndex = std::move(source.nextWriteIndex);
+        nextReadIndex = std::move(source.nextReadIndex);
+        numElements = std::move(source.numElements);
+
+        CLFQueue = std::move(source.CLFQueue);
+
+        return *this;
+    }
+
     // Returns a pointer to the next element to write new data to
     template<typename T>
     auto ConcurrentLockFreeQueue<T>::getNextToWriteTo() noexcept

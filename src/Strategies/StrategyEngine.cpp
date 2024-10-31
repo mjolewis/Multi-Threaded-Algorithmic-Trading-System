@@ -13,25 +13,34 @@
 #include "StrategyServer.hpp"
 #include "MessageObjects/marketdata/Quote.hpp"
 #include "Strategies/algos/MarketMaker.hpp"
+#include "CommonServer/logging/Logger.hpp"
 
 namespace BeaconTech::Strategies
 {
     template<typename T>
     StrategyEngine<T>::StrategyEngine(const StrategyServer<T>& server, const unsigned int& threadId,
-                                      BeaconTech::Common::Logger* logger)
-        : server{server}, logger(logger), threadId{threadId}, clock{std::make_shared<Common::Clock>()},
-          featureEngine{}, orderManager{std::make_shared<OrderManager>(clock)}
+                                      const BeaconTech::Common::Logger& logger)
+        : server{server}, logger{logger}, threadId{threadId}, clock{std::make_shared<Common::Clock>()}, featureEngine{}
     {
-        logger->logInfo(CLASS, "StrategyEngine", "Creating StrategyEngine");
+        logger.logInfo(CLASS, "CTOR", "Creating StrategyEngine");
 
-        marketMaker = std::make_shared<MarketMaker<T>>(*this, clock, featureEngine, orderManager);
+        orderManager = new OrderManager<T>{logger, clock};
+        marketMaker = new MarketMaker<T>{logger, clock, *this, featureEngine, *orderManager};
+    }
+
+    template<typename T>
+    StrategyEngine<T>::~StrategyEngine()
+    {
+        logger.logInfo(CLASS, "DTOR", "Destroying StrategyEngine");
+        delete this->marketMaker;
+        delete this->orderManager;
     }
 
     // Informs the feature engine and strategy about quotes and book updates
     template<typename T>
     void StrategyEngine<T>::onOrderBookUpdate(const MarketData::Quote& quote, const Common::Bbo& bbo)
     {
-        logger->logInfo(CLASS, "onOrderBookUpdate", "Received BBO");
+//        logger->logInfo(CLASS, "onOrderBookUpdate", "Received BBO");
 
         featureEngine.onOrderBookUpdate(quote, bbo);
         onOrderBookUpdateAlgo(quote, bbo);

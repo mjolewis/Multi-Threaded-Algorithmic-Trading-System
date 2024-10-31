@@ -9,6 +9,7 @@
 #include <string>
 
 #include <databento/live.hpp>
+#include "databento/exceptions.hpp"
 
 #include "MarketDataLiveClient.hpp"
 #include "MarketDataStreamingClient.hpp"

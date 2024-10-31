@@ -37,17 +37,21 @@ namespace BeaconTech::Strategies
         inline static const std::string CLASS = "StrategyEngine";
 
         const StrategyServer<T>& server;
-        BeaconTech::Common::Logger* logger = nullptr;
+
+        // Mgmt properties
+        const BeaconTech::Common::Logger& logger;
         unsigned int threadId;
         std::shared_ptr<Common::Clock> clock;
+
+        // Strategy properties
         FeatureEngine featureEngine;
-        std::shared_ptr<OrderManager> orderManager;
-        std::shared_ptr<MarketMaker<T>> marketMaker;
+        OrderManager<T>* orderManager;
+        MarketMaker<T>* marketMaker;
 
     public:
-        StrategyEngine(const StrategyServer<T>& server, const unsigned int& threadId, BeaconTech::Common::Logger* logger);
+        StrategyEngine(const StrategyServer<T>& server, const unsigned int& threadId, const BeaconTech::Common::Logger& logger);
 
-        virtual ~StrategyEngine() = default;
+        virtual ~StrategyEngine();
 
         void onOrderBookUpdate(const MarketData::Quote& quote, const Common::Bbo& bbo);
 

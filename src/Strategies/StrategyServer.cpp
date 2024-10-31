@@ -27,11 +27,12 @@ namespace BeaconTech::Strategies
     // Overloaded ctor
     template<typename T>
     StrategyServer<T>::StrategyServer()
-        : logger{CLASS},
+        : logger{CLASS_PATH, APP_NAME},
           numEngineThreads{Common::ConfigManager::intConfigValueDefaultIfNull("numEngineThreads", 1)},
           numListeners{Common::ConfigManager::intConfigValueDefaultIfNull("numListeners", 1)},
-          marketDataClient{"StrategyServer", &logger}
+          marketDataClient{APP_NAME, &logger}
     {
+        logger.logInfo(CLASS, "CTOR", "Creating StrategyServer");
 //        try
 //        {
 //            marketDataClient = new T{"StrategyServer", &LOGGER};
@@ -53,8 +54,19 @@ namespace BeaconTech::Strategies
     template<typename T>
     StrategyServer<T>::~StrategyServer()
     {
+        logger.logInfo(CLASS, "DTOR", "Destroying StrategyServer");
+
         marketDataClient.stop();
-        for (const auto& queueProcessor : queueProcessors) queueProcessor->stop();
+        for (const auto& queueProcessor : queueProcessors)
+        {
+            queueProcessor->stop();
+            delete queueProcessor;
+        }
+
+        for (const auto& strategyEngine : strategyEngines)
+        {
+            delete strategyEngine;
+        }
     }
 
     // Creates the engines and listener. The number of threads is configurable to partition the
@@ -69,10 +81,11 @@ namespace BeaconTech::Strategies
             // When numListeners > numEngineThreads, the extra threads should be used for logging
             for (uint32_t listenerId = 0; listenerId < (numListeners / numEngineThreads); ++listenerId)
             {
-                strategyEngines.emplace_back(std::make_unique<StrategyEngine<T>>(*this, thread, &logger));
+                strategyEngines.emplace_back(new StrategyEngine<T>(*this, thread, logger));
             }
 
-            queueProcessors.emplace_back(std::make_unique<CLFQProcessor>());
+            // Each engine gets its own CLFQ
+            queueProcessors.emplace_back(new CLFQProcessor{});
         }
     }
 

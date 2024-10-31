@@ -14,6 +14,7 @@
 #include <string>
 
 #include <databento/historical.hpp>
+#include "databento/exceptions.hpp"
 
 #include "MarketDataHistoricalClient.hpp"
 #include "MarketData/MarketDataUtils.hpp"

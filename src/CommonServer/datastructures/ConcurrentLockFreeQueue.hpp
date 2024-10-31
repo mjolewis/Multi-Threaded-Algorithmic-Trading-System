@@ -36,6 +36,10 @@ namespace BeaconTech::Common
     public:
         ConcurrentLockFreeQueue();
 
+        ConcurrentLockFreeQueue(ConcurrentLockFreeQueue<T>&& source) noexcept;
+
+        ConcurrentLockFreeQueue<T>& operator=(ConcurrentLockFreeQueue<T>&& source) noexcept;
+
         virtual ~ConcurrentLockFreeQueue() = default;
 
         auto getNextToWriteTo() noexcept;
@@ -51,11 +55,7 @@ namespace BeaconTech::Common
         // Deleted default ctors and assignment operators
         ConcurrentLockFreeQueue(const ConcurrentLockFreeQueue& other) = delete;
 
-        ConcurrentLockFreeQueue(ConcurrentLockFreeQueue&& other) = delete;
-
-        ConcurrentLockFreeQueue& operator=(const ConcurrentLockFreeQueue& other) = delete;
-
-        ConcurrentLockFreeQueue& operator=(ConcurrentLockFreeQueue&& other) = delete;
+        ConcurrentLockFreeQueue<T>& operator=(const ConcurrentLockFreeQueue& other) = delete;
     };
 
 } // BeaconTech::Common
