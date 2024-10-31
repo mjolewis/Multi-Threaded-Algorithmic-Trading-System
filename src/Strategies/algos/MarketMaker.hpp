@@ -34,18 +34,29 @@ namespace BeaconTech::Strategies
     class MarketMaker
     {
     private:
-        StrategyEngine<T>& strategyEngine;
+        inline static const std::string CLASS = "MarketMaker";
+
+        // Management properties
+        const BeaconTech::Common::Logger& logger;
         const std::shared_ptr<Common::Clock>& clock;
+
+        // Strategy properties
+        StrategyEngine<T>& strategyEngine;
         const FeatureEngine& featureEngine;
-        const std::shared_ptr<OrderManager>& orderManager;
+        OrderManager<T>& orderManager;
+
+        // Order properties
         double targetSpreadBps;
         std::uint32_t targetSize;
 
     public:
-        MarketMaker(StrategyEngine<T>& strategyEngine, const std::shared_ptr<Common::Clock>& clock,
-                    const FeatureEngine& featureEngine, const std::shared_ptr<OrderManager>& orderManager);
+        MarketMaker(const BeaconTech::Common::Logger& logger, const std::shared_ptr<Common::Clock>& clock,
+                    StrategyEngine<T>& strategyEngine, const FeatureEngine& featureEngine,
+                    OrderManager<T>& orderManager);
 
-        virtual ~MarketMaker() = default;
+        virtual ~MarketMaker();
+
+        void initializeCallbacks();
 
         void onOrderBookUpdate(const MarketData::Quote &quote, const Common::Bbo& bbo);
 

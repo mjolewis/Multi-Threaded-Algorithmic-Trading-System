@@ -35,6 +35,10 @@ namespace BeaconTech::Common
 
         const TradeDate& tradeDate() const;
 
+        const TimePoint& getStartTime() const;
+
+        const TimePoint& getStopTime() const;
+
         static TimePoint createTime();
 
         static const std::string getLocalDateAndTime();

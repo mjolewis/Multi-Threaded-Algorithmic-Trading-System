@@ -7,6 +7,8 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATAUTILS_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATAUTILS_HPP
 
+#define CLASS_FILE_PATH (std::filesystem::path(__FILE__).parent_path().string())
+
 #include <string>
 #include <utility>
 
@@ -16,7 +18,6 @@
 #include <databento/flag_set.hpp>
 #include <nlohmann/json.hpp>
 
-#include "CommonServer/logging/LogLevel.hpp"
 #include "OrderBook.hpp"
 #include "MessageObjects/marketdata/PriceLevel.hpp"
 #include "CommonServer/logging/Logger.hpp"
@@ -27,10 +28,15 @@ namespace BeaconTech::MarketData
     class MarketDataUtils
     {
     private:
+        inline static const std::string CLASS_PATH = CLASS_FILE_PATH;
         inline static const std::string CLASS = "MarketDataUtils";
-        inline static BeaconTech::Common::Logger LOGGER{CLASS};
+        inline static BeaconTech::Common::Logger LOGGER{CLASS_PATH, CLASS};
+        inline static BeaconTech::Common::Clock clock{};
+        inline static int counter = 0;
 
     public:
+        MarketDataUtils();
+
         static databento::Historical getHistoricalClient();
 
         static databento::LiveBlocking getLiveClient();

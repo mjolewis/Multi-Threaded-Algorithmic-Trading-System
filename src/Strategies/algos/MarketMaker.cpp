@@ -29,13 +29,26 @@
 namespace BeaconTech::Strategies
 {
     template<typename T>
-    MarketMaker<T>::MarketMaker(StrategyEngine<T>& strategyEngine, const std::shared_ptr<Common::Clock>& clock,
-                                const FeatureEngine& featureEngine, const std::shared_ptr<OrderManager>& orderManager)
-        : strategyEngine{strategyEngine}, clock{clock}, featureEngine{featureEngine}, orderManager{orderManager},
+    MarketMaker<T>::MarketMaker(const BeaconTech::Common::Logger& logger, const std::shared_ptr<Common::Clock>& clock,
+                                StrategyEngine<T>& strategyEngine, const FeatureEngine& featureEngine,
+                                OrderManager<T>& orderManager)
+        : logger{logger}, clock{clock}, strategyEngine{strategyEngine}, featureEngine{featureEngine}, orderManager{orderManager},
           targetSpreadBps{Common::ConfigManager::doubleConfigValueDefaultIfNull("targetSpreadBps", 0.0002)},
           targetSize{Common::ConfigManager::intConfigValueDefaultIfNull("targetSize", 100)}
     {
-        // Initialize callbacks for the strategyEngine
+        logger.logInfo(CLASS, "CTOR", "Creating MarketMaker");
+        initializeCallbacks();
+    }
+
+    template<typename T>
+    MarketMaker<T>::~MarketMaker()
+    {
+        logger.logInfo(CLASS, "DTOR", "Creating MarketMaker");
+    }
+
+    template<typename T>
+    void MarketMaker<T>::initializeCallbacks()
+    {
         strategyEngine.onOrderBookUpdateAlgo = [this](auto quote, auto bbo) -> void { onOrderBookUpdate(quote, bbo); };
     }
 
@@ -46,7 +59,6 @@ namespace BeaconTech::Strategies
         double fairMarketPrice = featureEngine.getMarketPrice();
         if (std::isnan(fairMarketPrice)) return;
 
-        // todo - this is for illustration purpose. Should be removed when going to production
         MarketData::MarketDataUtils::printBbo(bbo, fairMarketPrice);
 
         double bidPrice = std::get<1>(bbo).price;
@@ -72,7 +84,7 @@ namespace BeaconTech::Strategies
         bidPrice = bidPrice - (fairMarketPrice - bidPrice >= (bidPrice * targetSpreadBps) ? 0 : 1);
         askPrice = askPrice + (askPrice - fairMarketPrice >= (askPrice * targetSpreadBps) ? 0 : 1);
 
-        orderManager->onOrderRequest(std::get<0>(bbo), bidPrice, askPrice, targetSize);
+        orderManager.onOrderRequest(std::get<0>(bbo), bidPrice, askPrice, targetSize);
     }
 } // BeaconTech
 

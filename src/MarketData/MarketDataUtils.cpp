@@ -23,6 +23,12 @@ using namespace std::chrono_literals;
 
 namespace BeaconTech::MarketData
 {
+
+    MarketDataUtils::MarketDataUtils()
+    {
+        clock.start();
+    }
+
     // Build the market data client. Retry up to a maximum of 10 times before throwing an error
     databento::Historical MarketDataUtils::getHistoricalClient()
     {
@@ -147,6 +153,16 @@ namespace BeaconTech::MarketData
     // Prints best bid and ask for each book after processing the last message in the packet
     void MarketDataUtils::printBbo(const Common::Bbo& bbo, const double& fairMarketPrice)
     {
+        ++counter;
+        if (counter % 1'000'000 == 0)
+        {
+            clock.stop();
+            LOGGER.logInfo(CLASS, "printBbo", "Microseconds=% startTime=% stopTime=%",
+                           clock.elapsedTime(), clock.getStartTime().time_since_epoch().count(),
+                           clock.getStopTime().time_since_epoch().count());
+            clock.start();
+        }
+
         if (!Common::ConfigManager::boolConfigValueDefaultIfNull("printBbo", false)) return;
 
         std::uint32_t instrumentId;
@@ -155,8 +171,8 @@ namespace BeaconTech::MarketData
 
         std::tie(instrumentId, bestBid, bestAsk) = bbo;
 
-        LOGGER.logInfo(CLASS, "printBbo", "InstrumentId=% bestBid=$% x % bestAsk=$% x % fairPrice=$%",
-                       instrumentId, bestBid.price, bestBid.size, bestAsk.price, bestAsk.size, fairMarketPrice);
+//        LOGGER.logInfo(CLASS, "printBbo", "InstrumentId=% bestBid=$% x % bestAsk=$% x % fairPrice=$%",
+//                       instrumentId, bestBid.price, bestBid.size, bestAsk.price, bestAsk.size, fairMarketPrice);
 //        auto formattedBid = boost::format("Best bid: %1% × %2%") % bestBid.price % bestBid.size;
 //        auto formattedAsk = boost::format("Best ask: %1% × %2%") % bestAsk.price % bestAsk.size;
 //        auto formattedFairPrice = boost::format("Fair market price: %1%") % fairMarketPrice;

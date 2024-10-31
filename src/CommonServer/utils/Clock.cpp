@@ -67,4 +67,14 @@ namespace BeaconTech::Common
         return oss.str();
     }
 
+    const TimePoint &Clock::getStartTime() const
+    {
+        return startTime;
+    }
+
+    const TimePoint &Clock::getStopTime() const
+    {
+        return stopTime;
+    }
+
 } // namespace BeaconTech::utils
