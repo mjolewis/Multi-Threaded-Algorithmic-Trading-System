@@ -24,10 +24,17 @@
 
 namespace BeaconTech::MarketData
 {
-    OrderBook::OrderBook() : orderBooks{std::make_shared<Common::OrderBooks>()},
-        bbos{std::make_shared<Common::Bbos>()}, bbo{}
+    OrderBook::OrderBook() : orderBooks{new std::unordered_map<std::uint32_t,
+                                        std::unordered_map<std::uint64_t, MarketData::Quote>>{}},
+        bbos{new std::unordered_map<std::uint32_t, Common::Bbo>{}}, bbo{}
     {
 
+    }
+
+    OrderBook::~OrderBook()
+    {
+        delete orderBooks;
+        delete bbos;
     }
 
     const Quote* OrderBook::apply(const databento::MboMsg& mboMsg)

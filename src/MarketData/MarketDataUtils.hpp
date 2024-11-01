@@ -30,7 +30,7 @@ namespace BeaconTech::MarketData
     private:
         inline static const std::string CLASS_PATH = CLASS_FILE_PATH;
         inline static const std::string CLASS = "MarketDataUtils";
-        inline static BeaconTech::Common::Logger LOGGER{CLASS_PATH, CLASS};
+        inline static BeaconTech::Common::Logger LOGGER{CLASS_PATH, CLASS, 0};
         inline static BeaconTech::Common::Clock clock{};
         inline static int counter = 0;
 

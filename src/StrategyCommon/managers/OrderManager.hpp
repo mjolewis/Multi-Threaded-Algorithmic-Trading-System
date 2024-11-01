@@ -17,7 +17,6 @@
 
 namespace BeaconTech::Strategies
 {
-    template<typename T>
     class OrderManager
     {
     private:
@@ -28,7 +27,7 @@ namespace BeaconTech::Strategies
         const std::shared_ptr<Common::Clock>& clock;
 
         // Order properties
-        std::unique_ptr<std::unordered_map<uint32_t, Strategies::Order>> openOrders; // instrumentId -> order
+        std::unordered_map<uint32_t, Strategies::Order>* openOrders; // instrumentId -> order
 
     public:
         OrderManager(const BeaconTech::Common::Logger& logger, const std::shared_ptr<Common::Clock>& clock);
@@ -42,17 +41,11 @@ namespace BeaconTech::Strategies
 
         OrderManager(OrderManager&& other) = delete;
 
-        OrderManager<T>& operator=(const OrderManager& other) = delete;
+        OrderManager& operator=(const OrderManager& other) = delete;
 
-        OrderManager<T>& operator=(OrderManager&& other) = delete;
+        OrderManager& operator=(OrderManager&& other) = delete;
     };
 
 } // BeaconTech::Strategies
-
-//********** Start Template Definitions **********
-#ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_ORDERMANAGER_CPP
-#include "OrderManager.cpp"
-#endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_ORDERMANAGER_CPP
-//********** End Template Definitions **********
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_ORDERMANAGER_HPP

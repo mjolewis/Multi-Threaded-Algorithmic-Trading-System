@@ -171,19 +171,19 @@ namespace BeaconTech::MarketData
 
         std::tie(instrumentId, bestBid, bestAsk) = bbo;
 
-//        LOGGER.logInfo(CLASS, "printBbo", "InstrumentId=% bestBid=$% x % bestAsk=$% x % fairPrice=$%",
-//                       instrumentId, bestBid.price, bestBid.size, bestAsk.price, bestAsk.size, fairMarketPrice);
-//        auto formattedBid = boost::format("Best bid: %1% × %2%") % bestBid.price % bestBid.size;
-//        auto formattedAsk = boost::format("Best ask: %1% × %2%") % bestAsk.price % bestAsk.size;
-//        auto formattedFairPrice = boost::format("Fair market price: %1%") % fairMarketPrice;
+        LOGGER.logInfo(CLASS, "printBbo", "InstrumentId=% bestBid=$% x % bestAsk=$% x % fairPrice=$%",
+                       instrumentId, bestBid.price, bestBid.size, bestAsk.price, bestAsk.size, fairMarketPrice);
+        auto formattedBid = boost::format("Best bid: %1% × %2%") % bestBid.price % bestBid.size;
+        auto formattedAsk = boost::format("Best ask: %1% × %2%") % bestAsk.price % bestAsk.size;
+        auto formattedFairPrice = boost::format("Fair market price: %1%") % fairMarketPrice;
 
-//        std::cout << std::left << std::setfill(' ')
-//                  << "InstrumentId: " << std::setw(12) << instrumentId
-//                  << std::setw(28)
-//                  << formattedBid.str()
-//                  << std::setw(28)
-//                  << formattedAsk.str()
-//                  << formattedFairPrice.str()
-//                  << std::endl;
+        std::cout << std::left << std::setfill(' ')
+                  << "InstrumentId: " << std::setw(12) << instrumentId
+                  << std::setw(28)
+                  << formattedBid.str()
+                  << std::setw(28)
+                  << formattedAsk.str()
+                  << formattedFairPrice.str()
+                  << std::endl;
     }
 } // namespace BeaconTech::marketdata

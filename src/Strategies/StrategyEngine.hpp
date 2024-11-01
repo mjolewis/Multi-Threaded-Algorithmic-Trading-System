@@ -34,22 +34,24 @@ namespace BeaconTech::Strategies
     class StrategyEngine
     {
     private:
+        inline static const std::string CLASS_PATH = CLASS_FILE_PATH;
+        inline static const std::string APP_NAME = "Strategies";
         inline static const std::string CLASS = "StrategyEngine";
 
         const StrategyServer<T>& server;
 
         // Mgmt properties
-        const BeaconTech::Common::Logger& logger;
-        unsigned int threadId;
+        const BeaconTech::Common::Logger logger;
+        uint32_t threadId;
         std::shared_ptr<Common::Clock> clock;
 
         // Strategy properties
         FeatureEngine featureEngine;
-        OrderManager<T>* orderManager;
+        OrderManager* orderManager;
         MarketMaker<T>* marketMaker;
 
     public:
-        StrategyEngine(const StrategyServer<T>& server, const unsigned int& threadId, const BeaconTech::Common::Logger& logger);
+        StrategyEngine(const StrategyServer<T>& server, const uint32_t threadId);
 
         virtual ~StrategyEngine();
 

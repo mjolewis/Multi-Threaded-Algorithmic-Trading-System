@@ -4,9 +4,6 @@
 // Created by Michael Lewis on 10/27/23.
 //
 
-#ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_ORDERMANAGER_CPP
-#define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_ORDERMANAGER_CPP
-
 #include <memory>
 #include <unordered_map>
 
@@ -20,23 +17,20 @@
 
 namespace BeaconTech::Strategies
 {
-    template<typename T>
-    OrderManager<T>::OrderManager(const BeaconTech::Common::Logger& logger, const std::shared_ptr<Common::Clock>& clock)
-        : logger{logger}, clock{clock}, openOrders{std::make_unique<std::unordered_map<uint32_t, Strategies::Order>>()}
+    OrderManager::OrderManager(const BeaconTech::Common::Logger& logger, const std::shared_ptr<Common::Clock>& clock)
+        : logger{logger}, clock{clock}, openOrders{new std::unordered_map<uint32_t, Strategies::Order>()}
     {
         logger.logInfo(CLASS, "CTOR", "Creating OrderManager");
     }
 
-    template<typename T>
-    OrderManager<T>::~OrderManager()
+    OrderManager::~OrderManager()
     {
-        logger.logInfo(CLASS, "DTOR", "Creating OrderManager");
+        logger.logInfo(CLASS, "DTOR", "Destroying OrderManager");
     }
 
     // Creates buy and sell orders for the MarketMaker, uses the RiskManager for pre-trade risk checks,
     // and sends the orders into the market
-    template<typename T>
-    void OrderManager<T>::onOrderRequest(const uint32_t& instrumentId, double bidPrice, double askPrice, uint32_t qty)
+    void OrderManager::onOrderRequest(const uint32_t& instrumentId, double bidPrice, double askPrice, uint32_t qty)
     {
         Strategies::Order buyOrder = OrderUtil::createOrder(instrumentId, clock, bidPrice, qty,
                                                             MarketData::Side::BUY, ExecType::SUBMIT,
@@ -54,5 +48,3 @@ namespace BeaconTech::Strategies
         openOrders->emplace(sellOrder.clOrdId, sellOrder);
     }
 } // BeaconTech::StrategyCommon
-
-#endif

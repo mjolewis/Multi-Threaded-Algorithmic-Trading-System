@@ -37,6 +37,7 @@ namespace BeaconTech::Common
         // The elements are formatted and written to disk by a non-performance critical thread
         mutable Common::ConcurrentLockFreeQueue<Common::LogElement> clfq;
         std::atomic<bool> running;
+        uint32_t engineId;
 
         // A logging thread that offloads IO from the critical path
         std::thread loggerThread;
@@ -73,7 +74,7 @@ namespace BeaconTech::Common
         void pushValue(double value) const noexcept;
 
     public:
-        explicit Logger(const std::string& filePath, const std::string& appName);
+        explicit Logger(const std::string& filePath, const std::string& appName, uint32_t engineId);
 
         virtual ~Logger();
 

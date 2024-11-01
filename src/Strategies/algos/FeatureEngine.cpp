@@ -14,9 +14,14 @@
 
 namespace BeaconTech::Strategies
 {
-    FeatureEngine::FeatureEngine() : marketPrice{Common::NaN}
+    FeatureEngine::FeatureEngine(const BeaconTech::Common::Logger& logger) : logger{logger}, marketPrice{Common::NaN}
     {
+        logger.logInfo(CLASS, "CTOR", "Creating FeatureEngine");
+    }
 
+    FeatureEngine::~FeatureEngine()
+    {
+        logger.logInfo(CLASS, "DTOR", "Destroying FeatureEngine");
     }
 
     double FeatureEngine::getMarketPrice() const
