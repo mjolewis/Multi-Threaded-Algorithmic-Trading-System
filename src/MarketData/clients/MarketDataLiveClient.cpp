@@ -21,10 +21,9 @@ using namespace std::chrono_literals;
 namespace BeaconTech::MarketData
 {
     // Overloaded ctor that initializes the client and downstream components
-    MarketDataLiveClient::MarketDataLiveClient(std::string clientName, BeaconTech::Common::Logger* logger)
-        : IMarketDataProvider{}, logger(logger), clientName{std::move(clientName)},
-          client{MarketDataUtils::getLiveClient()},
-          streamingClient{std::make_unique<MarketDataStreamingClient<MarketDataLiveClient>>()}
+    MarketDataLiveClient::MarketDataLiveClient(std::string clientName, const BeaconTech::Common::Logger& logger)
+        : IMarketDataProvider{}, logger{logger}, clientName{std::move(clientName)},
+          client{MarketDataUtils::getLiveClient()}, streamingClient{MarketDataStreamingClient<MarketDataLiveClient>()}
     {
 
     }
@@ -40,7 +39,7 @@ namespace BeaconTech::MarketData
     // Allows system components to subscribe to book updates via a callback
     void MarketDataLiveClient::subscribe(MarketDataLiveClient& marketDataClient, const Common::MdCallback& callback)
     {
-        streamingClient->initialize(marketDataClient, callback);
+        streamingClient.initialize(marketDataClient, callback);
     }
 
     // Used by the MarketDataConsumer to consume bookUpdates published by the market data provider (pub-sub model)
@@ -66,16 +65,16 @@ namespace BeaconTech::MarketData
                 }
                 else
                 {
-                    logger->logWarn(CLASS, "getBookUpdate", "Timed out waiting for record");
+                    logger.logWarn(CLASS, "getBookUpdate", "Timed out waiting for record");
                 }
             }
             catch (const databento::HttpResponseError& e)
             {
-                logger->logSevere(CLASS, "getBookUpdate", e.what());
+                logger.logSevere(CLASS, "getBookUpdate", e.what());
             }
             catch (const std::exception& e)
             {
-                logger->logSevere(CLASS, "getBookUpdate", e.what());
+                logger.logSevere(CLASS, "getBookUpdate", e.what());
             }
         };
     }
@@ -83,7 +82,7 @@ namespace BeaconTech::MarketData
     // Closes the session gateway. Once closed, the session cannot be restarted.
     void MarketDataLiveClient::stop()
     {
-        logger->logInfo(CLASS, "stop", "Terminated session gateway with MarketDataClient");
+        logger.logInfo(CLASS, "stop", "Terminated session gateway with MarketDataClient");
 
         client.Stop();
     }

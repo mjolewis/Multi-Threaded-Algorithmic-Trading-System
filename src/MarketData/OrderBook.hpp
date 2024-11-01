@@ -31,14 +31,14 @@ namespace BeaconTech::MarketData
     class OrderBook
     {
     private:
-        std::shared_ptr<Common::OrderBooks> orderBooks; // instrumentId -> orderBook
-        std::shared_ptr<Common::Bbos> bbos; // instrumentId -> priceLevels
+        Common::OrderBooks* orderBooks; // instrumentId -> orderBook
+        Common::Bbos* bbos; // instrumentId -> priceLevels
         Common::Bbo bbo; // priceLevels for the current book update
 
     public:
         OrderBook();
 
-        virtual ~OrderBook() = default;
+        virtual ~OrderBook();
 
         const Quote* apply(const databento::MboMsg& mboMsg);
 

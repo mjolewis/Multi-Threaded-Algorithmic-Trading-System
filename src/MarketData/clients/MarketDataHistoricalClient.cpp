@@ -26,10 +26,10 @@
 namespace BeaconTech::MarketData
 {
     // Overloaded ctor that initializes the client and downstream components
-    MarketDataHistoricalClient::MarketDataHistoricalClient(std::string clientName, BeaconTech::Common::Logger* logger)
-        : IMarketDataProvider{}, logger(logger), clientName{std::move(clientName)},
+    MarketDataHistoricalClient::MarketDataHistoricalClient(std::string clientName, const BeaconTech::Common::Logger& logger)
+        : IMarketDataProvider{}, logger{logger}, clientName{std::move(clientName)},
           client{MarketDataUtils::getHistoricalClient()},
-          streamingClient{std::make_unique<MarketDataStreamingClient<MarketDataHistoricalClient>>()}
+          streamingClient{MarketDataStreamingClient<MarketDataHistoricalClient>()}
     {
 
     }
@@ -47,7 +47,7 @@ namespace BeaconTech::MarketData
                                                const Common::MdCallback& callback)
     {
 
-        streamingClient->initialize(marketDataClient, callback);
+        streamingClient.initialize(marketDataClient, callback);
     }
 
     // Batch download historical data files for back-testing. Note - This can be converted into a
@@ -96,11 +96,11 @@ namespace BeaconTech::MarketData
             }
             catch (const databento::HttpResponseError& e)
             {
-                logger->logSevere(CLASS, "getBookUpdate", e.what());
+                logger.logSevere(CLASS, "getBookUpdate", e.what());
             }
             catch (const std::exception& e)
             {
-                logger->logSevere(clientName, "getBookUpdate", e.what());
+                logger.logSevere(clientName, "getBookUpdate", e.what());
             }
         };
     }
@@ -108,6 +108,6 @@ namespace BeaconTech::MarketData
     // Closes the session gateway. Once closed, the session cannot be restarted.
     void MarketDataHistoricalClient::stop()
     {
-        logger->logInfo(CLASS, "stop", "Terminated session gateway with MarketDataClient");
+        logger.logInfo(CLASS, "stop", "Terminated session gateway with MarketDataClient");
     }
 } // namespace BeaconTech::marketdata

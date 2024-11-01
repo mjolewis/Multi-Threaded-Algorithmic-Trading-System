@@ -18,13 +18,13 @@
 namespace BeaconTech::Strategies
 {
     template<typename T>
-    StrategyEngine<T>::StrategyEngine(const StrategyServer<T>& server, const unsigned int& threadId,
-                                      const BeaconTech::Common::Logger& logger)
-        : server{server}, logger{logger}, threadId{threadId}, clock{std::make_shared<Common::Clock>()}, featureEngine{}
+    StrategyEngine<T>::StrategyEngine(const StrategyServer<T>& server, uint32_t threadId)
+        : server{server}, logger{CLASS_PATH, APP_NAME, threadId}, threadId{threadId},
+          clock{std::make_shared<Common::Clock>()}, featureEngine{logger}
     {
         logger.logInfo(CLASS, "CTOR", "Creating StrategyEngine");
 
-        orderManager = new OrderManager<T>{logger, clock};
+        orderManager = new OrderManager{logger, clock};
         marketMaker = new MarketMaker<T>{logger, clock, *this, featureEngine, *orderManager};
     }
 
@@ -40,7 +40,7 @@ namespace BeaconTech::Strategies
     template<typename T>
     void StrategyEngine<T>::onOrderBookUpdate(const MarketData::Quote& quote, const Common::Bbo& bbo)
     {
-//        logger->logInfo(CLASS, "onOrderBookUpdate", "Received BBO");
+        logger.logInfo(CLASS, "onOrderBookUpdate", "Received BBO");
 
         featureEngine.onOrderBookUpdate(quote, bbo);
         onOrderBookUpdateAlgo(quote, bbo);

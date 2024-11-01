@@ -43,7 +43,7 @@ namespace BeaconTech::Strategies
         // Strategy properties
         StrategyEngine<T>& strategyEngine;
         const FeatureEngine& featureEngine;
-        OrderManager<T>& orderManager;
+        OrderManager& orderManager;
 
         // Order properties
         double targetSpreadBps;
@@ -52,7 +52,7 @@ namespace BeaconTech::Strategies
     public:
         MarketMaker(const BeaconTech::Common::Logger& logger, const std::shared_ptr<Common::Clock>& clock,
                     StrategyEngine<T>& strategyEngine, const FeatureEngine& featureEngine,
-                    OrderManager<T>& orderManager);
+                    OrderManager& orderManager);
 
         virtual ~MarketMaker();
 

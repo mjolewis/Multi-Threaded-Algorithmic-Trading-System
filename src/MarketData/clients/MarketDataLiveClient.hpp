@@ -34,14 +34,14 @@ namespace BeaconTech::MarketData
     private:
         inline static const std::string CLASS = "MarketDataLiveClient";
 
-        BeaconTech::Common::Logger* logger = nullptr;
+        const BeaconTech::Common::Logger& logger;
         std::string clientName;
         databento::LiveBlocking client;
-        std::unique_ptr<MarketDataStreamingClient<MarketDataLiveClient>> streamingClient;
+        MarketDataStreamingClient<MarketDataLiveClient> streamingClient;
 
     public:
 
-        explicit MarketDataLiveClient(std::string clientName, BeaconTech::Common::Logger* logger);
+        explicit MarketDataLiveClient(std::string clientName, const BeaconTech::Common::Logger& logger);
 
         ~MarketDataLiveClient() override = default;
 

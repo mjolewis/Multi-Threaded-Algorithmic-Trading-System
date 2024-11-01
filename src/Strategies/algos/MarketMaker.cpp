@@ -31,7 +31,7 @@ namespace BeaconTech::Strategies
     template<typename T>
     MarketMaker<T>::MarketMaker(const BeaconTech::Common::Logger& logger, const std::shared_ptr<Common::Clock>& clock,
                                 StrategyEngine<T>& strategyEngine, const FeatureEngine& featureEngine,
-                                OrderManager<T>& orderManager)
+                                OrderManager& orderManager)
         : logger{logger}, clock{clock}, strategyEngine{strategyEngine}, featureEngine{featureEngine}, orderManager{orderManager},
           targetSpreadBps{Common::ConfigManager::doubleConfigValueDefaultIfNull("targetSpreadBps", 0.0002)},
           targetSize{Common::ConfigManager::intConfigValueDefaultIfNull("targetSize", 100)}
@@ -43,7 +43,7 @@ namespace BeaconTech::Strategies
     template<typename T>
     MarketMaker<T>::~MarketMaker()
     {
-        logger.logInfo(CLASS, "DTOR", "Creating MarketMaker");
+        logger.logInfo(CLASS, "DTOR", "Destroying MarketMaker");
     }
 
     template<typename T>

@@ -11,6 +11,7 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_FEATUREENGINE_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_FEATUREENGINE_HPP
 
+#include "CommonServer/logging/Logger.hpp"
 #include "MarketData/OrderBook.hpp"
 #include "MessageObjects/marketdata/Quote.hpp"
 
@@ -20,12 +21,18 @@ namespace BeaconTech::Strategies
     class FeatureEngine
     {
     private:
+        inline static const std::string CLASS = "MarketMaker";
+
+        // Management properties
+        const BeaconTech::Common::Logger& logger;
+
+        // Feature properties
         double marketPrice;
 
     public:
-        FeatureEngine();
+        FeatureEngine(const BeaconTech::Common::Logger& logger);
 
-        virtual ~FeatureEngine() = default;
+        virtual ~FeatureEngine();
 
         double getMarketPrice() const;
 

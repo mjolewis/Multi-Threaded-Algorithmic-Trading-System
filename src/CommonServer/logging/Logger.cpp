@@ -20,14 +20,19 @@
 
 namespace BeaconTech::Common
 {
-    Logger::Logger(const std::string& filePath, const std::string& appName)
+    Logger::Logger(const std::string& filePath, const std::string& appName, uint32_t engineId)
         : directory{filePath + "/logs/"}, fileName{filePath + "/logs/" + appName + ".log"},
-          clfq{}, running{true}, loggerThread()
+          file{fileName, std::ios::app}, clfq{}, running{true}, engineId{engineId}, loggerThread()
     {
-        while (!file.is_open())
+        if (!std::filesystem::exists(fileName))
         {
             std::filesystem::create_directories(directory);
-            file.open(this->fileName, std::ios_base::out);
+        }
+
+        if (!file.is_open())
+        {
+            // opened in append mode
+            file.open(this->fileName, std::ios_base::app);
         }
 
         loggerThread = std::thread([this]() { flushQueue(); } );
@@ -193,12 +198,12 @@ namespace BeaconTech::Common
         // A non-blocking lock might cause a message to be skipped if the lock is already held.
         const std::lock_guard<std::mutex> lock{mutex};
 
-        std::stringstream ss;
-        ss << std::this_thread::get_id();
+//        std::stringstream ss;
+//        ss << std::this_thread::get_id();
 
         std::string dateAndTime = BeaconTech::Common::Clock::getLocalDateAndTime();
         std::string msg = dateAndTime + " " + logLevel.getDesc() + "  " + clazz + " " + method
-                          + " [CLFQ-" + ss.str() + "]: " + s;
+                          + " [CLFQ-" + std::to_string(engineId) + "]: " + s;
 
         log(msg.c_str());
 

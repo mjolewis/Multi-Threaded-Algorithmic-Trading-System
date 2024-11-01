@@ -23,29 +23,14 @@
 
 namespace BeaconTech::Strategies
 {
-
-    // Overloaded ctor
     template<typename T>
     StrategyServer<T>::StrategyServer()
-        : logger{CLASS_PATH, APP_NAME},
+        : logger{CLASS_PATH, APP_NAME, 0},
           numEngineThreads{Common::ConfigManager::intConfigValueDefaultIfNull("numEngineThreads", 1)},
           numListeners{Common::ConfigManager::intConfigValueDefaultIfNull("numListeners", 1)},
-          marketDataClient{APP_NAME, &logger}
+          marketDataClient{APP_NAME, logger}
     {
         logger.logInfo(CLASS, "CTOR", "Creating StrategyServer");
-//        try
-//        {
-//            marketDataClient = new T{"StrategyServer", &LOGGER};
-//        }
-//        catch (const databento::HttpResponseError& e)
-//        {
-//            LOGGER.logSevere(CLASS, "StrategyServer", "Databento Exception during startup");
-//            exit(EXIT_FAILURE);
-//        }
-//        catch (std::exception& e)
-//        {
-//            LOGGER.logSevere(CLASS, "StrategyServer", "Exception Starting Server! %", e.what());
-//        }
 
         createThreads();
         subscribeToMarketData();
@@ -81,7 +66,7 @@ namespace BeaconTech::Strategies
             // When numListeners > numEngineThreads, the extra threads should be used for logging
             for (uint32_t listenerId = 0; listenerId < (numListeners / numEngineThreads); ++listenerId)
             {
-                strategyEngines.emplace_back(new StrategyEngine<T>(*this, thread, logger));
+                strategyEngines.emplace_back(new StrategyEngine<T>{*this, thread});
             }
 
             // Each engine gets its own CLFQ

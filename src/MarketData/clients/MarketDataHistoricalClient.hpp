@@ -41,17 +41,17 @@ namespace BeaconTech::MarketData
     private:
         inline static const std::string CLASS = "MarketDataHistoricalClient";
 
-        BeaconTech::Common::Logger* logger = nullptr;
+        const BeaconTech::Common::Logger& logger;
         std::string clientName;
         databento::Historical client;
-        std::unique_ptr<MarketDataStreamingClient<MarketDataHistoricalClient>> streamingClient;
+        MarketDataStreamingClient<MarketDataHistoricalClient> streamingClient;
 
         static std::vector<std::string> doBatchDownload(databento::Historical& _client);
 
         static std::vector<std::string> readFromFile();
 
     public:
-        explicit MarketDataHistoricalClient(std::string clientName, BeaconTech::Common::Logger* logger);
+        MarketDataHistoricalClient(std::string clientName, const BeaconTech::Common::Logger& logger);
 
         ~MarketDataHistoricalClient() override = default;
 
