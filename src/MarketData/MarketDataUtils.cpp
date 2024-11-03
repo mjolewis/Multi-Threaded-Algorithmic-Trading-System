@@ -147,12 +147,16 @@ namespace BeaconTech::MarketData
     // True if the flag is set. False otherwise
     bool MarketDataUtils::isFlagSet(const databento::FlagSet& flag, std::uint8_t bit)
     {
-        return (flag & bit) == bit;
+        // todo
+        // return (flag & bit) == bit;
+        return false;
     }
 
     // Prints best bid and ask for each book after processing the last message in the packet
     void MarketDataUtils::printBbo(const Common::Bbo& bbo, const double& fairMarketPrice)
     {
+        if (!Common::ConfigManager::boolConfigValueDefaultIfNull("printBbo", false)) return;
+
         ++counter;
         if (counter % 1'000'000 == 0)
         {
@@ -163,8 +167,6 @@ namespace BeaconTech::MarketData
             clock.start();
         }
 
-        if (!Common::ConfigManager::boolConfigValueDefaultIfNull("printBbo", false)) return;
-
         std::uint32_t instrumentId;
         MarketData::PriceLevel bestBid{};
         MarketData::PriceLevel bestAsk{};
@@ -173,17 +175,5 @@ namespace BeaconTech::MarketData
 
         LOGGER.logInfo(CLASS, "printBbo", "InstrumentId=% bestBid=$% x % bestAsk=$% x % fairPrice=$%",
                        instrumentId, bestBid.price, bestBid.size, bestAsk.price, bestAsk.size, fairMarketPrice);
-        auto formattedBid = boost::format("Best bid: %1% × %2%") % bestBid.price % bestBid.size;
-        auto formattedAsk = boost::format("Best ask: %1% × %2%") % bestAsk.price % bestAsk.size;
-        auto formattedFairPrice = boost::format("Fair market price: %1%") % fairMarketPrice;
-
-        std::cout << std::left << std::setfill(' ')
-                  << "InstrumentId: " << std::setw(12) << instrumentId
-                  << std::setw(28)
-                  << formattedBid.str()
-                  << std::setw(28)
-                  << formattedAsk.str()
-                  << formattedFairPrice.str()
-                  << std::endl;
     }
 } // namespace BeaconTech::marketdata

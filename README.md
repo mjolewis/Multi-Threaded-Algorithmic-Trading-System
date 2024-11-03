@@ -9,8 +9,9 @@
 
 # Beacon Tech
 **Beacon Tech** is a cutting-edge high-frequency trading system that supports market-making and liquidity-taking 
-strategies. Built with modern C++, it deterministically sequences order book updates into downstream load-balanced 
-and lock-free components that manage orders, positions, risk (and more) while emitting orders to exchanges around the world.
+strategies. Built with modern C++, it deterministically sequences order book updates into downstream, load-balanced, 
+and lock-free components that manage orders, positions, risk (and more) while emitting orders to exchanges around the 
+world.
 
 # Components
 - Exchange Simulator 
@@ -19,7 +20,7 @@ and lock-free components that manage orders, positions, risk (and more) while em
   - Market Data Publisher 
 - Feed Handlers 
 - Order Book Builder 
-- Strategies 
+- Strategy Engine 
 - Order Manager (In Development)
 - Position Manager (Scoping)
 - Risk Manager (Backlog)
@@ -51,8 +52,8 @@ and lock-free components that manage orders, positions, risk (and more) while em
 - Ninja: 1.11.1
 
 # About Me
-I’ve been working in finance since 2008 and building high-frequency trading software since 2019. Primarily using C++ 
-or Java (via the sequencer framework) for the core system.
+I’ve been working in finance since 2008 and building high-frequency trading software since 2019. My primary development  
+stack consists of C++ and Java in Linux environments.
 
 I am a software engineer with a deep passion for algorithmic trading and have extensive experience in building 
 end-to-end high-frequency trading systems. Throughout my experience, I have developed a thorough understanding of the 
@@ -70,4 +71,7 @@ can be used to advance any organizations strategic objectives.
 Through Beacon Tech, I hope to showcase my skill set by building a production quality system.
 
 # Contact Info
-For any recruiters interesting in connecting, please use my LinkedIn profile. [LinkedIn](https://www.linkedin.com/in/mjolewis/)
+For any recruiters interested in connecting, please use my LinkedIn profile. [LinkedIn](https://www.linkedin.com/in/mjolewis/)
+
+## License
+This project is maintains a closed source license - see the [LICENSE](LICENSE) file for details.

@@ -40,8 +40,6 @@ namespace BeaconTech::Strategies
     template<typename T>
     void StrategyEngine<T>::onOrderBookUpdate(const MarketData::Quote& quote, const Common::Bbo& bbo)
     {
-        logger.logInfo(CLASS, "onOrderBookUpdate", "Received BBO");
-
         featureEngine.onOrderBookUpdate(quote, bbo);
         onOrderBookUpdateAlgo(quote, bbo);
     }
