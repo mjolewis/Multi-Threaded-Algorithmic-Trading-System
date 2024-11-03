@@ -36,7 +36,7 @@ namespace BeaconTech::MarketData
 
         // FlagSet::kLast indicates the last message in the packet from the venue for a given instrument
         // and the book should only be inspected for the instrument after this messages is received
-        if (!MarketDataUtils::isFlagSet(mbbo.flags, databento::FlagSet::kLast)) return;
+        if (mbbo.flags.kLast <= 0) return;
 
         if (quote == nullptr) [[unlikely]] return;
 

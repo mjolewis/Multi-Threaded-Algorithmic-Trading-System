@@ -36,7 +36,7 @@ namespace BeaconTech::Strategies
     {
     private:
         inline static const std::string CLASS_PATH = CLASS_FILE_PATH;
-        inline static const std::string APP_NAME = "Strategies";
+        inline static const std::string APP_NAME = "STRATEGIES";
         inline static const std::string CLASS = "StrategyServer";
 
         BeaconTech::Common::Logger logger;
