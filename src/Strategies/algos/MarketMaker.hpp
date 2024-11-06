@@ -19,7 +19,7 @@
 
 #include "../StrategyEngine.hpp"
 #include "FeatureEngine.hpp"
-#include "../../StrategyCommon/managers/OrderManager.hpp"
+#include "../../RiskManager/managers/OrderManager.hpp"
 #include "../../MessageObjects/marketdata/Quote.hpp"
 #include "../../CommonServer/utils/Clock.hpp"
 

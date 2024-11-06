@@ -14,7 +14,7 @@
 #include "../../CommonServer/utils/Clock.hpp"
 #include "../../CommonServer/logging/Logger.hpp"
 
-namespace BeaconTech::Strategies
+namespace BeaconTech::RiskManager
 {
     class OrderManager
     {
@@ -45,6 +45,6 @@ namespace BeaconTech::Strategies
         OrderManager& operator=(OrderManager&& other) = delete;
     };
 
-} // BeaconTech::Strategies
+} // BeaconTech::RiskManager
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_ORDERMANAGER_HPP

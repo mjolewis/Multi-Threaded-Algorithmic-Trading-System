@@ -7,9 +7,7 @@ message(STATUS "Started CMake for ${PROJECT_NAME} v${PROJECT_VERSION}...")
 
 # Create the library for component
 add_library(${PROJECT_NAME} STATIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/managers/OrderManager.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/managers/StrategyConfigManager.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/managers/PositionManager.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/utils/OrderUtil.cpp
 )
 

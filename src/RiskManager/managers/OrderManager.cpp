@@ -8,9 +8,9 @@
 #include <unordered_map>
 
 #include "OrderManager.hpp"
-#include "../utils/OrderUtil.hpp"
+#include "../../StrategyCommon/utils/OrderUtil.hpp"
 
-namespace BeaconTech::Strategies
+namespace BeaconTech::RiskManager
 {
     OrderManager::OrderManager(const BeaconTech::Common::Logger& logger, const std::shared_ptr<Common::Clock>& clock)
         : logger{logger}, clock{clock}, openOrders{new std::unordered_map<uint32_t, Strategies::Order>()}
@@ -42,4 +42,4 @@ namespace BeaconTech::Strategies
         openOrders->emplace(buyOrder.clOrdId, buyOrder);
         openOrders->emplace(sellOrder.clOrdId, sellOrder);
     }
-} // BeaconTech::StrategyCommon
+} // BeaconTech::RiskManager

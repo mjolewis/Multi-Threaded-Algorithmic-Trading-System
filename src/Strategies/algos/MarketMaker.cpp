@@ -20,7 +20,7 @@
 #include "MarketMaker.hpp"
 #include "../StrategyEngine.hpp"
 #include "FeatureEngine.hpp"
-#include "../../StrategyCommon/managers/OrderManager.hpp"
+#include "../../RiskManager/managers/OrderManager.hpp"
 #include "../../CommonServer/utils/ConfigManager.hpp"
 #include "../../MessageObjects/marketdata/Quote.hpp"
 #include "../../MarketData/MarketDataUtils.hpp"

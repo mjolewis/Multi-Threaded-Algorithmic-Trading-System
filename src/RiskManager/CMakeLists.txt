@@ -18,4 +18,5 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 # Optionally, specify include (aka #include) directories for this library if component has header files
 target_include_directories(${PROJECT_NAME} PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/RiskManager          # Includes the current directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/RiskManager/managers
 )

@@ -4,6 +4,6 @@
 
 #include "PositionManager.hpp"
 
-namespace BeaconTech::Strategies
+namespace BeaconTech::RiskManager
 {
 } // BeaconTech::Strategies

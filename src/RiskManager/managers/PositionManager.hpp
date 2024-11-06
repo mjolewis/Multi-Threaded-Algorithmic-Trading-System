@@ -5,7 +5,7 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_POSITIONMANAGER_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_POSITIONMANAGER_HPP
 
-namespace BeaconTech::Strategies
+namespace BeaconTech::RiskManager
 {
 
     class PositionManager
@@ -13,6 +13,6 @@ namespace BeaconTech::Strategies
 
     };
 
-} // BeaconTech::Strategies
+} // BeaconTech::RiskManager
 
 #endif //MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_POSITIONMANAGER_HPP
