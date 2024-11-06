@@ -11,15 +11,15 @@
 #include <string>
 
 #include "StrategyServer.hpp"
-#include "MarketData/clients/MarketDataHistoricalClient.hpp"
-#include "MarketData/clients/MarketDataLiveClient.hpp"
-#include "MarketData/OrderBook.hpp"
-#include "MessageObjects/marketdata/Quote.hpp"
-#include "Strategies/algos/MarketMaker.hpp"
-#include "Strategies/algos/FeatureEngine.hpp"
-#include "StrategyCommon/managers/OrderManager.hpp"
-#include "CommonServer/utils/Clock.hpp"
-#include "CommonServer/logging/Logger.hpp"
+#include "../MarketData/clients/MarketDataHistoricalClient.hpp"
+#include "../MarketData/clients/MarketDataLiveClient.hpp"
+#include "../MarketData/OrderBook.hpp"
+#include "../MessageObjects/marketdata/Quote.hpp"
+#include "algos/MarketMaker.hpp"
+#include "algos/FeatureEngine.hpp"
+#include "../StrategyCommon/managers/OrderManager.hpp"
+#include "../CommonServer/utils/Clock.hpp"
+#include "../CommonServer/logging/Logger.hpp"
 
 namespace BeaconTech::Strategies
 {

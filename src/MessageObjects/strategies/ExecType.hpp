@@ -10,7 +10,7 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_EXECTYPE_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_EXECTYPE_HPP
 
-#include "CommonServer/datastructures/AbstractCodes.hpp"
+#include "../../CommonServer/datastructures/AbstractCodes.hpp"
 
 namespace BeaconTech::Strategies
 {

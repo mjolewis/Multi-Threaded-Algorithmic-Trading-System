@@ -9,17 +9,10 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_STRATEGYSERVER_CPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_STRATEGYSERVER_CPP
 
-#include <cstdlib>
 #include <exception>
 #include <memory>
 
-#include <databento/exceptions.hpp>
-
 #include "StrategyServer.hpp"
-#include "CommonServer/utils/ConfigManager.hpp"
-#include "CommonServer/handlers/CLFQProcessor.hpp"
-#include "MessageObjects/marketdata/Quote.hpp"
-#include "CommonServer/logging/Logger.hpp"
 
 namespace BeaconTech::Strategies
 {

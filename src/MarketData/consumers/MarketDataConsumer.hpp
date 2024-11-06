@@ -7,8 +7,8 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATACONSUMER_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_MARKETDATACONSUMER_HPP
 
-#include "MarketData/processors/MarketDataProcessor.hpp"
-#include "MarketData/MarketDataUtils.hpp"
+#include "../processors/MarketDataProcessor.hpp"
+#include "../MarketDataUtils.hpp"
 
 namespace BeaconTech::MarketData
 {

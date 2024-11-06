@@ -17,11 +17,11 @@
 #include "databento/exceptions.hpp"
 
 #include "MarketDataHistoricalClient.hpp"
-#include "MarketData/MarketDataUtils.hpp"
+#include "../MarketDataUtils.hpp"
 #include "MarketDataStreamingClient.hpp"
-#include "MarketData/processors/MarketDataProcessor.hpp"
-#include "CommonServer/utils/ConfigManager.hpp"
-#include "CommonServer/logging/Logger.hpp"
+#include "../processors/MarketDataProcessor.hpp"
+#include "../../CommonServer/utils/ConfigManager.hpp"
+#include "../../CommonServer/logging/Logger.hpp"
 
 namespace BeaconTech::MarketData
 {

@@ -10,8 +10,8 @@
 
 #include "memory"
 
-#include "MarketData/processors/MarketDataProcessor.hpp"
-#include "MarketData/consumers/MarketDataConsumer.hpp"
+#include "../processors/MarketDataProcessor.hpp"
+#include "../consumers/MarketDataConsumer.hpp"
 
 namespace BeaconTech::MarketData
 {

@@ -7,13 +7,12 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_ORDERMANAGER_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_ORDERMANAGER_HPP
 
-#include <cstdint>
 #include <memory>
 #include <unordered_map>
 
-#include "MessageObjects/strategies/Order.hpp"
-#include "CommonServer/utils/Clock.hpp"
-#include "CommonServer/logging/Logger.hpp"
+#include "../../MessageObjects/strategies/Order.hpp"
+#include "../../CommonServer/utils/Clock.hpp"
+#include "../../CommonServer/logging/Logger.hpp"
 
 namespace BeaconTech::Strategies
 {

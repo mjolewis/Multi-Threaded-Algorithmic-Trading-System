@@ -10,7 +10,6 @@
 
 #include "MarketDataStreamingClient.hpp"
 #include "MarketDataHistoricalClient.hpp"
-#include "CommonServer/types/MdTypes.hpp"
 
 namespace BeaconTech::MarketData
 {

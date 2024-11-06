@@ -13,8 +13,8 @@
 
 #include "MarketDataLiveClient.hpp"
 #include "MarketDataStreamingClient.hpp"
-#include "MarketData/MarketDataUtils.hpp"
-#include "CommonServer/logging/Logger.hpp"
+#include "../MarketDataUtils.hpp"
+#include "../../CommonServer/logging/Logger.hpp"
 
 using namespace std::chrono_literals;
 

@@ -8,12 +8,7 @@
 #include <unordered_map>
 
 #include "OrderManager.hpp"
-#include "MessageObjects/strategies/Order.hpp"
-#include "StrategyCommon/utils/OrderUtil.hpp"
-#include "MessageObjects/marketdata/Side.hpp"
-#include "MessageObjects/strategies/ExecType.hpp"
-#include "MessageObjects/strategies/OrderStatus.hpp"
-#include "CommonServer/logging/Logger.hpp"
+#include "../utils/OrderUtil.hpp"
 
 namespace BeaconTech::Strategies
 {

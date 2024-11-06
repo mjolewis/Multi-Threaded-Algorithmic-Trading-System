@@ -14,7 +14,7 @@
 #include <nlohmann/json.hpp>
 
 #include "ConfigManager.hpp"
-#include "CommonServer/logging/LogLevel.hpp"
+#include "../logging/LogLevel.hpp"
 
 using json = nlohmann::json;
 

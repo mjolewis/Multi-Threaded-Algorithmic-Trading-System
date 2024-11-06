@@ -1,3 +1,5 @@
+|cpp| |license| |docs| |roadmap| |github|
+
 # Contents
 - [Beacon Tech](#beacon-tech)
 - [Components](#components)

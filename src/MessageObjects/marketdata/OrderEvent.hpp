@@ -9,7 +9,7 @@
 
 #include <utility>
 
-#include "CommonServer/datastructures/AbstractCodes.hpp"
+#include "../../CommonServer/datastructures/AbstractCodes.hpp"
 
 namespace BeaconTech::MarketData
 {

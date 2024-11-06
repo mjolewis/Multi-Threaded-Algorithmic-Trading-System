@@ -17,11 +17,11 @@
 #include <functional>
 #include <memory>
 
-#include "Strategies/StrategyEngine.hpp"
+#include "../StrategyEngine.hpp"
 #include "FeatureEngine.hpp"
-#include "StrategyCommon/managers/OrderManager.hpp"
-#include "MessageObjects/marketdata/Quote.hpp"
-#include "CommonServer/utils/Clock.hpp"
+#include "../../StrategyCommon/managers/OrderManager.hpp"
+#include "../../MessageObjects/marketdata/Quote.hpp"
+#include "../../CommonServer/utils/Clock.hpp"
 
 namespace BeaconTech::Strategies
 {
