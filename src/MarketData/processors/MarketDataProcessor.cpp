@@ -10,8 +10,8 @@
 #include <databento/timeseries.hpp>
 
 #include "MarketDataProcessor.hpp"
-#include "MarketData/MarketDataUtils.hpp"
-#include "MessageObjects/marketdata/Quote.hpp"
+#include "../../MarketData/MarketDataUtils.hpp"
+#include "../../MessageObjects/marketdata/Quote.hpp"
 
 namespace BeaconTech::MarketData
 {

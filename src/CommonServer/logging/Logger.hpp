@@ -17,10 +17,10 @@
 #include <string>
 #include <thread>
 
-#include "CommonServer/datastructures/ConcurrentLockFreeQueue.hpp"
-#include "CommonServer/logging/LogLevel.hpp"
-#include "CommonServer/logging/LogElement.hpp"
-#include "CommonServer/utils/Clock.hpp"
+#include "../datastructures/ConcurrentLockFreeQueue.hpp"
+#include "../logging/LogLevel.hpp"
+#include "../logging/LogElement.hpp"
+#include "../utils/Clock.hpp"
 
 namespace BeaconTech::Common
 {

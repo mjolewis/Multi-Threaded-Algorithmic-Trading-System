@@ -11,7 +11,7 @@
 
 #include <utility>
 
-#include "CommonServer/types/NumericTypes.hpp"
+#include "../../CommonServer/types/NumericTypes.hpp"
 
 namespace BeaconTech::MarketData
 {

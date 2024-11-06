@@ -10,8 +10,8 @@
 
 #include <databento/timeseries.hpp>
 
-#include "MarketData/OrderBook.hpp"
-#include "CommonServer/concepts/BTConcepts.hpp"
+#include "../OrderBook.hpp"
+#include "../../CommonServer/concepts/BTConcepts.hpp"
 
 namespace BeaconTech::MarketData
 {

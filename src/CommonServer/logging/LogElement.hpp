@@ -8,7 +8,7 @@
 #ifndef MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_LOGELEMENT_HPP
 #define MULTI_THREADED_ALGORITHMIC_TRADING_SYSTEM_LOGELEMENT_HPP
 
-#include "CommonServer/logging/LogType.hpp"
+#include "../logging/LogType.hpp"
 
 namespace BeaconTech::Common
 {

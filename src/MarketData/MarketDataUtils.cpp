@@ -17,7 +17,7 @@
 #include <databento/flag_set.hpp>
 
 #include "MarketDataUtils.hpp"
-#include "CommonServer/utils/ConfigManager.hpp"
+#include "../CommonServer/utils/ConfigManager.hpp"
 
 using namespace std::chrono_literals;
 

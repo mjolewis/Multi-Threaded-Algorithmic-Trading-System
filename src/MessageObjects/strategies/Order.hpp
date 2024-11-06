@@ -9,10 +9,10 @@
 
 #include <cstdint>
 
-#include "MessageObjects/marketdata/Side.hpp"
+#include "../marketdata/Side.hpp"
 #include "ExecType.hpp"
 #include "OrderStatus.hpp"
-#include "CommonServer/types/DateTimes.hpp"
+#include "../../CommonServer/types/DateTimes.hpp"
 
 namespace BeaconTech::Strategies
 {

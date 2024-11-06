@@ -10,7 +10,7 @@
 
 #include <chrono>
 
-#include "CommonServer/types/DateTimes.hpp"
+#include "../types/DateTimes.hpp"
 
 namespace BeaconTech::Common
 {

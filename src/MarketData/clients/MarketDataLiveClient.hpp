@@ -15,7 +15,7 @@
 
 #include "IMarketDataProvider.hpp"
 #include "MarketDataStreamingClient.hpp"
-#include "CommonServer/logging/Logger.hpp"
+#include "../../CommonServer/logging/Logger.hpp"
 
 namespace BeaconTech::MarketData
 {

@@ -14,9 +14,9 @@
 #include <sstream>
 
 #include "Logger.hpp"
-#include "CommonServer/logging/LogLevel.hpp"
-#include "CommonServer/logging/LogElement.hpp"
-#include "CommonServer/utils/Clock.hpp"
+#include "../logging/LogLevel.hpp"
+#include "../logging/LogElement.hpp"
+#include "../utils/Clock.hpp"
 
 namespace BeaconTech::Common
 {

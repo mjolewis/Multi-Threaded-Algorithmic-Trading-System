@@ -10,12 +10,12 @@
 #include <future>
 
 #include "MarketDataConsumer.hpp"
-#include "MarketData/processors/MarketDataProcessor.hpp"
+#include "../processors/MarketDataProcessor.hpp"
 
 namespace BeaconTech::MarketData
 {
-    // Overloaded ctor that initializes the consumer and its downstream components so that it can
-    // consume data and delegate the processing to the streaming processor
+    // Overloaded ctor that initializes the consumer, consumes market data,
+    // and dispatches the market data entities to the streaming processor
     template<typename T>
     MarketDataConsumer<T>::MarketDataConsumer(MarketDataProcessor& streamingProcessor)
         : streamingProcessor{streamingProcessor}, stopSignal{false}
