@@ -4,6 +4,6 @@
 
 #include "RiskManager.hpp"
 
-namespace BeaconTech::Strategies
+namespace BeaconTech::RiskManager
 {
-} // BeaconTech::Strategies
+} // BeaconTech::RiskManager
