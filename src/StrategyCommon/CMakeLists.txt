@@ -11,7 +11,6 @@ add_library(${PROJECT_NAME} STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/managers/StrategyConfigManager.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/managers/PositionManager.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/utils/OrderUtil.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/managers/RiskManager.cpp
 )
 
 # Specify the components that MarketData depends on

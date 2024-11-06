@@ -53,6 +53,7 @@ add_subdirectory(src/MessageObjects)
 add_subdirectory(src/MarketData)
 add_subdirectory(src/StrategyCommon)
 add_subdirectory(src/Strategies)
+add_subdirectory(src/RiskManager)
 
 #include_directories(${PROJECT_SOURCE_DIR})
 #include_directories(${PROJECT_SOURCE_DIR}/src)
