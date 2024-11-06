@@ -1,4 +1,4 @@
 # Stop
-# Roll logs
-55 23 * * 1-5 /Users/mlewis/CLionProjects/Multi-Threaded-Algorithmic-Trading-System/scripts/RollLogs.sh
+# Cleanup logs
+55 23 * * 1-5 /Users/mlewis/CLionProjects/Multi-Threaded-Algorithmic-Trading-System/scripts/clean_logs.sh
 # Restart
