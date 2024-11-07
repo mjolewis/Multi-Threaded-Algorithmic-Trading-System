@@ -17,7 +17,6 @@
 #include "../MessageObjects/marketdata/Quote.hpp"
 #include "algos/MarketMaker.hpp"
 #include "algos/FeatureEngine.hpp"
-#include "../RiskManager/managers/OrderManager.hpp"
 #include "../CommonServer/utils/Clock.hpp"
 #include "../CommonServer/logging/Logger.hpp"
 
@@ -47,7 +46,6 @@ namespace BeaconTech::Strategies
 
         // Strategy properties
         FeatureEngine featureEngine;
-        OrderManager* orderManager; // todo - this won't be necessary here after building MC dispatching into Risk component
         MarketMaker<T>* marketMaker;
 
     public:
