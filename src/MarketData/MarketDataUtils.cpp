@@ -144,14 +144,6 @@ namespace BeaconTech::MarketData
         return Common::ConfigManager::intConfigValueDefaultIfNull("numThreads", 1);
     }
 
-    // True if the flag is set. False otherwise
-    bool MarketDataUtils::isFlagSet(const databento::FlagSet& flag, std::uint8_t bit)
-    {
-        // todo
-        // return (flag & bit) == bit;
-        return false;
-    }
-
     // Prints best bid and ask for each book after processing the last message in the packet
     void MarketDataUtils::printBbo(const Common::Bbo& bbo, const double& fairMarketPrice)
     {

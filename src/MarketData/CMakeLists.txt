@@ -6,6 +6,8 @@ project("MarketData" VERSION 0.0.1 LANGUAGES CXX)
 message(STATUS "Started CMake for ${PROJECT_NAME} v${PROJECT_VERSION}...")
 
 # Start Databento Dependency
+# CMake caches fetched content, so to fetch the latest version, you must clear the caches
+# by fully removing the build directory and regenerating the build system by running cmake ..
 include(FetchContent)
 
 FetchContent_Declare(
@@ -31,9 +33,12 @@ add_library(${PROJECT_NAME} STATIC
 # Specify the components that MarketData depends on
 # Public modifier ensures users of MarketData component also have access to its dependencies
 # Link MarketData (aka target) to the components that it depends on
-target_link_libraries(${PROJECT_NAME} PUBLIC
+target_link_libraries(${PROJECT_NAME}
+        PRIVATE
         CommonServer
         MessageObjects
+
+        PUBLIC
         databento::databento
 )
 

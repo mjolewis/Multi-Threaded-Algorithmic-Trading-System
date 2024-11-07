@@ -46,8 +46,6 @@ namespace BeaconTech::MarketData
 
         static unsigned int getNumThreads();
 
-        static bool isFlagSet(const databento::FlagSet& flag, std::uint8_t bit);
-
         static void printBbo(const Common::Bbo& bbo, const double& fairMarketPrice);
     };
 } // namespace BeaconTech::marketdata
