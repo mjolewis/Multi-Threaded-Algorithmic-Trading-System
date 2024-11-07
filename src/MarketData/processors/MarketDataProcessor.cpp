@@ -32,11 +32,13 @@ namespace BeaconTech::MarketData
     requires Common::Mbbo<T>
     void MarketDataProcessor::handle(const T& mbbo)
     {
+        // Apply the quote to the order book
         const MarketData::Quote* quote = orderBook.apply(mbbo);
 
-        // FlagSet::kLast indicates the last message in the packet from the venue for a given instrument
-        // and the book should only be inspected for the instrument after this messages is received
-        if (mbbo.flags.kLast <= 0) return;
+        // But only process it when FlagSet::kLast is set. This flag indicates that the last message in the
+        // packet has been received from the venue for a given instrument. The book should only be inspected
+        // for the instrument after this messages is received.
+        if (!mbbo.flags.IsLast()) return;
 
         if (quote == nullptr) [[unlikely]] return;
 
@@ -67,7 +69,7 @@ namespace BeaconTech::MarketData
         auto mbo = record.Get<databento::MboMsg>();
         handle<databento::MboMsg>(mbo);
 
-        // todo uncomment if we want to build liquidity taking strategies
+        // todo - uncomment if we want to build liquidity taking strategies
         // auto trade = record.Get<databento::TradeMsg>();
         // handle<databento::TradeMsg>(trade);
 
