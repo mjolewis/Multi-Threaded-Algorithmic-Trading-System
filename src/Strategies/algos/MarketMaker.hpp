@@ -19,7 +19,6 @@
 
 #include "../StrategyEngine.hpp"
 #include "FeatureEngine.hpp"
-#include "../../RiskManager/managers/OrderManager.hpp"
 #include "../../MessageObjects/marketdata/Quote.hpp"
 #include "../../CommonServer/utils/Clock.hpp"
 
@@ -43,7 +42,6 @@ namespace BeaconTech::Strategies
         // Strategy properties
         StrategyEngine<T>& strategyEngine;
         const FeatureEngine& featureEngine;
-        OrderManager& orderManager;
 
         // Order properties
         double targetSpreadBps;
@@ -51,8 +49,7 @@ namespace BeaconTech::Strategies
 
     public:
         MarketMaker(const BeaconTech::Common::Logger& logger, const std::shared_ptr<Common::Clock>& clock,
-                    StrategyEngine<T>& strategyEngine, const FeatureEngine& featureEngine,
-                    OrderManager& orderManager);
+                    StrategyEngine<T>& strategyEngine, const FeatureEngine& featureEngine);
 
         virtual ~MarketMaker();
 

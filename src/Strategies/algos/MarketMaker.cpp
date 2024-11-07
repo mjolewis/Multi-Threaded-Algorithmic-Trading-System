@@ -30,9 +30,8 @@ namespace BeaconTech::Strategies
 {
     template<typename T>
     MarketMaker<T>::MarketMaker(const BeaconTech::Common::Logger& logger, const std::shared_ptr<Common::Clock>& clock,
-                                StrategyEngine<T>& strategyEngine, const FeatureEngine& featureEngine,
-                                OrderManager& orderManager)
-        : logger{logger}, clock{clock}, strategyEngine{strategyEngine}, featureEngine{featureEngine}, orderManager{orderManager},
+                                StrategyEngine<T>& strategyEngine, const FeatureEngine& featureEngine)
+        : logger{logger}, clock{clock}, strategyEngine{strategyEngine}, featureEngine{featureEngine},
           targetSpreadBps{Common::ConfigManager::doubleConfigValueDefaultIfNull("targetSpreadBps", 0.0002)},
           targetSize{Common::ConfigManager::intConfigValueDefaultIfNull("targetSize", 100)}
     {
@@ -84,7 +83,8 @@ namespace BeaconTech::Strategies
         bidPrice = bidPrice - (fairMarketPrice - bidPrice >= (bidPrice * targetSpreadBps) ? 0 : 1);
         askPrice = askPrice + (askPrice - fairMarketPrice >= (askPrice * targetSpreadBps) ? 0 : 1);
 
-        orderManager.onOrderRequest(std::get<0>(bbo), bidPrice, askPrice, targetSize);
+        // todo - send request over multicst into risk manager
+//        orderManager.onOrderRequest(std::get<0>(bbo), bidPrice, askPrice, targetSize);
     }
 } // BeaconTech
 

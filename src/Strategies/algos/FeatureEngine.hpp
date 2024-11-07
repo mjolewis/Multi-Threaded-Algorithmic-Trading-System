@@ -29,7 +29,7 @@ namespace BeaconTech::Strategies
         double marketPrice;
 
     public:
-        FeatureEngine(const BeaconTech::Common::Logger& logger);
+        explicit FeatureEngine(const BeaconTech::Common::Logger& logger);
 
         virtual ~FeatureEngine();
 

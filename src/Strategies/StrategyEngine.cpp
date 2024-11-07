@@ -22,8 +22,7 @@ namespace BeaconTech::Strategies
     {
         logger.logInfo(CLASS, "CTOR", "Creating StrategyEngine");
 
-        orderManager = new OrderManager{logger, clock};
-        marketMaker = new MarketMaker<T>{logger, clock, *this, featureEngine, *orderManager};
+        marketMaker = new MarketMaker<T>{logger, clock, *this, featureEngine};
     }
 
     template<typename T>
@@ -31,7 +30,6 @@ namespace BeaconTech::Strategies
     {
         logger.logInfo(CLASS, "DTOR", "Destroying StrategyEngine");
         delete this->marketMaker;
-        delete this->orderManager;
     }
 
     // Informs the feature engine and strategy about quotes and book updates
